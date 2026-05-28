@@ -48,7 +48,7 @@
       Afvalophaling
     </div>
 
-    <div class="waste-row" id="wasteTodayTomorrowRow" style="margin-bottom:12px; grid-template-columns: repeat(2, 1fr);">
+    <div class="waste-row-2" id="wasteTodayTomorrowRow" style="margin-bottom:12px;">
       <div class="waste-card" id="wasteTodayCard" style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
         <div style="text-align: left;">
             <span class="waste-when">VANDAAG</span>
