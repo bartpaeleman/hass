@@ -397,7 +397,7 @@ function renderCard(container, room, stateMap) {
 
       <div class="thermo-target-ctrl-new" style="display:flex; align-items:center; background:var(--bg); border:1px solid var(--border); border-radius:5px; overflow:hidden; flex-shrink:0; width:100%; justify-content:space-between;">
         <button class="thermo-temp-btn" onclick="adjTemp('${id}','${room.climate}',-0.5)">−</button>
-        <span class="thermo-target-val" id="tval-${id}" style="min-width:36px; text-align:center; font-family:'Share Tech Mono', monospace; font-size:16px; color:var(--text);">${targetText}</span>
+        <span class="thermo-target-val" id="tval-${id}" onclick="setMidTemp('${id}', '${room.climate}', ${room.minComfortTemp || 20}, ${room.maxComfortTemp || 22})" style="min-width:36px; text-align:center; font-family:'Share Tech Mono', monospace; font-size:16px; color:var(--text); cursor:pointer;">${targetText}</span>
         <button class="thermo-temp-btn" onclick="adjTemp('${id}','${room.climate}',+0.5)">+</button>
       </div>
 
@@ -475,6 +475,21 @@ const adjTimers = {};
 function adjTemp(id, climateId, delta) {
   localTargets[id] = Math.round((localTargets[id] + delta) * 2) / 2;
   localTargets[id] = Math.max(5, Math.min(30, localTargets[id]));
+  const el = document.getElementById(`tval-${id}`);
+  if (el) el.textContent = localTargets[id].toFixed(1) + '°C';
+
+  clearTimeout(adjTimers[id]);
+  adjTimers[id] = setTimeout(() => {
+    setTemperature(climateId, localTargets[id]);
+  }, 800);
+}
+
+function setMidTemp(id, climateId, min, max) {
+  if (min && max) {
+    localTargets[id] = Math.round(((min + max) / 2) * 2) / 2;
+  } else {
+    localTargets[id] = 21.0;
+  }
   const el = document.getElementById(`tval-${id}`);
   if (el) el.textContent = localTargets[id].toFixed(1) + '°C';
 
