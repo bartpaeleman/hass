@@ -141,12 +141,15 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 .compact-card .energy-card-header {
     gap: 12px;
 }
 .compact-card .energy-value {
     font-size: 18px;
+    margin-left: auto;
 }
 
 .stacked-card {
@@ -173,6 +176,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 .airco-card .energy-card-header {
     gap: 12px;
@@ -184,6 +189,7 @@
     font-size: 0.9em;
     font-weight: bolder;
     margin-top: 0;
+    margin-left: auto;
 }
 .airco-card .energy-icon {
     width: 28px;
