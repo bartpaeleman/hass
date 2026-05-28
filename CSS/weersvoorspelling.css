@@ -66,14 +66,14 @@
 
 .weather-temp-min {
     font-size: 14px;
-    color: var(--dim);
+    color: #9deafa;
     font-family: 'Share Tech Mono', monospace;
 }
 
 .weather-description {
     margin-top: 8px;
     font-size: 12px;
-    color: var(--muted);
+    color: #c5c5bc;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }

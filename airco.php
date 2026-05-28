@@ -123,7 +123,7 @@ const AC_UNITS = [
     climate:   'climate.bureau_airco',
     power:     'switch.bureau_power',
     streamer:  'switch.bureau_streamer',
-    tempIn:    'sensor.bureau_inside_temperature',
+    tempIn:    'sensor.bureau_temp',
     tempOut:   'sensor.bureau_outside_temperature',
     compFreq:  'sensor.bureau_compressor_frequency',
     compPower: 'sensor.bureau_compressor_estimated_power_consumption',
