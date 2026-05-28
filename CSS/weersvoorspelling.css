@@ -1,0 +1,79 @@
+/* Weersvoorspelling (10-daagse) */
+
+.weather-section {
+    margin-top: 20px;
+    margin-bottom: 24px;
+}
+
+.weather-row {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 8px; /* Ruimte voor scrollbar */
+    /* Verberg scrollbar voor nettere UI, maar behoud functionaliteit */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.weather-row::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.weather-card {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 16px 12px;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, border-color 0.2s;
+    min-width: 120px;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.weather-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.weather-day {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    color: var(--text);
+    letter-spacing: 1px;
+}
+
+.weather-icon {
+    width: 48px;
+    height: 48px;
+    margin: 8px auto;
+    object-fit: contain;
+}
+
+.weather-temp-max {
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--text);
+    margin-top: 4px;
+}
+
+.weather-temp-min {
+    font-size: 14px;
+    color: var(--dim);
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.weather-description {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

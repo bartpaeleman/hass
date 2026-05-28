@@ -1,0 +1,182 @@
+  /* ── Top Banners (Alarm + Versies) ── */
+  .top-banners {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .alarm-banner {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-radius: 6px;
+    border: 1px solid;
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+
+  .alarm-banner.ok {
+    background: rgba(0,230,118,0.05);
+    border-color: rgba(0,230,118,0.25);
+  }
+
+  .alarm-banner.active {
+    background: rgba(255,61,61,0.1);
+    border-color: rgba(255,61,61,0.4);
+    animation: alarm-flash 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes alarm-flash {
+    from { box-shadow: 0 0 0 rgba(255,61,61,0); }
+    to   { box-shadow: 0 0 20px rgba(255,61,61,0.2); }
+  }
+
+  .alarm-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .alarm-icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .alarm-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .alarm-sub {
+    font-size: 12px;
+    color: var(--dim);
+    font-family: 'Share Tech Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .alarm-banner.ok .alarm-title  { color: var(--ok); }
+  .alarm-banner.active .alarm-title { color: var(--alert); }
+
+  /* Versies Banner */
+  .versions-banner {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.4s ease;
+  }
+
+  .versions-banner.ok {
+    background: rgba(0,230,118,0.05);
+    border-color: rgba(0,230,118,0.25);
+  }
+
+  .versions-banner.alert {
+    background: rgba(255,61,61,0.1);
+    border-color: rgba(255,61,61,0.4);
+  }
+
+  .version-mini-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  /* ── Sensor grid (12-column system) ── */
+  .sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .sensor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+
+  .sensor-card[data-row="1"] { grid-column: span 4; } /* 3 items op rij 1 */
+  .sensor-card[data-row="2"] { grid-column: span 3; } /* 4 items op rij 2 */
+
+  .sensor-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    transition: background 0.3s;
+  }
+
+  .sensor-card.ok::before    { background: var(--ok); }
+  .sensor-card.alert::before { background: var(--alert); }
+  .sensor-card.ok    { border-color: rgba(0,230,118,0.15); }
+  .sensor-card.alert { border-color: rgba(255,61,61,0.3);
+                        animation: card-pulse 1.5s ease-in-out infinite alternate; }
+
+  .sensor-batt {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sensor-name {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 6px;
+  }
+
+  .sensor-status {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .sensor-card.ok    .sensor-status { color: var(--ok); }
+  .sensor-card.alert .sensor-status { color: var(--alert); }
+
+  .sensor-toggles {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .toggle-chip {
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .toggle-chip.motion-on  { background: rgba(0,230,118,0.1);  color: var(--ok);   border: 1px solid rgba(0,230,118,0.2); }
+  .toggle-chip.motion-off { background: rgba(255,61,61,0.1);   color: var(--alert);border: 1px solid rgba(255,61,61,0.2); }
+  .toggle-chip.light-on   { background: rgba(255,179,0,0.1);   color: var(--warn); border: 1px solid rgba(255,179,0,0.2); }
+  .toggle-chip.light-off  { background: rgba(255,61,61,0.1);   color: var(--alert);border: 1px solid rgba(255,61,61,0.2); }
