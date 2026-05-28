@@ -204,3 +204,9 @@
     border: 1px solid var(--ok) !important;
     background: transparent;
 }
+
+@media (max-width: 900px) {
+    .col-3, .col-4, .col-6 {
+        grid-column: span 12;
+    }
+}

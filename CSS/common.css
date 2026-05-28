@@ -55,6 +55,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
   }
 
   .logo-icon {
@@ -98,6 +99,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
+    min-width: 0;
   }
 
   .sidebar-toggle {
@@ -196,6 +198,12 @@
   /* Responsive */
   @media (max-width: 900px) {
     main { grid-template-columns: 1fr; }
+    header { padding: 12px 16px; }
+    .left  { padding: 16px; border-right: none; }
+    .right { padding: 16px; }
+
+    #wasteTodayTomorrowRow { grid-template-columns: 1fr !important; }
+    .waste-row { grid-template-columns: repeat(2, 1fr) !important; }
 
     .sidebar-toggle { display: block; }
 
@@ -503,4 +511,11 @@
     .right { border-top: 1px solid var(--border); }
     .sensor-card[data-row="1"], .sensor-card[data-row="2"] { grid-column: span 6; }
     .top-banners { flex-direction: column; }
+  }
+
+  @media (max-width: 600px) {
+    .waste-row { grid-template-columns: 1fr; }
+    .persons-grid { grid-template-columns: 1fr; }
+    .speed-bars { grid-template-columns: 1fr; }
+    .sensor-card[data-row="1"], .sensor-card[data-row="2"] { grid-column: span 12; }
   }
