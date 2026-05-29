@@ -519,6 +519,17 @@ main {
    🚨 RESPONSIVE LAYOUT MATRIX & MEDIA QUERIES
    ========================================================================= */
 
+/* ── Grotere Schermen (min-width: 901px) ── */
+@media (min-width: 901px) {
+  #clock {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--warn);
+  }
+}
+
 /* ── Tablet / Generiek Responsive (max-width: 900px) ── */
 @media (max-width: 900px) {
   main { grid-template-columns: 1fr; }
