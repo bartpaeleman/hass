@@ -194,7 +194,10 @@
   }
 
   /* Responsive */
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
+    .persons-grid {
+      grid-template-columns: 1fr;
+    }
     .waste-card {
       height: auto;
       min-height: max-content;

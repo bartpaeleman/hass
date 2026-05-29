@@ -125,7 +125,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v6.5M6 10a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M8 3h1M8 5h1" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
         Temperatuur
     </div>
-    <div id="tempList" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 10px;"><!-- injected --></div>
+    <div id="tempList" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;"><!-- injected --></div>
 </div>
 </div>
 
