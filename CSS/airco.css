@@ -1,8 +1,4 @@
-/* ══════════════════════════════════════
-   AIRCO DASHBOARD — airco.css
-══════════════════════════════════════ */
-
-/* ── Grid layout ── */
+/* ── Grid layouts ── */
 .airco-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -44,11 +40,9 @@
   transition: background 0.4s;
 }
 
-/* Status: off */
 .ac-card.ac-off { border-color: var(--border); }
 .ac-card.ac-off::before { background: var(--muted); }
 
-/* Status: cooling */
 .ac-card.ac-cool {
   border-color: rgba(0,180,216,0.4);
   box-shadow: 0 0 24px rgba(0,180,216,0.08);
@@ -57,7 +51,6 @@
   background: linear-gradient(90deg, #00b4d8, #48cae4);
 }
 
-/* Status: heating */
 .ac-card.ac-heat {
   border-color: rgba(255,107,53,0.45);
   box-shadow: 0 0 24px rgba(255,107,53,0.08);
@@ -66,14 +59,12 @@
   background: linear-gradient(90deg, #ff6b35, #ffb300);
 }
 
-/* Status: fan */
 .ac-card.ac-fan {
   border-color: rgba(0,230,118,0.3);
   box-shadow: 0 0 20px rgba(0,230,118,0.06);
 }
 .ac-card.ac-fan::before { background: var(--ok); }
 
-/* Status: dry */
 .ac-card.ac-dry {
   border-color: rgba(255,179,0,0.35);
 }
@@ -122,7 +113,6 @@
 }
 .ac-power-btn:active { transform: scale(0.88); }
 
-/* Auto Airco button styling */
 .ac-auto-btn {
   border: 1.5px solid var(--border);
   background: var(--bg);
@@ -170,7 +160,7 @@
 .ac-dial-wrap {
   position: relative;
   width: 100%;
-  max-width: 220px; /* Grootste formaat (ongeveer 200%) */
+  max-width: 220px;
   aspect-ratio: 1 / 1;
   height: auto;
   margin: 0 auto;
@@ -182,7 +172,6 @@
   display: block;
 }
 
-/* SVG arc segments */
 .dial-track {
   fill: none;
   stroke: rgba(255,255,255,0.06);
@@ -197,10 +186,9 @@
   transition: stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1), stroke 0.4s;
 }
 
-/* Text styles within SVG */
 .dial-temp-val {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 48px; /* Grotere font size, meeschalend via SVG viewport */
+  font-size: 48px;
   font-weight: 700;
   fill: #fff;
 }
@@ -223,7 +211,6 @@
 .ac-card.ac-dry  .dial-mode-label { fill: var(--warn); }
 .ac-card.ac-off  .dial-mode-label { fill: var(--muted); }
 
-/* Temp adj buttons on sides of dial */
 .dial-adj-btn {
   position: absolute;
   top: 50%;
@@ -242,6 +229,7 @@
   justify-content: center;
   transition: all 0.2s;
   line-height: 1;
+  z-index: 5;
 }
 
 .dial-adj-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,180,216,0.08); }
@@ -249,7 +237,7 @@
 .dial-adj-btn.minus { left: 0; }
 .dial-adj-btn.plus  { right: 0; }
 
-/* ── Temps row (inside + outside) ── */
+/* ── Temps row ── */
 .ac-temps-row {
   display: flex;
   justify-content: center;
@@ -300,6 +288,7 @@
   gap: 8px;
   align-items: center;
   justify-content: center;
+  min-width: 0;
 }
 
 .ac-mode-btn {
@@ -359,9 +348,9 @@
 .ac-fan-btn {
   flex: 1;
   background: var(--bg);
-  border: 1px solid rgba(0,180,216,0.3); /* Lichte blauwe rand altijd zichtbaar voor leesbaarheid */
+  border: 1px solid rgba(0,180,216,0.3);
   border-radius: 4px;
-  color: #fff; /* Witte tekst voor betere leesbaarheid */
+  color: #fff;
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   font-weight: bold;
@@ -377,157 +366,20 @@
 .ac-fan-btn.active-fan-speed {
   border-color: var(--accent);
   color: #000;
-  background: var(--accent); /* Solid blauw voor de actieve knop (zoals in de rest van UI of duidelijk wit/zwart contrast) */
+  background: var(--accent);
 }
 
-/* ── Extra toggles (streamer, powerful) ── */
-.ac-toggles {
-  display: flex;
-  gap: 6px;
-}
-
-.ac-toggle-btn {
-  flex: 1;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--dim);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1px;
-  padding: 6px 4px;
-  cursor: pointer;
-  text-transform: uppercase;
-  text-align: center;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.ac-toggle-btn:hover { border-color: var(--muted); color: var(--text); }
-.ac-toggle-btn.toggle-on {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(0,180,216,0.08);
-}
-
-/* ── Stats row (compressor, energy) ── */
-.ac-stats-row {
-  display: flex;
-  gap: 0;
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-}
-
-.ac-stat {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  border-right: 1px solid var(--border);
-  padding: 0 4px;
-}
-
-.ac-stat:last-child { border-right: none; }
-
-.ac-stat-label {
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  color: var(--dim);
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.ac-stat-val {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  color: var(--text);
-  text-align: center;
-}
-
-/* ── Daikin Onecta energy monthly row ── */
-.ac-monthly-row {
-  display: flex;
-  gap: 8px;
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-}
-
-.ac-monthly-item {
-  flex: 1;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 6px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.ac-monthly-label {
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  color: var(--dim);
-  text-transform: uppercase;
-}
-
-.ac-monthly-val {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  color: var(--text);
-}
-
-/* ── Monthly Stats Grid (Bottom) ── */
-.monthly-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 28px;
-}
-
-.monthly-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.monthly-card-title {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #fff;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 8px;
-}
-
-/* Dial arc animations */
-@keyframes dial-spin {
-  from { stroke-dashoffset: 251; }
-}
-
+/* Summary Bar */
 .ac-summary-bar {
-    display: grid;
-    /* auto-fit regelt het wrappen */
-    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
-    gap: 10px;
-    margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
 }
 
-/* Gericht op het LAATSTE item in de grid (jouw Auto Airco knop) */
 .ac-summary-bar > .ac-summary-stat:last-child {
-    /* grid-column: 1 / -1 zorgt ervoor dat hij van de eerste tot de allerlaatste kolom rekt */
-    grid-column: 1 / -1;
-    
-    /* Extra hoogte specifiek voor deze knop */
-    min-height: 50px; 
+  grid-column: 1 / -1;
+  min-height: 50px; 
 }
 
 .ac-summary-stat {
@@ -555,34 +407,48 @@
 
 .ac-summary-val.cool { color: var(--accent); }
 .ac-summary-val.heat { color: #ff8c42; }
-.ac-summary-val.ok   { color: var(--ok); }
-
-/* ── Spin animation for fan mode indicator ── */
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
 
 .fan-spin {
   display: inline-block;
   animation: spin-slow 2s linear infinite;
 }
 
-/* ── Responsive ── */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Responsive Overrides */
 @media (max-width: 1024px) {
   .airco-grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .ac-card-wrapper { grid-column: span 1; }
 }
 
 @media (max-width: 900px) {
   .airco-grid { grid-template-columns: 1fr; }
   .airco-grid-4 { grid-template-columns: 1fr; }
-  .ac-card-wrapper { grid-column: span 1;  }
+}
+
+@media (max-width: 500px) {
+  .ac-body-layout {
+    flex-direction: column-reverse;
+    gap: 16px;
+  }
+  .ac-modes-vertical {
+    flex-direction: row;
+    width: 100%;
+    margin-top: 0;
+  }
+  .ac-mode-btn {
+    padding: 8px 2px;
+  }
+  .ac-header {
+    margin-bottom: 10px;
+  }
 }
 
 @media (min-width: 600px) {
-    .ac-summary-bar > .ac-summary-stat:last-child {
-        grid-column: auto; /* Herstel naar normale grid-positie op desktop */
-        min-height: auto;  /* Herstel naar normale hoogte op desktop */
-    }
+  .ac-summary-bar > .ac-summary-stat:last-child {
+    grid-column: auto;
+    min-height: auto;
+  }
 }

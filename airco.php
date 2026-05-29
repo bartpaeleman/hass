@@ -27,10 +27,8 @@
 </header>
 
 <main>
-  <!-- ══ LEFT ══ -->
   <div class="left">
 
-    <!-- Summary Bar -->
     <div class="ac-summary-bar" id="acSummaryBar">
       <div class="ac-summary-stat">
         <span class="ac-summary-label">Actief</span>
@@ -53,25 +51,21 @@
       </div>
     </div>
 
-    <!-- Section heading -->
     <div class="section-label">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v2M6 9v2M1 6h2M9 6h2M2.7 2.7l1.4 1.4M7.9 7.9l1.4 1.4M2.7 9.3l1.4-1.4M7.9 4.1l1.4-1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       Airco Units
     </div>
 
     <div class="airco-grid" id="aircoGrid">
-      <!-- Injected by JS -->
-    </div>
+      </div>
 
   </div>
 
-  <!-- ══ RIGHT sidebar ══ -->
   <div class="right">
     <?php include 'sidebar.php'; ?>
   </div>
 </main>
 
-<!-- Toast -->
 <div id="toast" style="
   position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
   background:var(--surface); border:1px solid var(--border); border-radius:6px;
@@ -81,12 +75,8 @@
 </div>
 
 <script>
-// ════════════════════════════════════════════════
-//  ⚙️  CONFIGURATIE
-// ════════════════════════════════════════════════
 const REFRESH = 5000;
 
-// Airco units — koppelt Daikin AC climate entity aan Daikin Onecta sensors
 const AC_UNITS = [
   {
     name:      'Living',
@@ -150,26 +140,19 @@ const AC_UNITS = [
   },
 ];
 
-// Fan speed opties per Daikin modus (HA fan_mode strings)
 const FAN_SPEEDS = ['Auto', '1', '2', '3', '4', '5'];
 
-// HVAC modus → CSS class mapping
 const MODE_CLASS = {
   cool: 'ac-cool',
   heat: 'ac-heat',
   fan_only: 'ac-fan',
   dry: 'ac-dry',
   off: 'ac-off',
-  auto: 'ac-cool', // treat auto as cool visually
+  auto: 'ac-cool',
 };
 
-// Lokale doeltemperatuuren (voor debounce)
 const localTargets = {};
 const adjTimers    = {};
-
-// ════════════════════════════════════════════════
-//  SVG DIAL HELPERS
-// ════════════════════════════════════════════════
 
 function modeColor(mode) {
   if (mode === 'cool')     return '#00b4d8';
@@ -189,7 +172,6 @@ function buildDialSVG(targetTemp, mode, modeLabel, unitIdx = 'TEXT', actualTemp 
   const arcDeg = 220;
   const startAngle = 160;
 
-  // Vergroot de radius
   const tRadius = 76;
   const tCirc = 2 * Math.PI * tRadius;
   const tArcLen = (arcDeg / 360) * tCirc;
@@ -228,9 +210,6 @@ function buildDialSVG(targetTemp, mode, modeLabel, unitIdx = 'TEXT', actualTemp 
     </svg>`;
 }
 
-// ════════════════════════════════════════════════
-//  TOAST
-// ════════════════════════════════════════════════
 function toast(msg, ok = true) {
   const el = document.getElementById('toast');
   el.textContent = msg;
@@ -245,9 +224,6 @@ function toast(msg, ok = true) {
   }, 2800);
 }
 
-// ════════════════════════════════════════════════
-//  HA API CALLS
-// ════════════════════════════════════════════════
 async function haCall(domain, service, data) {
   try {
     const r = await fetch(`${HA_URL}/api/services/${domain}/${service}`, {
@@ -302,13 +278,6 @@ async function setFanSpeed(unit, speed) {
   setTimeout(refresh, 1000);
 }
 
-async function toggleStreamer(unit) {
-  const ok = await haCall('switch', 'toggle', { entity_id: unit.streamer });
-  if (ok) toast(`✓ ${unit.name.toUpperCase()} streamer`);
-  setTimeout(refresh, 1000);
-}
-
-// Temperatuur aanpassen met debounce
 function adjTemp(unitIdx, delta) {
   const unit = AC_UNITS[unitIdx];
   const id   = 'ac_' + unitIdx;
@@ -316,14 +285,11 @@ function adjTemp(unitIdx, delta) {
   localTargets[id] = Math.round((localTargets[id] + delta) * 2) / 2;
   localTargets[id] = Math.max(16, Math.min(30, localTargets[id]));
 
-  // Update dial en getal direct
-  const valEl  = document.getElementById(`dial-val-${unitIdx}`);
   const svgEl  = document.getElementById(`dial-svg-${unitIdx}`);
   const card   = document.getElementById(`ac-card-${unitIdx}`);
   const mode   = card ? card.dataset.mode : 'cool';
   const actual = card ? parseFloat(card.dataset.actual) : null;
 
-  // Because we moved text inside SVG, we rebuild the whole SVG
   const modeLabels = { cool: 'KOELEN', heat: 'VERWARMEN', fan_only: 'VENTILATIE', dry: 'ONTVOCHTIGEN', auto: 'AUTO', off: 'UIT' };
   const mLabel = modeLabels[mode] || mode.toUpperCase();
   if (svgEl) svgEl.innerHTML = buildDialSVG(localTargets[id], mode, mLabel, unitIdx, actual);
@@ -334,9 +300,6 @@ function adjTemp(unitIdx, delta) {
   }, 800);
 }
 
-// ════════════════════════════════════════════════
-//  RENDER / UPDATE CARDS
-// ════════════════════════════════════════════════
 function fmtVal(obj, decimals = 1, unit = '') {
   if (!obj || obj.state === 'unavailable' || obj.state === 'unknown') return '—';
   const n = parseFloat(obj.state);
@@ -350,33 +313,22 @@ function renderAcCard(container, unitIdx, stateMap) {
 
   const climateObj  = stateMap[unit.climate]  || {};
   const attrs       = climateObj.attributes   || {};
-  const hvacMode    = climateObj.state || 'off'; // 'cool','heat','fan_only','dry','off','auto'
-  const hvacAction  = attrs.hvac_action || 'idle';
+  const hvacMode    = climateObj.state || 'off';
   const serverTemp  = parseFloat(attrs.temperature);
   const fanMode     = attrs.fan_mode || 'Auto';
 
-  // Sync lokale doeltemp pas als er geen pending timer loopt
   if (!(adjTimers[id]) && !isNaN(serverTemp)) localTargets[id] = serverTemp;
   else if (!(id in localTargets)) localTargets[id] = 22;
   const targetTemp = localTargets[id];
 
   const isOff      = hvacMode === 'off';
-  const isOn       = !isOff;
   const cardClass  = isOff ? 'ac-off' : (MODE_CLASS[hvacMode] || 'ac-cool');
 
   const tempIn   = fmtVal(stateMap[unit.tempIn],  1, '°C');
   const tempOut  = fmtVal(stateMap[unit.tempOut], 1, '°C');
-  const compFreq = fmtVal(stateMap[unit.compFreq], 0, 'Hz');
-  const compPow  = fmtVal(stateMap[unit.compPower], 0, 'W');
-  const energy   = fmtVal(stateMap[unit.energy],  2, 'kWh');
 
-  const mHeat = fmtVal(stateMap[unit.monthHeat], 1, 'kWh');
-  const mCool = fmtVal(stateMap[unit.monthCool], 1, 'kWh');
-
-  const streamerOn = unit.streamer && stateVal(stateMap[unit.streamer]) === 'on';
   const autoAircoOn = stateVal(stateMap[unit.autoAirco]) === 'on';
 
-  // Mode knoppen: active class
   const modeMap = {
     cool:     hvacMode === 'cool'     ? 'active-cool' : '',
     heat:     hvacMode === 'heat'     ? 'active-heat' : '',
@@ -386,15 +338,11 @@ function renderAcCard(container, unitIdx, stateMap) {
     off:      isOff                   ? 'active-off'  : '',
   };
 
-  // Modus label
   const modeLabels = {
     cool: 'KOELEN', heat: 'VERWARMEN', fan_only: 'VENTILATIE',
     dry: 'ONTVOCHTIGEN', auto: 'AUTO', off: 'UIT'
   };
   const modeLabel = modeLabels[hvacMode] || hvacMode.toUpperCase();
-
-  // Fan indicator
-  const fanIcon = (hvacMode === 'fan_only') ? '<span class="fan-spin">⟳</span>' : '⟳';
 
   let wrapper = document.getElementById(`ac-wrap-${unitIdx}`);
   if (!wrapper) {
@@ -415,7 +363,6 @@ function renderAcCard(container, unitIdx, stateMap) {
   card.dataset.actual = tempIn.replace(' °C', '');
 
   card.innerHTML = `
-    <!-- Header -->
     <div class="ac-header">
       <div>
         <div class="ac-room-name">${unit.name}</div>
@@ -429,7 +376,6 @@ function renderAcCard(container, unitIdx, stateMap) {
     </div>
 
     <div class="ac-body-layout">
-      <!-- Modus knoppen verticaal -->
       <div class="ac-modes-vertical">
         <button class="ac-mode-btn ${modeMap.cool}" onclick="setMode(AC_UNITS[${unitIdx}], 'cool')">
           <span class="mode-icon">❄️</span>KOEL
@@ -449,7 +395,6 @@ function renderAcCard(container, unitIdx, stateMap) {
       </div>
 
       <div class="ac-main-content">
-        <!-- Dial -->
         <div class="ac-dial-section">
           <button class="dial-adj-btn minus" onclick="adjTemp(${unitIdx}, -0.5)">−</button>
           <div class="ac-dial-wrap" id="dial-svg-${unitIdx}">
@@ -458,7 +403,6 @@ function renderAcCard(container, unitIdx, stateMap) {
           <button class="dial-adj-btn plus" onclick="adjTemp(${unitIdx}, +0.5)">+</button>
         </div>
 
-        <!-- Binnentemperatuur / buitentemperatuur -->
         <div class="ac-temps-row">
           <div class="ac-temp-item">
             <span class="ac-temp-label">Binnen</span>
@@ -471,7 +415,6 @@ function renderAcCard(container, unitIdx, stateMap) {
           </div>
         </div>
 
-        <!-- Fan speed -->
         <div class="ac-fan-row">
           <span class="ac-fan-label">⟳ FAN</span>
           <div class="ac-fan-btns">
@@ -483,13 +426,9 @@ function renderAcCard(container, unitIdx, stateMap) {
         </div>
       </div>
     </div>
-
   `;
 }
 
-// ════════════════════════════════════════════════
-//  SUMMARY BAR
-// ════════════════════════════════════════════════
 function updateSummary(stateMap) {
   let activeCount = 0, coolingCount = 0, heatingCount = 0, totalPower = 0;
 
@@ -521,9 +460,6 @@ function updateSummary(stateMap) {
   }
 }
 
-// ════════════════════════════════════════════════
-//  MAIN REFRESH
-// ════════════════════════════════════════════════
 async function refresh() {
   const allIds = AC_UNITS.flatMap(u => [
     u.climate, u.power, u.streamer, u.tempIn, u.tempOut,
@@ -537,7 +473,6 @@ async function refresh() {
 
   const grid = document.getElementById('aircoGrid');
 
-  // Render all units
   AC_UNITS.forEach((unit, idx) => {
     if (unit) renderAcCard(grid, idx, stateMap);
   });
@@ -548,7 +483,6 @@ async function refresh() {
     'Bijgewerkt: ' + new Date().toLocaleTimeString('nl-BE');
 }
 
-// ── Clock ──
 function tick() {
   document.getElementById('clock').textContent =
     new Date().toLocaleTimeString('nl-BE', { hour12: false });

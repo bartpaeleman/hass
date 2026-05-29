@@ -27,9 +27,7 @@
 </header>
 
 <main>
-  <!-- ══ LEFT ══ -->
   <div class="left">
-      <!-- Realtime Energie Flow -->
       <div class="energy-subtitle">
           <span>⚡</span> Realtime Energie Flow
       </div>
@@ -57,7 +55,6 @@
           </div>
       </div>
 
-      <!-- Energie Intelligentie -->
       <div class="energy-subtitle">
           <span>📊</span> Energie Intelligentie
       </div>
@@ -108,7 +105,6 @@
           </div>
       </div>
 
-      <!-- Zelfvoorziening -->
       <div class="energy-subtitle">
           <span>🌍</span> Zelfvoorziening
       </div>
@@ -143,7 +139,6 @@
           </div>
       </div>
 
-      <!-- Headers for Batterij & Net Flow -->
       <div class="energy-grid" style="margin-bottom: 8px;">
           <div class="col-6">
               <div class="energy-subtitle" style="margin-bottom: 0; border-bottom: none;">
@@ -157,9 +152,7 @@
           </div>
       </div>
 
-      <!-- Combined Data Row -->
       <div class="energy-grid">
-          <!-- Batterij Data -->
           <div class="energy-card stacked-card col-3" id="card-soc">
               <div class="energy-card-header">
                   <div class="energy-icon green" id="icon-soc">⚡</div>
@@ -178,7 +171,6 @@
               <div class="energy-value" id="val-batt-vermogen">—</div>
           </div>
 
-          <!-- Net Flow Data -->
           <div class="energy-card stacked-card col-3" id="card-net-import">
               <div class="energy-card-header">
                   <div class="energy-icon red" id="icon-net-import">⬇️</div>
@@ -196,21 +188,14 @@
       </div>
   </div>
 
-  <!-- ══ RIGHT sidebar ══ -->
   <div class="right">
       <?php include 'sidebar.php'; ?>
   </div>
 </main>
 
 <script>
-  // ════════════════════════════════════════════════
-  //  ⚙️  CONFIGURATIE
-  // ════════════════════════════════════════════════
-  const REFRESH  = 3000; // milliseconden tussen elke refresh
+  const REFRESH  = 3000;
 
-  // ════════════════════════════════════════════════
-
-  // ── Clock ──
   function tick() {
     document.getElementById('clock').textContent =
       new Date().toLocaleTimeString('nl-BE', { hour12: false });
@@ -239,7 +224,6 @@
     aircoBureau: 'input_boolean.auto_airco_bureau'
   };
 
-  // ── Airco Service Call ──
   async function toggleAirco(entityId) {
       try {
           const r = await fetch(`${HA_URL}/api/services/input_boolean/toggle`, {
@@ -251,14 +235,12 @@
               body: JSON.stringify({ entity_id: entityId })
           });
           if (!r.ok) throw new Error(`HA Service error: ${r.status}`);
-          // Trigger a quick refresh to update UI immediately
           setTimeout(refresh, 500);
       } catch (err) {
           console.error('Failed to toggle airco', err);
       }
   }
 
-  // ── Main refresh ──
   async function refresh() {
     const allIds = Object.values(ENERGY_ENTITIES);
 
@@ -274,7 +256,6 @@
         return val + (stateObj.attributes?.unit_of_measurement ? ` <span class="energy-unit">${stateObj.attributes.unit_of_measurement}</span>` : '');
       };
 
-      // Net vermogen (P1)
       const p1NetObj = stateMap[ENERGY_ENTITIES.p1Net];
       const cardP1 = document.getElementById('card-p1-net');
       const iconP1 = document.getElementById('icon-p1-net');
@@ -298,7 +279,6 @@
 
       document.getElementById('val-zon-prod').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.zonProd]);
 
-      // Bruto verbruik
       const brutoVerbruikObj = stateMap[ENERGY_ENTITIES.brutoVerbruik];
       const cardBruto = document.getElementById('card-bruto-verbruik');
       const iconBruto = document.getElementById('icon-bruto-verbruik');
@@ -323,7 +303,6 @@
       document.getElementById('val-airco-overschot').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.aircoOverschot]);
       document.getElementById('val-huisverbruik').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.huisverbruik]);
 
-      // Airco controls logic
       const aircos = [
         { id: 'aircoAuto', cardId: 'card-airco-auto', valId: 'val-airco-auto' },
         { id: 'aircoLiving', cardId: 'card-airco-living', valId: 'val-airco-living' },
@@ -348,7 +327,6 @@
         }
       });
 
-      // Special logic for SOC (Thuisbatterij)
       const socObj = stateMap[ENERGY_ENTITIES.soc];
       const cardSoc = document.getElementById('card-soc');
       const iconSoc = document.getElementById('icon-soc');
@@ -390,7 +368,6 @@
          battStatusEl.style.color = '';
       }
 
-      // Net Import
       const importObj = stateMap[ENERGY_ENTITIES.netImport];
       const cardImport = document.getElementById('card-net-import');
       const iconImport = document.getElementById('icon-net-import');
@@ -417,7 +394,6 @@
       }
 
       document.getElementById('val-net-injectie').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.netInjectie]);
-
       document.getElementById('val-energie-status').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.energieStatus]);
       document.getElementById('val-zelfvoorziening').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.zelfvoorziening]);
 
@@ -434,7 +410,6 @@
       } else {
          document.getElementById('val-autonomie').innerHTML = '—';
       }
-
     }
 
     document.getElementById('lastRefresh').textContent =

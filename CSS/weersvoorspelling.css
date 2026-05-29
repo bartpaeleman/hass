@@ -3,15 +3,19 @@
 .weather-section {
     margin-top: 20px;
     margin-bottom: 24px;
+    width: 100%;
 }
 
 .weather-row {
-    display: flex;
+    display: flex; /* CRUCIAL: Activeert de flexbox voor horizontaal scrollen */
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 12px;
-    padding-bottom: 8px; /* Ruimte voor scrollbar */
-    /* Verberg scrollbar voor nettere UI, maar behoud functionaliteit */
+    padding-bottom: 12px; /* Ruimte voor scroll-actie */
+    width: 100%;
+    -webkit-overflow-scrolling: touch; /* Zorgt voor vloeiend scrollen op iOS/iPhone */
+    
+    /* Verberg scrollbar voor nettere UI */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
 }
@@ -27,8 +31,8 @@
     text-align: center;
     border: 1px solid var(--border);
     transition: transform 0.2s, border-color 0.2s;
-    min-width: 120px;
-    flex: 1 0 auto;
+    min-width: 115px; /* Perfecte breedte voor iPhone schermen */
+    flex: 0 0 auto; /* Voorkomt dat kaarten krimpen */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,23 +45,23 @@
 }
 
 .weather-day {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     text-transform: uppercase;
     color: var(--text);
     letter-spacing: 1px;
 }
 
 .weather-icon {
-    width: 48px;
-    height: 48px;
-    margin: 8px auto;
+    width: 42px;
+    height: 42px;
+    margin: 6px auto;
     object-fit: contain;
 }
 
 .weather-temp-max {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     font-family: 'Share Tech Mono', monospace;
     color: var(--text);
@@ -65,14 +69,14 @@
 }
 
 .weather-temp-min {
-    font-size: 14px;
+    font-size: 13px;
     color: #9deafa;
     font-family: 'Share Tech Mono', monospace;
 }
 
 .weather-description {
-    margin-top: 8px;
-    font-size: 12px;
+    margin-top: 6px;
+    font-size: 11px;
     color: #c5c5bc;
     text-transform: uppercase;
     letter-spacing: 0.5px;
