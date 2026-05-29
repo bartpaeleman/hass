@@ -180,3 +180,10 @@
   .toggle-chip.motion-off { background: rgba(255,61,61,0.1);   color: var(--alert);border: 1px solid rgba(255,61,61,0.2); }
   .toggle-chip.light-on   { background: rgba(255,179,0,0.1);   color: var(--warn); border: 1px solid rgba(255,179,0,0.2); }
   .toggle-chip.light-off  { background: rgba(255,61,61,0.1);   color: var(--alert);border: 1px solid rgba(255,61,61,0.2); }
+
+  @media (max-width: 600px) {
+    .sensor-card[data-row="1"],
+    .sensor-card[data-row="2"] {
+      grid-column: span 12;
+    }
+  }
