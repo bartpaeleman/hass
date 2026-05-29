@@ -37,7 +37,7 @@
           <div class="energy-card col-4" id="card-p1-net">
               <div class="energy-card-header">
                   <div class="energy-icon blue" id="icon-p1-net">⚡</div>
-                  <div class="energy-title">Net vermogen</div>
+                  <div class="energy-title">Verbruik</div>
               </div>
               <div class="energy-value" id="val-p1-net">—</div>
           </div>
@@ -219,7 +219,7 @@
   setInterval(tick, 1000);
 
   const ENERGY_ENTITIES = {
-    p1Net: 'sensor.p1_net_vermogen',
+    p1Net: 'sensor.huisverbruik_totaal',
     zonProd: 'sensor.zonneenergie_productie_nu',
     brutoVerbruik: 'sensor.actueel_bruto_elektriciteitsverbruik',
     aircoOverschot: 'sensor.airco_solar_eligible',
@@ -230,7 +230,7 @@
     autonomie: 'sensor.energie_autonomie_index',
     soc: 'sensor.adj0b1302u_state_of_charge',
     battVermogen: 'sensor.batterij_vermogen',
-    battStatus: 'sensor.batterij_status_2',
+    battStatus: 'sensor.batterij_status',
     netImport: 'sensor.electriciteit_netverbruik_nu',
     netInjectie: 'sensor.electriciteit_injectie_nu',
     aircoAuto: 'input_boolean.autoairco',
