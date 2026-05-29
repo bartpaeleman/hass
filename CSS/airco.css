@@ -513,12 +513,21 @@
   from { stroke-dashoffset: 251; }
 }
 
-/* ── Summary bar (top of page) ── */
 .ac-summary-bar {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-bottom: 24px;
+    display: grid;
+    /* auto-fit regelt het wrappen */
+    grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+/* Gericht op het LAATSTE item in de grid (jouw Auto Airco knop) */
+.ac-summary-bar > .ac-summary-stat:last-child {
+    /* grid-column: 1 / -1 zorgt ervoor dat hij van de eerste tot de allerlaatste kolom rekt */
+    grid-column: 1 / -1;
+    
+    /* Extra hoogte specifiek voor deze knop */
+    min-height: 50px; 
 }
 
 .ac-summary-stat {
@@ -565,9 +574,15 @@
   .ac-card-wrapper { grid-column: span 1; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .airco-grid { grid-template-columns: 1fr; }
   .airco-grid-4 { grid-template-columns: 1fr; }
   .ac-card-wrapper { grid-column: span 1;  }
-   
+}
+
+@media (min-width: 600px) {
+    .ac-summary-bar > .ac-summary-stat:last-child {
+        grid-column: auto; /* Herstel naar normale grid-positie op desktop */
+        min-height: auto;  /* Herstel naar normale hoogte op desktop */
+    }
 }
