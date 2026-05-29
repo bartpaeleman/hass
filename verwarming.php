@@ -114,8 +114,6 @@ const ROOMS = [
     smartBoost: 'button.woonkamer_slimme_boost',
     comfort:    'sensor.woonkamer_comfortniveau',
     childlock:  'switch.woonkamer_kinderslot',
-    minComfortTemp: 20.0,
-    maxComfortTemp: 23.5
   },
   {
     name:       'Badkamer',
@@ -130,8 +128,6 @@ const ROOMS = [
     smartBoost: 'button.badkamer_slimme_boost',
     comfort:    'sensor.badkamer_comfortniveau',
     childlock:  'switch.badkamer_kinderslot',
-    minComfortTemp: 21.0,
-    maxComfortTemp: 24.0
   },
   {
     name:       'Bureau',
@@ -146,8 +142,6 @@ const ROOMS = [
     smartBoost: 'button.bureau_slimme_boost',
     comfort:    'sensor.bureau_comfortniveau',
     childlock:  'switch.bureau_kinderslot',
-    minComfortTemp: 19.5,
-    maxComfortTemp: 23.0
   },
   {
     name:       'Slaapkamer',
@@ -162,8 +156,6 @@ const ROOMS = [
     smartBoost: 'button.slaapkamer_slimme_boost',
     comfort:    'sensor.slaapkamer_comfortniveau',
     childlock:  'switch.slaapkamer_kinderslot',
-    minComfortTemp: 15.0,
-    maxComfortTemp: 21.0
   },
   {
     name:       'Kinderkamer',
@@ -178,8 +170,6 @@ const ROOMS = [
     smartBoost: 'button.kinderkamer_slimme_boost',
     comfort:    'sensor.kinderkamer_comfortniveau',
     childlock:  'switch.kinderkamer_kinderslot',
-    minComfortTemp: 18.0,
-    maxComfortTemp: 21.0
   },
   {
     name:       'Gastenkamer',
@@ -194,8 +184,6 @@ const ROOMS = [
     smartBoost: 'button.gastenkamer_slimme_boost',
     comfort:    'sensor.gastenkamer_comfortniveau',
     childlock:  'switch.gastenkamer_kinderslot',
-    minComfortTemp: 18.0,
-    maxComfortTemp: 21.0
   },
   {
     name:       'Gang',
@@ -210,8 +198,6 @@ const ROOMS = [
     smartBoost: 'button.gang_slimme_boost',
     comfort:    'sensor.gang_comfortniveau',
     childlock:  'switch.gang_kinderslot',
-    minComfortTemp: 19.0,
-    maxComfortTemp: 22.0
   },
   {
     name:       'Toilet',
@@ -226,8 +212,6 @@ const ROOMS = [
     smartBoost: 'button.toilet_slimme_boost',
     comfort:    'sensor.toilet_comfortniveau',
     childlock:  'switch.toilet_kinderslot',
-    minComfortTemp: 18.0,
-    maxComfortTemp: 22.0
   },
 ];
 
@@ -351,22 +335,7 @@ function renderCard(container, room, stateMap) {
     statusClass = 'status-heating';
   }
 
-  // Comfort grenzen ophalen
-  const minComfort = room.minComfortTemp !== undefined ? room.minComfortTemp : 19.0;
-  const maxComfort = room.maxComfortTemp !== undefined ? room.maxComfortTemp : 22.5;
-
-  // Kleurbepaling op basis van exacte volgorde van prioriteit (Extreem -> Normaal)
-  let actualColor = 'var(--ok)'; // Standaard Groen
-
-  if (currentTemp < minComfort - 2.0) {
-    actualColor = '#00b4d8';      // Koud = Blauw
-  } else if (currentTemp > maxComfort + 2.0) {
-    actualColor = 'var(--alert)';  // Heet = Rood
-  } else if (currentTemp > maxComfort) {
-    actualColor = '#ff8c42';      // Warm = Oranje
-  } else {
-    actualColor = 'var(--ok)';     // OK = Groen (Alles tussen minComfort-2 en maxComfort)
-  }
+  const actualColor = getComfortColor(currentTemp, room.name);
 
   // ── Badges ──
   const hasOverlay = overlayVal && overlayVal !== 'none' && overlayVal !== 'unavailable' && overlayVal !== 'None';
@@ -397,7 +366,7 @@ function renderCard(container, room, stateMap) {
 
       <div class="thermo-target-ctrl-new" style="display:flex; align-items:center; background:var(--bg); border:1px solid var(--border); border-radius:5px; overflow:hidden; flex-shrink:0; width:100%; justify-content:space-between;">
         <button class="thermo-temp-btn" onclick="adjTemp('${id}','${room.climate}',-0.5)">−</button>
-        <span class="thermo-target-val" id="tval-${id}" onclick="setMidTemp('${id}', '${room.climate}', ${room.minComfortTemp || 20}, ${room.maxComfortTemp || 22})" style="min-width:36px; text-align:center; font-family:'Share Tech Mono', monospace; font-size:16px; color:var(--text); cursor:pointer;">${targetText}</span>
+        <span class="thermo-target-val" id="tval-${id}" onclick="setMidTemp('${id}', '${room.climate}', '${room.name}')" style="min-width:36px; text-align:center; font-family:'Share Tech Mono', monospace; font-size:16px; color:var(--text); cursor:pointer;">${targetText}</span>
         <button class="thermo-temp-btn" onclick="adjTemp('${id}','${room.climate}',+0.5)">+</button>
       </div>
 
@@ -484,7 +453,10 @@ function adjTemp(id, climateId, delta) {
   }, 800);
 }
 
-function setMidTemp(id, climateId, min, max) {
+function setMidTemp(id, climateId, roomName) {
+  const bounds = COMFORT_BOUNDARIES[roomName] || {min: 20.0, max: 22.0};
+  const min = bounds.min;
+  const max = bounds.max;
   if (min && max) {
     localTargets[id] = Math.round(((min + max) / 2) * 2) / 2;
   } else {
