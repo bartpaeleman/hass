@@ -346,18 +346,36 @@
     });
   }
 
-  const weatherCodes = {
-      0: { text: "Helder", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/clear-day.svg" },
-      1: { text: "Meestal helder", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/partly-cloudy-day.svg" },
-      2: { text: "Half bewolkt", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/cloudy.svg" },
-      3: { text: "Bewolkt", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/overcast.svg" },
-      45: { text: "Mist", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/fog.svg" },
-      51: { text: "Lichte motregen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/drizzle.svg" },
-      61: { text: "Regen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/rain.svg" },
-      71: { text: "Sneeuw", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/snow.svg" },
-      80: { text: "Buien", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/rain.svg" },
-      95: { text: "Onweer", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/thunderstorms.svg" }
-  };
+const weatherCodes = {
+    0: { text: "Helder", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/clear-day.svg" },
+    1: { text: "Meestal helder", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/partly-cloudy-day.svg" },
+    2: { text: "Half bewolkt", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/cloudy.svg" },
+    3: { text: "Bewolkt", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/overcast.svg" },
+    45: { text: "Mist", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/fog.svg" },
+    48: { text: "Rijmende mist", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/fog.svg" },
+    51: { text: "Lichte motregen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/drizzle.svg" },
+    53: { text: "Matige motregen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/drizzle.svg" },
+    55: { text: "Dichte motregen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/drizzle.svg" },
+    56: { text: "Lichte ijskoude motregen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/sleet.svg" },
+    57: { text: "Dichte ijskoude motregen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/sleet.svg" },
+    61: { text: "Lichte regen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/rain.svg" },
+    63: { text: "Matige regen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/rain.svg" },
+    65: { text: "Zware regen", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/extreme-rain.svg" },
+    66: { text: "Lichte ijzel", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/sleet.svg" },
+    67: { text: "Zware ijzel", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/extreme-sleet.svg" },
+    71: { text: "Lichte sneeuwval", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/snow.svg" },
+    73: { text: "Matige sneeuwval", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/snow.svg" },
+    75: { text: "Zware sneeuwval", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/extreme-snow.svg" },
+    77: { text: "Sneeuwgries", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/snow.svg" },
+    80: { text: "Lichte regenbuien", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/rain.svg" },
+    81: { text: "Matige regenbuien", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/rain.svg" },
+    82: { text: "Hevige regenbuien", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/extreme-rain.svg" },
+    85: { text: "Lichte sneeuwbuien", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/snow.svg" },
+    86: { text: "Zware sneeuwbuien", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/extreme-snow.svg" },
+    95: { text: "Onweer", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/thunderstorms.svg" },
+    96: { text: "Onweer met lichte hagel", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/thunderstorms-rain.svg" },
+    99: { text: "Onweer met zware hagel", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/extreme-thunderstorms.svg" }
+};
 
   async function loadWeather() {
       try {
