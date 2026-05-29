@@ -81,3 +81,41 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
+/* ── Mobiele optimalisatie voor de weersvoorspelling (max 600px) ── */
+@media (max-width: 600px) {
+    /* n+4 selecteert het 4e element, 5e element, 6e element, etc. 
+       Hiermee verbergen we dagen 4 t/m 7 op een iPhone.
+    */
+    .weather-row .weather-card:nth-child(n+4) {
+        display: none !important;
+    }
+
+    /* Zorg dat de overgebleven 3 kaarten perfect evenredig 
+       de volledige breedte van het scherm vullen zonder te scrollen.
+    */
+    .weather-row {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        overflow-x: hidden !important; /* Geen scrollbar meer nodig voor 3 dagen */
+        padding-bottom: 0 !important;
+    }
+
+    .weather-card {
+        min-width: 0 !important; /* Overschrijf de desktop min-width zodat ze mooi krimpen */
+        padding: 10px 6px !important; /* Iets compactere padding voor kleine schermen */
+    }
+    
+    .weather-day {
+        font-size: 12px !important;
+    }
+    
+    .weather-temp-max {
+        font-size: 18px !important;
+    }
+
+    .weather-description {
+        font-size: 10px !important;
+    }
+}
