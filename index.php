@@ -17,7 +17,7 @@
     <div class="logo-icon"></div>
     <div>
       <h1>Start</h1>
-      <span>DASHBOARD · SUBTITLE</span>
+      <span>HOME</span>
     </div>
   </div>
   <div class="header-right">
@@ -32,7 +32,7 @@
 
     <div class="section-label" style="margin-top:20px;">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 6h6M6 3v6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Weersverwachting 7 dagen (Turnhout)
+      Weersverwachting komende dagen (Turnhout)
     </div>
     <div class="weather-section">
       <div class="weather-row" id="weatherRow">
