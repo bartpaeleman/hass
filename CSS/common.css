@@ -105,9 +105,9 @@ header {
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   letter-spacing: 2px;
-  color: var(--dim);
+  color: var(--accent);
   cursor: pointer;
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);;
   padding: 6px 10px;
   border-radius: 6px;
   background: var(--surface);
