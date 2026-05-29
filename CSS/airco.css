@@ -84,7 +84,7 @@
   font-weight: 700;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--text-bright);
 }
 
 .ac-power-btn {
@@ -108,8 +108,8 @@
 .ac-card.ac-heat .ac-power-btn,
 .ac-card.ac-fan .ac-power-btn,
 .ac-card.ac-dry .ac-power-btn {
-  border-color: rgba(255,255,255,0.3);
-  color: #fff;
+  border-color: var(--overlay-15);
+  color: var(--text-bright);
 }
 .ac-power-btn:active { transform: scale(0.88); }
 
@@ -174,7 +174,7 @@
 
 .dial-track {
   fill: none;
-  stroke: rgba(255,255,255,0.06);
+  stroke: var(--overlay-05);
   stroke-width: 10;
   stroke-linecap: round;
 }
@@ -190,7 +190,7 @@
   font-family: 'Share Tech Mono', monospace;
   font-size: 38px;
   font-weight: 700;
-  fill: #fff;
+  fill: var(--text-bright);
 }
 
 .dial-temp-unit {
@@ -206,7 +206,7 @@
 }
 
 .ac-card.ac-cool .dial-mode-label { fill: var(--accent); }
-.ac-card.ac-heat .dial-mode-label { fill: #ff8c42; }
+.ac-card.ac-heat .dial-mode-label { fill: var(--heat); }
 .ac-card.ac-fan  .dial-mode-label { fill: var(--ok); }
 .ac-card.ac-dry  .dial-mode-label { fill: var(--warn); }
 .ac-card.ac-off  .dial-mode-label { fill: var(--muted); }
@@ -316,10 +316,10 @@
 .ac-mode-btn:hover { border-color: var(--muted); color: var(--text); }
 
 .ac-mode-btn.active-cool { border-color: var(--accent); color: var(--accent); background: rgba(0,180,216,0.1); border-width: 2px; }
-.ac-mode-btn.active-heat { border-color: #ff8c42; color: #ff8c42; background: rgba(255,140,66,0.1); border-width: 2px; }
+.ac-mode-btn.active-heat { border-color: var(--heat); color: var(--heat); background: rgba(255,140,66,0.1); border-width: 2px; }
 .ac-mode-btn.active-fan  { border-color: var(--ok); color: var(--ok); background: rgba(0,230,118,0.1); border-width: 2px; }
 .ac-mode-btn.active-dry  { border-color: var(--warn); color: var(--warn); background: rgba(255,179,0,0.1); border-width: 2px; }
-.ac-mode-btn.active-off  { border-color: var(--muted); color: var(--text); background: rgba(255,255,255,0.05); border-width: 2px; }
+.ac-mode-btn.active-off  { border-color: var(--muted); color: var(--text); background: var(--overlay-05); border-width: 2px; }
 .ac-mode-btn.active-auto { border-color: #9b59b6; color: #c39bd3; background: rgba(155,89,182,0.1); border-width: 2px; }
 
 /* ── Fan speed row ── */
@@ -350,7 +350,7 @@
   background: var(--bg);
   border: 1px solid rgba(0,180,216,0.3);
   border-radius: 4px;
-  color: #fff;
+  color: var(--text-bright);
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   font-weight: bold;
@@ -406,7 +406,7 @@
 }
 
 .ac-summary-val.cool { color: var(--accent); }
-.ac-summary-val.heat { color: #ff8c42; }
+.ac-summary-val.heat { color: var(--heat); }
 
 .fan-spin {
   display: inline-block;

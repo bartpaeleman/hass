@@ -1,4 +1,5 @@
 :root {
+  /* Dark Theme (Default) */
   --bg:        #0a0c0f;
   --surface:   #111418;
   --border:    #1e2530;
@@ -9,6 +10,34 @@
   --text:      #c8d6e5;
   --dim:       #5a6a7e;
   --accent:    #00b4d8;
+  --heat:      #ff8c42;
+  --header-bg: rgba(10,12,15,0.92);
+  --text-bright: #ffffff;
+  --text-muted: #a0a8b5;
+  --overlay-15: rgba(255,255,255,0.15);
+  --overlay-10: rgba(255,255,255,0.1);
+  --overlay-05: rgba(255,255,255,0.05);
+}
+
+[data-theme="light"] {
+  /* Light Theme */
+  --bg:        #f4f6f8;
+  --surface:   #ffffff;
+  --border:    #e0e5eb;
+  --ok:        #00c853; /* Darker green */
+  --alert:     #d50000; /* Darker red */
+  --warn:      #f57f17; /* Darker orange/yellow */
+  --muted:     #b0bec5;
+  --text:      #263238; /* Dark grey */
+  --dim:       #546e7a;
+  --accent:    #0277bd; /* Darker blue */
+  --heat:      #d84315; /* Darker orange */
+  --header-bg: rgba(244,246,248,0.92);
+  --text-bright: #000000;
+  --text-muted: #607d8b;
+  --overlay-15: rgba(0,0,0,0.15);
+  --overlay-10: rgba(0,0,0,0.1);
+  --overlay-05: rgba(0,0,0,0.05);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,7 +75,7 @@ header {
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  background: rgba(10,12,15,0.92);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
   z-index: 100;
 }
@@ -84,7 +113,7 @@ header {
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--text-bright);
 }
 
 .logo span {
@@ -439,7 +468,7 @@ main {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #ccc;
+  color: var(--text-muted);
   display: block;
 }
 

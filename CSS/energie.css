@@ -69,7 +69,7 @@
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    background: rgba(255,255,255,0.05);
+    background: var(--overlay-05);
 }
 .energy-icon.grey { color: #9e9e9e; background: rgba(158,158,158,0.1); }
 .energy-icon.dark-grey { color: #616161; background: rgba(97,97,97,0.1); }
@@ -83,7 +83,7 @@
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #fff;
+    color: var(--text-bright);
 }
 .energy-value {
     font-family: 'Share Tech Mono', monospace;
