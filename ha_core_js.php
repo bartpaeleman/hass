@@ -11,10 +11,24 @@ if (empty($referer) || strpos($referer, $host) === false) {
 
 header("Content-type: application/javascript; charset=utf-8");
 require_once 'config.php';
+require_once 'CLASSES/Comfort.php';
 ?>
 // Globale Authenticatie Variabelen
 const HA_URL   = "<?php echo HA_URL; ?>";
 const HA_TOKEN = "<?php echo HA_TOKEN; ?>";
+const COMFORT_BOUNDARIES = <?php echo json_encode(Comfort::getBoundaries()); ?>;
+
+function getComfortColor(currentTemp, roomName) {
+  if (currentTemp == null || isNaN(currentTemp)) return 'var(--text)';
+  const bounds = COMFORT_BOUNDARIES[roomName] || {min: 19.0, max: 22.5};
+  const minComfort = bounds.min;
+  const maxComfort = bounds.max;
+  if (currentTemp < minComfort - 2.0) return '#00b4d8';
+  if (currentTemp > maxComfort + 2.0) return 'var(--alert)';
+  if (currentTemp > maxComfort) return '#ff8c42';
+  return 'var(--ok)';
+}
+
 
 // ── HA API Helpers (Centraal voor elk dashboard) ──
 async function haGet(entityId) {

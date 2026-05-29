@@ -406,7 +406,7 @@ function renderAcCard(container, unitIdx, stateMap) {
         <div class="ac-temps-row">
           <div class="ac-temp-item">
             <span class="ac-temp-label">Binnen</span>
-            <span class="ac-temp-value">${tempIn}</span>
+            <span class="ac-temp-value" style="color: ${getComfortColor(parseFloat(tempIn), unit.name)};">${tempIn}</span>
           </div>
           <div style="width:1px; background:var(--border);"></div>
           <div class="ac-temp-item">
