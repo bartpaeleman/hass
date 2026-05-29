@@ -262,10 +262,11 @@ main {
 
 .sidebar-section { margin-bottom: 28px; }
 
-/* ── Temp list base ── */
+/* ── Temp list base (Desktop: Gecorrigeerd naar 3 gelijke kolommen naast elkaar) ── */
 #tempList {
   display: grid;
-  gap: 10px;
+  grid-template-columns: repeat(3, 1fr); /* Forceert 3 kolommen naast elkaar op grote schermen */
+  gap: 12px;
 }
 
 .temp-card {
@@ -273,7 +274,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px 12px;
+  padding: 16px 12px;
   border-radius: 6px;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -321,7 +322,7 @@ main {
 .temp-card.prima .temp-status { color: var(--ok); }
 
 .temp-val-large {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   margin-top: 6px;
   font-family: 'Share Tech Mono', monospace;
@@ -487,7 +488,7 @@ main {
 
 /* ==========================================================================
    🚨 RESPONSIVE LAYOUT MATRIX & MEDIA QUERIES
-   ========================================================================== */
+   ========================================================================= */
 
 /* ── Tablet / Generiek Responsive (max-width: 900px) ── */
 @media (max-width: 900px) {
@@ -579,7 +580,7 @@ main {
     margin-left: auto !important;
   }
 
-  /* Temperatuurkaarten grid reset (Stapel horizontaal over de breedte) */
+  /* Temperatuurkaarten grid reset (Op mobiel keurig terugvallen naar verticale lijst) */
   #tempList {
     grid-template-columns: 1fr !important;
     gap: 10px !important;
