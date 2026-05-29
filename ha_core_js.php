@@ -23,9 +23,9 @@ function getComfortColor(currentTemp, roomName) {
   const bounds = COMFORT_BOUNDARIES[roomName] || {min: 19.0, max: 22.5};
   const minComfort = bounds.min;
   const maxComfort = bounds.max;
-  if (currentTemp < minComfort - 2.0) return '#00b4d8';
+  if (currentTemp < minComfort - 2.0) return 'var(--accent)';
   if (currentTemp > maxComfort + 2.0) return 'var(--alert)';
-  if (currentTemp > maxComfort) return '#ff8c42';
+  if (currentTemp > maxComfort) return 'var(--heat)';
   return 'var(--ok)';
 }
 
@@ -68,6 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Theme Toggle logic
+  const logoIcon = document.querySelector('.logo-icon');
+  if (logoIcon) {
+    logoIcon.style.cursor = 'pointer'; // Make it look clickable
+    logoIcon.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  }
 
   // Mobile sidebar toggle injection
   const headerRight = document.querySelector('.header-right');

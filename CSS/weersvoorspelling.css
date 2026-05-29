@@ -41,7 +41,7 @@
 
 .weather-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--overlay-15);
 }
 
 .weather-day {

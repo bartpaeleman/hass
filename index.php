@@ -9,6 +9,14 @@
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/energie.css">
 <link rel="stylesheet" href="CSS/weersvoorspelling.css">
+<script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  })();
+</script>
 </head>
 <body>
 
@@ -291,9 +299,9 @@
     const tomorrowObj = parseWasteState(stateVal(stateMap[WASTE_TODAY_TOMORROW[1]]));
 
     const getWasteColor = (type) => {
-        if (type === 'GEEN') return '#ccc';
+        if (type === 'GEEN') return 'var(--text-muted)';
         const config = WASTE_CONFIG.find(w => w.name.toUpperCase() === type.toUpperCase());
-        return config ? config.color : '#ccc';
+        return config ? config.color : 'var(--text-muted)';
     };
 
     const todayCard = document.getElementById('wasteTodayCard');
