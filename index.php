@@ -38,14 +38,6 @@
 <main>
   <div class="left">
 
-    <div class="section-label" style="margin-top:20px;">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 6h6M6 3v6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Weersverwachting komende dagen (Turnhout)
-    </div>
-    <div class="weather-section">
-      <div class="weather-row" id="weatherRow">
-        </div>
-    </div>
 
     <div class="energy-grid" style="margin-top: 24px;">
         <div class="col-12" id="tvPauzeContainer" style="display:none; text-align: center;">
@@ -68,7 +60,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="energy-grid" style="margin-top: 24px;">
     <div class="col-12">
         <div class="section-label">
@@ -203,7 +195,7 @@
     }
   }
 
-const weatherCodes = {
+  const weatherCodes = {
     0: { text: "Helder", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/clear-day.svg" },
     1: { text: "Meestal helder", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/partly-cloudy-day.svg" },
     2: { text: "Half bewolkt", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/cloudy.svg" },
