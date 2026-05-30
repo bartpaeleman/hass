@@ -1,0 +1,64 @@
+[Sat May 30 12:20:56 2026] PHP 8.3.6 Development Server (http://localhost:8000) started
+[Sat May 30 12:21:18 2026] [::1]:33312 Accepted
+[Sat May 30 12:21:18 2026] [::1]:33312 [200]: GET /index.php
+[Sat May 30 12:21:18 2026] [::1]:33312 Closing
+[Sat May 30 12:21:18 2026] [::1]:33318 Accepted
+[Sat May 30 12:21:18 2026] [::1]:33320 Accepted
+[Sat May 30 12:21:18 2026] [::1]:33332 Accepted
+[Sat May 30 12:21:18 2026] [::1]:33336 Accepted
+[Sat May 30 12:21:18 2026] [::1]:33318 [200]: GET /CSS/common.css
+[Sat May 30 12:21:18 2026] [::1]:33320 [200]: GET /CSS/energie.css
+[Sat May 30 12:21:18 2026] [::1]:33318 Closing
+[Sat May 30 12:21:18 2026] [::1]:33332 [200]: GET /CSS/weersvoorspelling.css
+[Sat May 30 12:21:19 2026] [::1]:33336 [200]: GET /ha_core_js.php
+[Sat May 30 12:21:19 2026] [::1]:33336 Closing
+[Sat May 30 12:21:19 2026] [::1]:33320 Closing
+[Sat May 30 12:21:19 2026] [::1]:33332 Closing
+[Sat May 30 12:21:19 2026] [::1]:33350 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33350 [404]: GET /api/states/input_boolean.alarm_actief - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33350 Closing
+[Sat May 30 12:21:19 2026] [::1]:33366 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33378 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33380 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33390 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33394 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33366 [404]: GET /api/states/input_text.actieve_zone - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33366 Closing
+[Sat May 30 12:21:19 2026] [::1]:33404 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33378 [404]: GET /api/states/sensor.woonkamer_temp - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33378 Closing
+[Sat May 30 12:21:19 2026] [::1]:33380 [404]: GET /api/states/sensor.slaapkamer_temp - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33380 Closing
+[Sat May 30 12:21:19 2026] [::1]:33390 [404]: GET /api/states/sensor.bureau_temp - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33390 Closing
+[Sat May 30 12:21:19 2026] [::1]:33394 [404]: GET /api/states/sensor.thuis_outdoor_temperature - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33394 Closing
+[Sat May 30 12:21:19 2026] [::1]:33412 Accepted
+[Sat May 30 12:21:19 2026] [::1]:33404 [404]: GET /api/states/script.tvpauze - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33404 Closing
+[Sat May 30 12:21:19 2026] [::1]:33412 [404]: GET /api/states/timer.tv_pauze - No such file or directory
+[Sat May 30 12:21:19 2026] [::1]:33412 Closing
+[Sat May 30 12:21:22 2026] [::1]:33424 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33426 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33428 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33442 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33444 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33448 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33424 [404]: GET /api/states/input_boolean.alarm_actief - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33424 Closing
+[Sat May 30 12:21:22 2026] [::1]:33426 [404]: GET /api/states/input_text.actieve_zone - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33426 Closing
+[Sat May 30 12:21:22 2026] [::1]:33428 [404]: GET /api/states/sensor.woonkamer_temp - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33428 Closing
+[Sat May 30 12:21:22 2026] [::1]:33442 [404]: GET /api/states/sensor.slaapkamer_temp - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33442 Closing
+[Sat May 30 12:21:22 2026] [::1]:33444 [404]: GET /api/states/sensor.bureau_temp - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33444 Closing
+[Sat May 30 12:21:22 2026] [::1]:33448 [404]: GET /api/states/sensor.thuis_outdoor_temperature - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33448 Closing
+[Sat May 30 12:21:22 2026] [::1]:33462 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33464 Accepted
+[Sat May 30 12:21:22 2026] [::1]:33462 [404]: GET /api/states/script.tvpauze - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33464 [404]: GET /api/states/timer.tv_pauze - No such file or directory
+[Sat May 30 12:21:22 2026] [::1]:33462 Closing
+[Sat May 30 12:21:22 2026] [::1]:33464 Closing

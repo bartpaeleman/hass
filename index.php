@@ -38,29 +38,13 @@
 <main>
   <div class="left">
 
-
-    <div class="energy-grid" style="margin-top: 24px;">
-        <div class="col-12" id="tvPauzeContainer" style="display:none; text-align: center;">
-            <div id="tvPauzeStartSection" style="padding: 20px; border: 2px solid grey; background: rgb(95,95,95,0.1); border-radius: 8px; cursor: pointer;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px; color: grey;">
-                    <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-                    <polyline points="17 2 12 7 7 2"></polyline>
-                </svg>
-                <div style="font-size: 18px; font-weight: bold; color: var(--text);">START TV PAUZE</div>
-            </div>
-
-            <div id="tvPauzeStopSection" style="display: none; padding: 20px; border: 4px solid red; background: transparent; border-radius: 8px; height: 100%; box-sizing: border-box; flex-direction: column; justify-content: center; align-items: center;">
-                <div id="tvPauzeTimer" style="font-size: 10rem; font-weight: bold; line-height: 1; margin: 20px 0; color: var(--text);">00:00</div>
-                <div id="tvPauzeStopBtn" style="background-color: #f44336; color: white; border-radius: 25px; padding: 20px; width: 100%; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                        <rect x="6" y="6" width="12" height="12"></rect>
-                    </svg>
-                    <span style="font-size: 2.5rem; font-weight: bold;">STOP TV PAUZE</span>
-                </div>
-            </div>
-        </div>
+    <!-- Weersverwachting -->
+    <div class="weather-section">
+      <div class="weather-row" id="weatherRow">
+      </div>
     </div>
 
+    <!-- Temperatuur -->
     <div class="energy-grid" style="margin-top: 24px;">
     <div class="col-12">
         <div class="section-label">
@@ -69,6 +53,35 @@
         </div>
         <div id="tempList"></div>
     </div>
+    </div>
+
+    <!-- Automatisering (TV Pauze) -->
+    <div class="energy-grid" style="margin-top: 24px;">
+        <div class="col-12">
+            <div class="section-label">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Automatisering
+            </div>
+            <div id="tvPauzeContainer" style="display:none; text-align: center; margin-top: 8px;">
+                <div id="tvPauzeStartSection" style="padding: 20px; border: 2px solid grey; background: rgb(95,95,95,0.1); border-radius: 8px; cursor: pointer;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px; color: grey;">
+                        <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                        <polyline points="17 2 12 7 7 2"></polyline>
+                    </svg>
+                    <div style="font-size: 18px; font-weight: bold; color: var(--text);">START TV PAUZE</div>
+                </div>
+
+                <div id="tvPauzeStopSection" style="display: none; padding: 20px; border: 4px solid red; background: transparent; border-radius: 8px; height: 100%; box-sizing: border-box; flex-direction: column; justify-content: center; align-items: center;">
+                    <div id="tvPauzeTimer" style="font-size: 10rem; font-weight: bold; line-height: 1; margin: 20px 0; color: var(--text);">00:00</div>
+                    <div id="tvPauzeStopBtn" style="background-color: #f44336; color: white; border-radius: 25px; padding: 20px; width: 100%; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="6" width="12" height="12"></rect>
+                        </svg>
+                        <span style="font-size: 2.5rem; font-weight: bold;">STOP TV PAUZE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
   </div>
