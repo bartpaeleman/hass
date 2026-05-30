@@ -1,0 +1,248 @@
+/* CSS/speciale_dagen.css */
+
+/* Upcoming Grid Layout */
+.upcoming-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.upcoming-card {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.upcoming-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.uc-icon {
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uc-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.uc-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.uc-item {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uc-name-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.uc-name {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-bright);
+}
+
+.uc-date {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: bold;
+}
+
+.msg-highlight {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+/* Category Labels */
+.cat-label {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.cat-verjaardag { color: var(--ok); }
+.cat-huwelijk { color: var(--warn); }
+.cat-feestdag { color: var(--alert); }
+.cat-andere { color: var(--accent); }
+
+/* Events List Layout */
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.er-icon {
+  font-size: 24px;
+}
+
+.er-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.er-name-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.er-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-bright);
+}
+
+.er-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.er-date {
+  color: var(--text);
+}
+
+.er-days {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--warn);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Months Grid Layout */
+.months-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.month-details {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.month-summary {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-bright);
+  background: rgba(255,255,255,0.02);
+  transition: background 0.2s;
+}
+
+.month-summary:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.month-summary::marker,
+.month-summary::-webkit-details-marker {
+  display: none;
+}
+
+.month-title {
+  display: flex;
+  align-items: center;
+}
+
+/* Custom dropdown icon */
+.month-title::before {
+  content: '▶';
+  font-size: 10px;
+  margin-right: 10px;
+  transition: transform 0.3s;
+  color: var(--accent);
+}
+
+.month-details[open] .month-title::before {
+  transform: rotate(90deg);
+}
+
+.month-count {
+  background: var(--border);
+  color: var(--text);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.month-content {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.no-events {
+  padding: 16px;
+  color: var(--text-muted);
+  text-align: center;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .upcoming-grid, .months-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .event-row {
+    padding: 10px 12px;
+    gap: 12px;
+  }
+  .er-icon {
+    font-size: 20px;
+  }
+  .er-name {
+    font-size: 15px;
+  }
+  .er-days {
+    font-size: 13px;
+  }
+}
