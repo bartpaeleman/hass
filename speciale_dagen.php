@@ -204,11 +204,8 @@ foreach ($processedEvents as $e) {
     $eventsByMonth[$m][] = $e;
 }
 
-// Determine active row based on current month.
-// Rows: [1,2], [3,4], [5,6], [7,8], [9,10], [11,12]
+// Determine active month for highlighting
 $currentMonth = (int)$today->format('n');
-$activeRow = ceil($currentMonth / 2);
-$activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
 
 ?>
 <!DOCTYPE html>
@@ -321,7 +318,7 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
       ];
 
       for ($m = 1; $m <= 12; $m++):
-        $isOpen = in_array($m, $activeMonths) ? 'open' : '';
+        $isActive = ($m === $currentMonth) ? 'active-month' : '';
         $monthEvents = $eventsByMonth[$m];
 
         // Sort events within the month by day (since they are currently sorted globally by daysRemaining,
@@ -331,7 +328,7 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
             return (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
         });
       ?>
-      <details class="month-details" <?php echo $isOpen; ?>>
+      <details class="month-details <?php echo $isActive; ?>">
         <summary class="month-summary">
           <div class="month-title"><?php echo $fullMonthNames[$m]; ?></div>
           <div class="month-count"><?php echo count($monthEvents); ?></div>
