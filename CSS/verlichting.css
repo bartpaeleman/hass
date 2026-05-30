@@ -1,0 +1,188 @@
+/* CSS/verlichting.css */
+
+.light-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.col-6 { grid-column: span 6; }
+.col-12 { grid-column: span 12; }
+
+.light-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    flex-wrap: wrap;
+}
+
+.light-card-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.light-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: var(--overlay-05);
+    transition: all 0.3s ease;
+}
+
+.light-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-bright);
+}
+
+.light-value {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text);
+    margin-left: auto;
+}
+
+/* OFF State */
+.light-off {
+    border-color: var(--border);
+    background: transparent;
+}
+.light-off .light-icon {
+    color: var(--dim);
+}
+.light-off .light-value {
+    color: var(--dim);
+}
+
+/* Default ON State (Yellow) */
+.light-on {
+    background: rgba(255, 179, 0, 0.05);
+    border-color: var(--warn);
+}
+.light-on .light-icon {
+    color: var(--warn);
+    background: rgba(255, 179, 0, 0.15);
+}
+.light-on .light-value {
+    color: var(--warn);
+}
+
+/* Specific ON States for Automations / Groups */
+.light-on.light-alert {
+    background: rgba(255, 61, 61, 0.05);
+    border-color: var(--alert);
+}
+.light-on.light-alert .light-icon {
+    color: var(--alert);
+    background: rgba(255, 61, 61, 0.15);
+}
+.light-on.light-alert .light-value {
+    color: var(--alert);
+}
+
+.light-on.light-ok {
+    background: rgba(0, 230, 118, 0.05);
+    border-color: var(--ok);
+}
+.light-on.light-ok .light-icon {
+    color: var(--ok);
+    background: rgba(0, 230, 118, 0.15);
+}
+.light-on.light-ok .light-value {
+    color: var(--ok);
+}
+
+/* Section Grouping & Collapsible */
+.light-section {
+    margin-bottom: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.light-collapsible summary {
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    list-style: none; /* Hide default arrow */
+    outline: none;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+}
+
+.light-collapsible summary::-webkit-details-marker {
+    display: none;
+}
+
+.light-collapsible summary::after {
+    content: '▼';
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+.light-collapsible[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.light-collapsible[open] summary {
+    border-bottom: 1px solid var(--border);
+}
+
+.light-section-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Horizontal alignment for smaller groups inside section */
+.light-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    /* Keep .col-6 side-by-side on tablet */
+}
+
+@media (max-width: 750px) {
+    .col-6 { grid-column: span 12; }
+    .light-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .light-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .light-card {
+        padding: 12px 14px !important;
+    }
+}
