@@ -14,6 +14,84 @@ if (file_exists($eventsFile)) {
 $today = new DateTime('today');
 $processedEvents = [];
 
+// Helper functies voor flexibele datums
+function getEasterDate($year) {
+    // PHP heeft ingebouwde functies voor Pasen: easter_days of easter_date.
+    // easter_days geeft het aantal dagen na 21 maart.
+    $days = easter_days($year);
+    $date = new DateTime("$year-03-21");
+    $date->modify("+$days days");
+    return $date;
+}
+
+function getSpecificWeekday($year, $occurrence, $dayOfWeek, $month) {
+    // dayOfWeek in JSON: 0 = Zondag, 1 = Maandag...
+    // PHP DateTime/strtotime format: "first sunday of may 2026", "last sunday of october 2026"
+    $dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    $monthNames = ['', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+    $dName = $dayNames[$dayOfWeek];
+    $mName = $monthNames[$month];
+
+    if ($occurrence === 'last') {
+        $str = "last $dName of $mName $year";
+    } else {
+        $occNames = ['', 'first', 'second', 'third', 'fourth', 'fifth'];
+        $oName = $occNames[$occurrence] ?? 'first';
+        $str = "$oName $dName of $mName $year";
+    }
+
+    return new DateTime($str);
+}
+
+function getThanksgivingDate($year) {
+    // 4e donderdag in november
+    return getSpecificWeekday($year, 4, 4, 11);
+}
+
+function calculateNextDate($event, $baseYear) {
+    if (!isset($event['type'])) return null;
+
+    if ($event['type'] === 'vast' && isset($event['date'])) {
+        $parts = explode('-', $event['date']);
+        if (count($parts) === 3) {
+            $month = $parts[1];
+            $day = $parts[2];
+        } elseif (count($parts) === 2) {
+            $month = $parts[0];
+            $day = $parts[1];
+        } else {
+            return null;
+        }
+        return new DateTime("$baseYear-$month-$day");
+    }
+
+    if ($event['type'] === 'flexibel' && isset($event['formula'])) {
+        $tokens = explode(' ', $event['formula']);
+        $cmd = $tokens[0] ?? '';
+
+        if ($cmd === 'easter') {
+            $offset = (int)($tokens[1] ?? 0);
+            $date = getEasterDate($baseYear);
+            $date->modify("$offset days");
+            return $date;
+        }
+        if ($cmd === 'weekday') {
+            $occ = $tokens[1];
+            $dayOfWeek = (int)($tokens[2] ?? 0);
+            $month = (int)($tokens[3] ?? 1);
+            return getSpecificWeekday($baseYear, $occ, $dayOfWeek, $month);
+        }
+        if ($cmd === 'thanksgiving') {
+            $offset = (int)($tokens[1] ?? 0);
+            $date = getThanksgivingDate($baseYear);
+            $date->modify("$offset days");
+            return $date;
+        }
+    }
+    return null;
+}
+
 $months = [
     1 => 'jan', 2 => 'feb', 3 => 'mrt', 4 => 'apr',
     5 => 'mei', 6 => 'jun', 7 => 'jul', 8 => 'aug',
@@ -21,27 +99,20 @@ $months = [
 ];
 
 foreach ($events as $event) {
-    if (!isset($event['date']) || !isset($event['name'])) continue;
+    if (!isset($event['name'])) continue;
 
-    try {
-        $eventDate = new DateTime($event['date']);
-    } catch (Exception $e) {
-        continue;
-    }
+    $currentYear = (int)$today->format('Y');
 
-    $isRecurring = isset($event['type']) && $event['type'] === 'recurring';
-    $nextDate = clone $eventDate;
+    // First, try to calculate for this year
+    $nextDate = calculateNextDate($event, $currentYear);
+    if (!$nextDate) continue; // Skip invalid formats
 
-    if ($isRecurring) {
-        $nextDate->setDate($today->format('Y'), $eventDate->format('m'), $eventDate->format('d'));
-        if ($nextDate < $today) {
-            $nextDate->modify('+1 year');
-        }
-    } else {
-        // For single events, if it's past, we might still show it or skip it. Let's show it if it's today or in the future.
-        // If it's strictly in the past, maybe skip? Let's skip past single events.
+    $nextDate->setTime(0,0,0);
+
+    // If the event has already passed this year, compute for next year
+    if ($nextDate < $today) {
+        $nextDate = calculateNextDate($event, $currentYear + 1);
         $nextDate->setTime(0,0,0);
-        if ($nextDate < $today) continue;
     }
 
     $interval = $today->diff($nextDate);
@@ -53,15 +124,24 @@ foreach ($events as $event) {
     $category = strtolower($event['category'] ?? '');
     $isBirthdayOrWedding = in_array($category, ['verjaardag', 'huwelijk']);
 
-    if ($isRecurring && $isBirthdayOrWedding) {
-        $currentYears = $today->format('Y') - $eventDate->format('Y');
+    // Only calculate years if the event is 'vast' and has a YYYY-MM-DD format (3 parts)
+    $originalYear = null;
+    if ($event['type'] === 'vast' && isset($event['date'])) {
+        $parts = explode('-', $event['date']);
+        if (count($parts) === 3) {
+            $originalYear = (int)$parts[0];
+        }
+    }
+
+    if ($originalYear !== null && $isBirthdayOrWedding) {
+        $currentYears = $currentYear - $originalYear;
         // If the date hasn't happened yet this year, they haven't reached the "current" age for this year yet
-        $thisYearDate = clone $eventDate;
-        $thisYearDate->setDate($today->format('Y'), $eventDate->format('m'), $eventDate->format('d'));
+        $thisYearDate = calculateNextDate($event, $currentYear);
+        $thisYearDate->setTime(0,0,0);
         if ($thisYearDate > $today) {
             $currentYears--;
         }
-        $nextYears = $nextDate->format('Y') - $eventDate->format('Y');
+        $nextYears = ((int)$nextDate->format('Y')) - $originalYear;
     }
 
     $highlightMessage = '';
