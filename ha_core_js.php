@@ -42,6 +42,22 @@ async function haGet(entityId) {
   return r.json();
 }
 
+async function haPost(domain, service, entityId = "", payload = {}) {
+  const url = `${HA_URL}/api/services/${domain}/${service}`;
+  const body = { ...payload };
+  if (entityId) body.entity_id = entityId;
+  const r = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${HA_TOKEN}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(`HA POST ${domain}/${service}: ${r.status}`);
+  return r.json();
+}
+
 async function haGetAll(ids) {
   return Promise.all(ids.map(id => haGet(id).catch(() => ({ state: 'unavailable', attributes: {} }))));
 }
