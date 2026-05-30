@@ -47,5 +47,11 @@
         "category": "interessant",
         "name": "Black Friday",
         "formula": "thanksgiving +1"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Oud Event",
+        "date": "1990-05-01"
     }
 ]

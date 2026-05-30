@@ -109,8 +109,11 @@ foreach ($events as $event) {
 
     $nextDate->setTime(0,0,0);
 
-    // If the event has already passed this year, compute for next year
+    // Check if the event has already passed this year
+    $hasPassedThisYear = false;
     if ($nextDate < $today) {
+        $hasPassedThisYear = true;
+        // Compute for next year to get the correct next occurrence date and days remaining
         $nextDate = calculateNextDate($event, $currentYear + 1);
         $nextDate->setTime(0,0,0);
     }
@@ -163,7 +166,8 @@ foreach ($events as $event) {
         'formattedDate' => $nextDate->format('j') . ' ' . $months[(int)$nextDate->format('n')],
         'currentYears' => $currentYears,
         'nextYears' => $nextYears,
-        'highlightMessage' => $highlightMessage
+        'highlightMessage' => $highlightMessage,
+        'hasPassedThisYear' => $hasPassedThisYear
     ];
 }
 
@@ -358,9 +362,11 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
                 </div>
                 <div class="er-days">
                   <?php
-                    if ($e['daysRemaining'] == 0) echo '<span style="color:var(--ok); font-weight:bold;">Vandaag</span>';
-                    elseif ($e['daysRemaining'] == 1) echo 'Morgen';
-                    else echo 'Binnen ' . $e['daysRemaining'] . ' dagen';
+                    if (!$e['hasPassedThisYear']) {
+                        if ($e['daysRemaining'] == 0) echo '<span style="color:var(--ok); font-weight:bold;">Vandaag</span>';
+                        elseif ($e['daysRemaining'] == 1) echo 'Morgen';
+                        else echo 'Binnen ' . $e['daysRemaining'] . ' dagen';
+                    }
                   ?>
                 </div>
               </div>
