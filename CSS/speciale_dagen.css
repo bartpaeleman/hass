@@ -162,6 +162,20 @@
   overflow: hidden;
 }
 
+.month-details.active-month {
+  border-color: var(--accent);
+}
+
+.month-details.active-month .month-summary {
+  color: var(--accent);
+}
+
+.month-details.active-month .month-count {
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: bold;
+}
+
 .month-summary {
   padding: 12px 16px;
   display: flex;
