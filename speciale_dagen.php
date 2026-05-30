@@ -73,7 +73,7 @@ foreach ($events as $event) {
     ];
 }
 
-// Sort by days remaining
+// Sort by days remaining (global)
 usort($processedEvents, function($a, $b) {
     return $a['daysRemaining'] <=> $b['daysRemaining'];
 });
@@ -81,6 +81,22 @@ usort($processedEvents, function($a, $b) {
 $upcomingEvents = array_filter($processedEvents, function($e) {
     return $e['daysRemaining'] <= 7;
 });
+
+// Group by next occurrence month (1-12)
+$eventsByMonth = [];
+for ($m = 1; $m <= 12; $m++) {
+    $eventsByMonth[$m] = [];
+}
+foreach ($processedEvents as $e) {
+    $m = (int)$e['nextDate']->format('n');
+    $eventsByMonth[$m][] = $e;
+}
+
+// Determine active row based on current month.
+// Rows: [1,2], [3,4], [5,6], [7,8], [9,10], [11,12]
+$currentMonth = (int)$today->format('n');
+$activeRow = ceil($currentMonth / 2);
+$activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
 
 ?>
 <!DOCTYPE html>
@@ -155,43 +171,73 @@ $upcomingEvents = array_filter($processedEvents, function($e) {
     </div>
     <?php endif; ?>
 
-    <!-- Alle Speciale Dagen -->
+    <!-- Alle Speciale Dagen per Maand -->
     <div class="section-label" style="margin-top:24px; margin-bottom:12px;">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M2 3h8M2 6h8M2 9h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      Alle Gelegenheden
+      Kalender
     </div>
-    <div class="events-list">
-      <?php if (count($processedEvents) > 0): ?>
-        <?php foreach ($processedEvents as $e):
-            $cat = strtolower($e['original']['category'] ?? '');
-            $icon = '📅';
-            if ($cat === 'verjaardag') $icon = '🎂';
-            elseif ($cat === 'huwelijk') $icon = '💍';
-            elseif ($cat === 'feestdag') $icon = '🎉';
-        ?>
-        <div class="event-row">
-          <div class="er-icon"><?php echo $icon; ?></div>
-          <div class="er-main">
-            <div class="er-name"><?php echo htmlspecialchars($e['original']['name']); ?></div>
-            <div class="er-meta">
-              <span class="er-date"><?php echo $e['formattedDate']; ?></span>
-              <?php if ($e['nextYears'] !== null): ?>
-                <span class="er-years">&bull; <?php echo $e['currentYears']; ?> <span style="color:var(--dim)">→</span> <?php echo $e['nextYears']; ?> jaar</span>
-              <?php endif; ?>
+
+    <div class="months-grid">
+      <?php
+      $fullMonthNames = [
+          1 => 'Januari', 2 => 'Februari', 3 => 'Maart', 4 => 'April',
+          5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Augustus',
+          9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'December'
+      ];
+
+      for ($m = 1; $m <= 12; $m++):
+        $isOpen = in_array($m, $activeMonths) ? 'open' : '';
+        $monthEvents = $eventsByMonth[$m];
+
+        // Sort events within the month by day (since they are currently sorted globally by daysRemaining,
+        // which can mix next year vs this year if we just look at the list).
+        // Best to sort strictly by date of month for display inside the month box.
+        usort($monthEvents, function($a, $b) {
+            return (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
+        });
+      ?>
+      <details class="month-details" <?php echo $isOpen; ?>>
+        <summary class="month-summary">
+          <div class="month-title"><?php echo $fullMonthNames[$m]; ?></div>
+          <div class="month-count"><?php echo count($monthEvents); ?></div>
+        </summary>
+        <div class="month-content">
+          <?php if (count($monthEvents) > 0): ?>
+            <div class="events-list">
+              <?php foreach ($monthEvents as $e):
+                  $cat = strtolower($e['original']['category'] ?? '');
+                  $icon = '📅';
+                  if ($cat === 'verjaardag') $icon = '🎂';
+                  elseif ($cat === 'huwelijk') $icon = '💍';
+                  elseif ($cat === 'feestdag') $icon = '🎉';
+              ?>
+              <div class="event-row">
+                <div class="er-icon"><?php echo $icon; ?></div>
+                <div class="er-main">
+                  <div class="er-name"><?php echo htmlspecialchars($e['original']['name']); ?></div>
+                  <div class="er-meta">
+                    <span class="er-date"><?php echo $e['formattedDate']; ?></span>
+                    <?php if ($e['nextYears'] !== null): ?>
+                      <span class="er-years">&bull; <?php echo $e['currentYears']; ?> <span style="color:var(--dim)">→</span> <?php echo $e['nextYears']; ?> jaar</span>
+                    <?php endif; ?>
+                  </div>
+                </div>
+                <div class="er-days">
+                  <?php
+                    if ($e['daysRemaining'] == 0) echo '<span style="color:var(--ok); font-weight:bold;">Vandaag</span>';
+                    elseif ($e['daysRemaining'] == 1) echo 'Morgen';
+                    else echo $e['daysRemaining'] . ' dgn';
+                  ?>
+                </div>
+              </div>
+              <?php endforeach; ?>
             </div>
-          </div>
-          <div class="er-days">
-            <?php
-              if ($e['daysRemaining'] == 0) echo '<span style="color:var(--ok); font-weight:bold;">Vandaag</span>';
-              elseif ($e['daysRemaining'] == 1) echo 'Morgen';
-              else echo $e['daysRemaining'] . ' dgn';
-            ?>
-          </div>
+          <?php else: ?>
+            <div class="no-events">Geen gelegenheden</div>
+          <?php endif; ?>
         </div>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <div style="padding:16px; color:var(--text-muted); text-align:center; background:var(--surface); border:1px solid var(--border); border-radius:6px;">Geen gelegenheden gevonden.</div>
-      <?php endif; ?>
+      </details>
+      <?php endfor; ?>
     </div>
 
   </div>
