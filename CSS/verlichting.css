@@ -170,6 +170,10 @@
 
 /* Responsive */
 @media (max-width: 900px) {
+    /* Keep .col-6 side-by-side on tablet */
+}
+
+@media (max-width: 750px) {
     .col-6 { grid-column: span 12; }
     .light-row { grid-template-columns: 1fr; }
 }
