@@ -55,31 +55,45 @@
     </div>
     </div>
 
-    <!-- Automatisering (TV Pauze) -->
+    <!-- Automatisering -->
     <div class="energy-grid" style="margin-top: 24px;">
         <div class="col-12">
             <div class="section-label">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 Automatisering
             </div>
-            <div id="tvPauzeContainer" style="display:none; text-align: center; margin-top: 8px;">
-                <div id="tvPauzeStartSection" style="padding: 20px; border: 2px solid grey; background: rgb(95,95,95,0.1); border-radius: 8px; cursor: pointer;">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px; color: grey;">
-                        <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-                        <polyline points="17 2 12 7 7 2"></polyline>
-                    </svg>
-                    <div style="font-size: 18px; font-weight: bold; color: var(--text);">START TV PAUZE</div>
-                </div>
 
-                <div id="tvPauzeStopSection" style="display: none; padding: 20px; border: 4px solid red; background: transparent; border-radius: 8px; height: 100%; box-sizing: border-box; flex-direction: column; justify-content: center; align-items: center;">
-                    <div id="tvPauzeTimer" style="font-size: 10rem; font-weight: bold; line-height: 1; margin: 20px 0; color: var(--text);">00:00</div>
-                    <div id="tvPauzeStopBtn" style="background-color: #f44336; color: white; border-radius: 25px; padding: 20px; width: 100%; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <rect x="6" y="6" width="12" height="12"></rect>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 8px; align-items: stretch;">
+
+                <!-- TV Pauze -->
+                <div id="tvPauzeContainer" style="display:none; text-align: center; display: flex; flex-direction: column;">
+                    <div id="tvPauzeStartSection" style="padding: 20px; border: 2px solid grey; background: rgb(95,95,95,0.1); border-radius: 8px; cursor: pointer; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px; color: grey;">
+                            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                            <polyline points="17 2 12 7 7 2"></polyline>
                         </svg>
-                        <span style="font-size: 2.5rem; font-weight: bold;">STOP TV PAUZE</span>
+                        <div style="font-size: 18px; font-weight: bold; color: var(--text);">START TV PAUZE</div>
+                    </div>
+
+                    <div id="tvPauzeStopSection" style="display: none; padding: 20px; border: 4px solid red; background: transparent; border-radius: 8px; box-sizing: border-box; flex-direction: column; justify-content: center; align-items: center; flex-grow: 1;">
+                        <div id="tvPauzeTimer" style="font-size: 4rem; font-weight: bold; line-height: 1; margin: 10px 0; color: var(--text);">00:00</div>
+                        <div id="tvPauzeStopBtn" style="background-color: #f44336; color: white; border-radius: 25px; padding: 15px; width: 100%; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="6" y="6" width="12" height="12"></rect>
+                            </svg>
+                            <span style="font-size: 1.5rem; font-weight: bold;">STOP TV</span>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Licht Eten -->
+                <div id="lichtEtenBtn" style="padding: 20px; border: 2px solid grey; background: rgb(95,95,95,0.1); border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; transition: all 0.2s;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px;" id="lichtEtenIcon">
+                        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <div style="font-size: 18px; font-weight: bold; color: var(--text);" id="lichtEtenText">LICHT ETEN AAN</div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -102,10 +116,34 @@
     tempBureau:   'sensor.bureau_temp',
     tempBuiten:   'sensor.thuis_outdoor_temperature',
     tvPauzeScript:'script.tvpauze',
-    tvPauzeTimer: 'timer.tv_pauze'
+    tvPauzeTimer: 'timer.tv_pauze',
+    lichtEten:    'light.zetel_bart_links'
   };
 
   let tvPauzeInterval = null;
+
+  function updateLichtEten(states) {
+      const lichtObj = states[ENTITIES.lichtEten];
+      const btn = document.getElementById('lichtEtenBtn');
+      const icon = document.getElementById('lichtEtenIcon');
+      const textEl = document.getElementById('lichtEtenText');
+
+      if (!lichtObj || !btn) return;
+
+      if (lichtObj.state === 'on') {
+          btn.style.borderColor = 'var(--ok)';
+          btn.style.backgroundColor = 'rgba(0, 230, 118, 0.15)';
+          icon.style.color = 'var(--ok)';
+          textEl.textContent = 'LICHT ETEN UIT';
+          textEl.style.color = 'var(--text-bright)';
+      } else {
+          btn.style.borderColor = 'grey';
+          btn.style.backgroundColor = 'rgba(95, 95, 95, 0.1)';
+          icon.style.color = 'grey';
+          textEl.textContent = 'LICHT ETEN AAN';
+          textEl.style.color = 'var(--text)';
+      }
+  }
 
   function updateTvPauze(states) {
     const scriptState = stateVal(states[ENTITIES.tvPauzeScript]);
@@ -290,6 +328,7 @@
 
       updateTemp(stateMap);
       updateTvPauze(stateMap);
+      updateLichtEten(stateMap);
     }
 
     document.getElementById('lastRefresh').textContent =
@@ -321,6 +360,25 @@
                   refresh();
               } catch (e) {
                   console.error("Failed to stop TV pause", e);
+              }
+          });
+      }
+
+      const lichtBtn = document.getElementById('lichtEtenBtn');
+      if (lichtBtn) {
+          lichtBtn.addEventListener('click', async () => {
+              const textEl = document.getElementById('lichtEtenText');
+              const isAan = textEl.textContent.includes('UIT'); // If text says UIT, it is currently ON
+
+              try {
+                  if (isAan) {
+                      await haPost('light', 'turn_off', ENTITIES.lichtEten);
+                  } else {
+                      await haPost('script', 'etenstijd_lichten', '');
+                  }
+                  refresh();
+              } catch(e) {
+                  console.error("Failed to toggle Licht Eten", e);
               }
           });
       }
