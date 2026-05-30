@@ -187,7 +187,7 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
               $dayText = 'Overmorgen';
               $borderColor = 'var(--heat)';
           } else {
-              $dayText = 'Over ' . $daysRemaining . ' dagen';
+              $dayText = 'Binnen ' . $daysRemaining . ' dagen';
           }
 
           foreach ($categories as $cat => $eventsInCat):
@@ -206,7 +206,10 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
           <div class="uc-items-list">
             <?php foreach ($eventsInCat as $e): ?>
               <div class="uc-item">
-                <span class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
+                <div class="uc-name-wrap">
+                  <span class="cat-label cat-<?php echo htmlspecialchars($e['category']); ?>"><?php echo strtoupper(htmlspecialchars($e['category'])); ?>:</span>
+                  <span class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
+                </div>
                 <?php if ($e['highlightMessage']): ?>
                   <span class="msg-highlight"><?php echo $e['highlightMessage']; ?></span>
                 <?php endif; ?>
@@ -262,7 +265,10 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
               <div class="event-row">
                 <div class="er-icon"><?php echo $icon; ?></div>
                 <div class="er-main">
-                  <div class="er-name"><?php echo htmlspecialchars($e['original']['name']); ?></div>
+                  <div class="er-name-wrap">
+                    <span class="cat-label cat-<?php echo htmlspecialchars($e['category']); ?>"><?php echo strtoupper(htmlspecialchars($e['category'])); ?>:</span>
+                    <span class="er-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
+                  </div>
                   <div class="er-meta">
                     <span class="er-date"><?php echo $e['formattedDate']; ?></span>
                     <?php if ($e['highlightMessage']): ?>
@@ -274,7 +280,7 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
                   <?php
                     if ($e['daysRemaining'] == 0) echo '<span style="color:var(--ok); font-weight:bold;">Vandaag</span>';
                     elseif ($e['daysRemaining'] == 1) echo 'Morgen';
-                    else echo $e['daysRemaining'] . ' dagen';
+                    else echo 'Binnen ' . $e['daysRemaining'] . ' dagen';
                   ?>
                 </div>
               </div>
