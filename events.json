@@ -1,26 +1,51 @@
 [
-  {
-    "type": "recurring",
-    "category": "verjaardag",
-    "name": "Alice",
-    "date": "1990-06-02"
-  },
-  {
-    "type": "recurring",
-    "category": "huwelijk",
-    "name": "Bob & Eve",
-    "date": "2015-06-05"
-  },
-  {
-    "type": "single",
-    "category": "andere",
-    "name": "Zomervakantie",
-    "date": "2024-07-01"
-  },
-  {
-    "type": "recurring",
-    "category": "feestdag",
-    "name": "Nieuwjaar",
-    "date": "2000-01-01"
-  }
+    {
+        "type": "recurring",
+        "category": "verjaardag",
+        "name": "Alice",
+        "date": "1990-05-30"
+    },
+    {
+        "type": "recurring",
+        "category": "verjaardag",
+        "name": "Bob",
+        "date": "1985-05-30"
+    },
+    {
+        "type": "recurring",
+        "category": "huwelijk",
+        "name": "Eve & Adam",
+        "date": "2010-05-30"
+    },
+    {
+        "type": "recurring",
+        "category": "feestdag",
+        "name": "Test Feest",
+        "date": "2000-05-31"
+    },
+    {
+        "type": "single",
+        "category": "andere",
+        "name": "Vakantie",
+        "date": "2026-05-31",
+        "boodschap": "Eindelijk vakantie!"
+    },
+    {
+        "type": "recurring",
+        "category": "verjaardag",
+        "name": "Charlie",
+        "date": "2005-06-01"
+    },
+    {
+        "type": "recurring",
+        "category": "verjaardag",
+        "name": "David",
+        "date": "1995-06-01"
+    },
+    {
+        "type": "recurring",
+        "category": "huwelijk",
+        "name": "Frank & Grace",
+        "date": "2015-06-02"
+    }
 ]

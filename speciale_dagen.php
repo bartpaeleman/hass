@@ -50,7 +50,8 @@ foreach ($events as $event) {
     // Calculate years if applicable (for birthdays and weddings)
     $currentYears = null;
     $nextYears = null;
-    $isBirthdayOrWedding = isset($event['category']) && in_array(strtolower($event['category']), ['verjaardag', 'huwelijk']);
+    $category = strtolower($event['category'] ?? '');
+    $isBirthdayOrWedding = in_array($category, ['verjaardag', 'huwelijk']);
 
     if ($isRecurring && $isBirthdayOrWedding) {
         $currentYears = $today->format('Y') - $eventDate->format('Y');
@@ -63,13 +64,26 @@ foreach ($events as $event) {
         $nextYears = $nextDate->format('Y') - $eventDate->format('Y');
     }
 
+    $highlightMessage = '';
+    if ($category === 'verjaardag' && $nextYears !== null) {
+        $highlightMessage = "wordt $nextYears jaar";
+    } elseif ($category === 'huwelijk' && $nextYears !== null) {
+        $highlightMessage = "$nextYears jaar getrouwd";
+    } elseif ($category === 'feestdag') {
+        $highlightMessage = "Feestdag";
+    } elseif (isset($event['boodschap'])) {
+        $highlightMessage = $event['boodschap'];
+    }
+
     $processedEvents[] = [
         'original' => $event,
+        'category' => $category,
         'nextDate' => $nextDate,
         'daysRemaining' => $daysRemaining,
         'formattedDate' => $nextDate->format('j') . ' ' . $months[(int)$nextDate->format('n')],
         'currentYears' => $currentYears,
-        'nextYears' => $nextYears
+        'nextYears' => $nextYears,
+        'highlightMessage' => $highlightMessage
     ];
 }
 
@@ -78,9 +92,23 @@ usort($processedEvents, function($a, $b) {
     return $a['daysRemaining'] <=> $b['daysRemaining'];
 });
 
-$upcomingEvents = array_filter($processedEvents, function($e) {
-    return $e['daysRemaining'] <= 7;
+$upcomingEventsRaw = array_filter($processedEvents, function($e) {
+    return $e['daysRemaining'] <= 5;
 });
+
+// Group upcoming events by daysRemaining -> category
+$upcomingGrouped = [];
+foreach ($upcomingEventsRaw as $e) {
+    $d = $e['daysRemaining'];
+    $cat = $e['category'];
+    if (!isset($upcomingGrouped[$d])) {
+        $upcomingGrouped[$d] = [];
+    }
+    if (!isset($upcomingGrouped[$d][$cat])) {
+        $upcomingGrouped[$d][$cat] = [];
+    }
+    $upcomingGrouped[$d][$cat][] = $e;
+}
 
 // Group by next occurrence month (1-12)
 $eventsByMonth = [];
@@ -137,37 +165,57 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
 <main>
   <div class="left">
 
-    <!-- Aankomende Speciale Dagen (Max 1 week) -->
-    <?php if (count($upcomingEvents) > 0): ?>
+    <!-- Aankomende Speciale Dagen (Max 5 dagen) -->
+    <?php if (count($upcomingGrouped) > 0): ?>
     <div class="section-label" style="margin-bottom:12px;">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M6 1v6.5M6 10a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M8 3h1M8 5h1" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-      Komende Week (7 dagen)
+      Komende 5 dagen
     </div>
     <div class="upcoming-grid">
-      <?php foreach ($upcomingEvents as $e):
-          $cat = strtolower($e['original']['category'] ?? '');
-          $icon = '📅';
-          if ($cat === 'verjaardag') $icon = '🎂';
-          elseif ($cat === 'huwelijk') $icon = '💍';
-          elseif ($cat === 'feestdag') $icon = '🎉';
-
+      <?php
+      ksort($upcomingGrouped);
+      foreach ($upcomingGrouped as $daysRemaining => $categories):
           $dayText = '';
-          if ($e['daysRemaining'] == 0) $dayText = 'Vandaag!';
-          elseif ($e['daysRemaining'] == 1) $dayText = 'Morgen';
-          elseif ($e['daysRemaining'] == 2) $dayText = 'Overmorgen';
-          else $dayText = 'Over ' . $e['daysRemaining'] . ' dagen';
+          $borderColor = 'var(--accent)';
+          if ($daysRemaining == 0) {
+              $dayText = 'Vandaag!';
+              $borderColor = 'var(--ok)';
+          } elseif ($daysRemaining == 1) {
+              $dayText = 'Morgen';
+              $borderColor = 'var(--warn)';
+          } elseif ($daysRemaining == 2) {
+              $dayText = 'Overmorgen';
+              $borderColor = 'var(--heat)';
+          } else {
+              $dayText = 'Over ' . $daysRemaining . ' dagen';
+          }
+
+          foreach ($categories as $cat => $eventsInCat):
+              $icon = '📅';
+              if ($cat === 'verjaardag') $icon = '🎂';
+              elseif ($cat === 'huwelijk') $icon = '💍';
+              elseif ($cat === 'feestdag') $icon = '🎉';
+
+              // Date is the same for all events in this group
+              $formattedDate = $eventsInCat[0]['formattedDate'];
       ?>
-      <div class="upcoming-card">
+      <div class="upcoming-card" style="border-color: <?php echo $borderColor; ?>">
         <div class="uc-icon"><?php echo $icon; ?></div>
         <div class="uc-details">
-          <div class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></div>
-          <div class="uc-date"><?php echo $dayText; ?> (<?php echo $e['formattedDate']; ?>)</div>
-          <?php if ($e['nextYears'] !== null): ?>
-            <div class="uc-years"><?php echo $e['currentYears']; ?> <span style="color:var(--dim)">→</span> <?php echo $e['nextYears']; ?> jaar</div>
-          <?php endif; ?>
+          <div class="uc-date"><?php echo $dayText; ?> (<?php echo $formattedDate; ?>)</div>
+          <div class="uc-items-list">
+            <?php foreach ($eventsInCat as $e): ?>
+              <div class="uc-item">
+                <span class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
+                <?php if ($e['highlightMessage']): ?>
+                  <span class="msg-highlight"><?php echo $e['highlightMessage']; ?></span>
+                <?php endif; ?>
+              </div>
+            <?php endforeach; ?>
+          </div>
         </div>
       </div>
-      <?php endforeach; ?>
+      <?php endforeach; endforeach; ?>
     </div>
     <?php endif; ?>
 
@@ -217,8 +265,8 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
                   <div class="er-name"><?php echo htmlspecialchars($e['original']['name']); ?></div>
                   <div class="er-meta">
                     <span class="er-date"><?php echo $e['formattedDate']; ?></span>
-                    <?php if ($e['nextYears'] !== null): ?>
-                      <span class="er-years">&bull; <?php echo $e['currentYears']; ?> <span style="color:var(--dim)">→</span> <?php echo $e['nextYears']; ?> jaar</span>
+                    <?php if ($e['highlightMessage']): ?>
+                      <span class="msg-highlight">&bull; <?php echo $e['highlightMessage']; ?></span>
                     <?php endif; ?>
                   </div>
                 </div>
@@ -226,7 +274,7 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
                   <?php
                     if ($e['daysRemaining'] == 0) echo '<span style="color:var(--ok); font-weight:bold;">Vandaag</span>';
                     elseif ($e['daysRemaining'] == 1) echo 'Morgen';
-                    else echo $e['daysRemaining'] . ' dgn';
+                    else echo $e['daysRemaining'] . ' dagen';
                   ?>
                 </div>
               </div>
@@ -250,5 +298,15 @@ $activeMonths = [($activeRow * 2) - 1, $activeRow * 2];
 <!-- We still include ha_core_js.php as requested to maintain global context -->
 <script src="ha_core_js.php"></script>
 
+<script>
+  function tick() {
+    const clockEl = document.getElementById('clock');
+    if (clockEl) {
+      clockEl.textContent = new Date().toLocaleTimeString('nl-BE', { hour12: false });
+    }
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>

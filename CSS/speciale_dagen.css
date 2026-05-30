@@ -36,6 +36,20 @@
   flex-direction: column;
 }
 
+.uc-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.uc-item {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .uc-name {
   font-weight: 600;
   font-size: 18px;
@@ -44,14 +58,14 @@
 
 .uc-date {
   font-size: 14px;
-  color: var(--ok);
+  color: var(--text);
   font-weight: bold;
 }
 
-.uc-years {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 2px;
+.msg-highlight {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--accent);
 }
 
 /* Events List Layout */
