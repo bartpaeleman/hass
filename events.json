@@ -1,0 +1,26 @@
+[
+  {
+    "type": "recurring",
+    "category": "verjaardag",
+    "name": "Alice",
+    "date": "1990-06-02"
+  },
+  {
+    "type": "recurring",
+    "category": "huwelijk",
+    "name": "Bob & Eve",
+    "date": "2015-06-05"
+  },
+  {
+    "type": "single",
+    "category": "andere",
+    "name": "Zomervakantie",
+    "date": "2024-07-01"
+  },
+  {
+    "type": "recurring",
+    "category": "feestdag",
+    "name": "Nieuwjaar",
+    "date": "2000-01-01"
+  }
+]
