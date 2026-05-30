@@ -158,12 +158,17 @@ foreach ($events as $event) {
         $highlightMessage = $event['boodschap'];
     }
 
+    $formattedDate = $nextDate->format('j') . ' ' . $months[(int)$nextDate->format('n')];
+    if ($originalYear !== null && $isBirthdayOrWedding) {
+        $formattedDate .= ' ' . $originalYear;
+    }
+
     $processedEvents[] = [
         'original' => $event,
         'category' => $category,
         'nextDate' => $nextDate,
         'daysRemaining' => $daysRemaining,
-        'formattedDate' => $nextDate->format('j') . ' ' . $months[(int)$nextDate->format('n')],
+        'formattedDate' => $formattedDate,
         'currentYears' => $currentYears,
         'nextYears' => $nextYears,
         'highlightMessage' => $highlightMessage,
