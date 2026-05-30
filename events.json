@@ -1,51 +1,57 @@
 [
     {
-        "type": "recurring",
+        "type": "vast",
         "category": "verjaardag",
         "name": "Alice",
         "date": "1990-05-30"
     },
     {
-        "type": "recurring",
-        "category": "verjaardag",
-        "name": "Bob",
-        "date": "1985-05-30"
-    },
-    {
-        "type": "recurring",
+        "type": "vast",
         "category": "huwelijk",
-        "name": "Eve & Adam",
-        "date": "2010-05-30"
+        "name": "Bob & Eve",
+        "date": "2015-05-30"
     },
     {
-        "type": "recurring",
+        "type": "vast",
         "category": "feestdag",
-        "name": "Test Feest",
-        "date": "2000-05-31"
+        "name": "Korte Datum Feest",
+        "date": "05-31"
     },
     {
-        "type": "single",
+        "type": "vast",
         "category": "andere",
         "name": "Vakantie",
-        "date": "2026-05-31",
+        "date": "05-31",
         "boodschap": "Eindelijk vakantie!"
     },
     {
-        "type": "recurring",
-        "category": "verjaardag",
-        "name": "Charlie",
-        "date": "2005-06-01"
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Flexibel Pasen Test",
+        "formula": "easter 0"
     },
     {
-        "type": "recurring",
-        "category": "verjaardag",
-        "name": "David",
-        "date": "1995-06-01"
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Pinkstermaandag",
+        "formula": "easter +50"
     },
     {
-        "type": "recurring",
-        "category": "huwelijk",
-        "name": "Frank & Grace",
-        "date": "2015-06-02"
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Vaderdag",
+        "formula": "weekday 2 0 6"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Black Friday",
+        "formula": "thanksgiving +1"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Oud Event",
+        "date": "1990-05-01"
     }
 ]
