@@ -39,14 +39,14 @@
 
     <div class="light-grid">
 
-      <!-- LEFT COLUMN -->
+      <!-- ROW 1: Autolichten (Left) / Zones + Conditionals + Aankomst (Right) -->
       <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
         <!-- AUTOLICHTEN -->
-        <div class="light-section" style="background: rgba(0, 230, 118, 0.05); border-color: rgba(0, 230, 118, 0.2); margin-bottom: 0;">
+        <div class="light-section" style="background: rgba(0, 230, 118, 0.05); border-color: rgba(0, 230, 118, 0.2); margin-bottom: 0; flex: 1; display: flex; flex-direction: column;">
           <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 16px;">💡</span> AUTOLICHTEN
           </div>
-          <div class="light-section-content">
+          <div class="light-section-content" style="flex: 1; display: flex; flex-direction: column; justify-content: space-evenly;">
             <div class="light-card light-off" id="card-avondlichten" onclick="toggleLight('input_boolean.avondlichten')">
               <div class="light-card-info">
                 <div class="light-icon" id="icon-avondlichten">💡</div>
@@ -107,152 +107,8 @@
             </div>
           </div>
         </div>
-
-        <div class="light-section" style="margin-bottom: 0;">
-          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">📶</span> TRAP</div>
-            <div id="badge-trap" style="cursor:pointer;" onclick="toggleLight('light.trap')">⚪</div>
-          </div>
-          <div class="light-section-content">
-            <div class="light-row">
-              <div class="light-card light-off" id="card-1e-verdieping" onclick="toggleLight('light.1e_verdieping')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-1e-verdieping">💡</div>
-                  <div class="light-title">1e Verd.</div>
-                </div>
-                <div class="light-value" id="val-1e-verdieping">UIT</div>
-              </div>
-              <div class="light-card light-off" id="card-2de-verdieping" onclick="toggleLight('light.2de_verdieping')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-2de-verdieping">💡</div>
-                  <div class="light-title">2de Verd.</div>
-                </div>
-                <div class="light-value" id="val-2de-verdieping">UIT</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="light-section" style="margin-bottom: 0;">
-          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🍽️</span> EETGEDEELTE</div>
-          </div>
-          <div class="light-section-content">
-            <div class="light-row">
-              <div class="light-card light-off" id="card-keuken" onclick="toggleLight('light.keuken_2')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-keuken">💡</div>
-                  <div class="light-title">Keuken</div>
-                </div>
-                <div class="light-value" id="val-keuken">UIT</div>
-              </div>
-              <div class="light-card light-off" id="card-eetkamer" onclick="toggleLight('light.eetkamer')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-eetkamer">💡</div>
-                  <div class="light-title">Eetkamer</div>
-                </div>
-                <div class="light-value" id="val-eetkamer">UIT</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="light-section" style="margin-bottom: 0;">
-          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🛏️</span> SLAAPKAMER</div>
-            <div id="badge-slaapkamer" style="cursor:pointer;" onclick="toggleLight('light.slaapkamer')">⚪</div>
-          </div>
-          <div class="light-section-content">
-            <div class="light-row">
-              <div class="light-card light-off" id="card-nachtlampje-bart" onclick="toggleLight('light.nachtlampje_bart')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-nachtlampje-bart">💡</div>
-                  <div class="light-title">Bart</div>
-                </div>
-                <div class="light-value" id="val-nachtlampje-bart">UIT</div>
-              </div>
-              <div class="light-card light-off" id="card-nachtlampje-linda" onclick="toggleLight('light.nachtlampje_linda')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-nachtlampje-linda">💡</div>
-                  <div class="light-title">Linda</div>
-                </div>
-                <div class="light-value" id="val-nachtlampje-linda">UIT</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="light-section" style="margin-bottom: 0;">
-          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🌳</span> BUITEN</div>
-            <div style="display:flex; gap: 8px;">
-              <div id="badge-buiten" style="cursor:pointer;" onclick="toggleLight('light.buiten')">⚪</div>
-              <div id="badge-plantentuin" style="cursor:pointer;" onclick="toggleLight('light.plantentuin')">⚪</div>
-            </div>
-          </div>
-          <div class="light-section-content">
-            <div class="light-row">
-              <div class="light-card light-off" id="card-buiten" onclick="toggleLight('light.buiten')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-buiten">💡</div>
-                  <div class="light-title">Buiten</div>
-                </div>
-                <div class="light-value" id="val-buiten">UIT</div>
-              </div>
-              <div class="light-card light-off" id="card-plantentuin" onclick="toggleLight('light.plantentuin')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-plantentuin">💡</div>
-                  <div class="light-title">Plantentuin</div>
-                </div>
-                <div class="light-value" id="val-plantentuin">UIT</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Collapsible TERRAS -->
-        <details class="light-section light-collapsible" id="sec-terras" style="margin-bottom: 0;">
-          <summary><span style="font-size: 16px;">🏖️</span> TERRAS</summary>
-          <div class="light-section-content">
-            <div class="light-row">
-              <div class="light-card light-off" id="card-buiten1" onclick="toggleLight('light.buiten_1')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Buiten 1</div></div>
-              </div>
-              <div class="light-card light-off" id="card-buiten2" onclick="toggleLight('light.buiten_2')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Buiten 2</div></div>
-              </div>
-            </div>
-            <div class="light-card light-off" id="card-ledstrip-buiten" onclick="toggleLight('light.ledstrip_buiten')">
-              <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Ledstrip</div></div>
-            </div>
-          </div>
-        </details>
-
-        <!-- Collapsible PLANTENTUIN -->
-        <details class="light-section light-collapsible" id="sec-plantentuin" style="margin-bottom: 0;">
-          <summary><span style="font-size: 16px;">🌿</span> PLANTENTUIN</summary>
-          <div class="light-section-content">
-            <div class="light-row">
-              <div class="light-card light-off" id="card-tuin-spot1" onclick="toggleLight('light.tuin_spot_1')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 1</div></div>
-              </div>
-              <div class="light-card light-off" id="card-tuin-spot2" onclick="toggleLight('light.tuin_spot_2')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 2</div></div>
-              </div>
-            </div>
-            <div class="light-row">
-              <div class="light-card light-off" id="card-tuin-spot3" onclick="toggleLight('light.tuin_spot_3')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 3</div></div>
-              </div>
-              <div class="light-card light-off" id="card-tuin-spot4" onclick="toggleLight('light.tuin_spot_4')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 4</div></div>
-              </div>
-            </div>
-          </div>
-        </details>
       </div>
 
-      <!-- RIGHT COLUMN -->
       <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
         <div class="light-section" style="margin-bottom: 0;">
           <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
@@ -294,6 +150,104 @@
           </div>
         </div>
 
+        <!-- CONDITIONAL SUB-ZONES -->
+        <!-- AMBILIGHT -->
+        <div class="light-section" id="sec-ambilight" style="margin-bottom: 0; display: none;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">📺</span> AMBILIGHT <span id="badge-ambilight" style="margin-left:auto; cursor:pointer;" onclick="toggleLight('light.ambilight')">⚪</span>
+          </div>
+          <div class="light-section-content">
+            <div class="light-row">
+              <div class="light-card light-off" id="card-liv-vl" onclick="toggleLight('light.living_voor_links')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Voor L</div></div>
+              </div>
+              <div class="light-card light-off" id="card-liv-sv" onclick="toggleLight('light.living_strip_voor')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Strip</div></div>
+              </div>
+            </div>
+            <div class="light-row">
+              <div class="light-card light-off" id="card-liv-vr" onclick="toggleLight('light.living_voor_rechts')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Voor R</div></div>
+              </div>
+              <div class="light-card light-off" id="card-liv-al" onclick="toggleLight('light.living_achter_links')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Achter L</div></div>
+              </div>
+            </div>
+            <div class="light-row">
+              <div class="light-card light-off" id="card-liv-ar" onclick="toggleLight('light.living_achter_rechts')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Achter R</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TV -->
+        <div class="light-section" id="sec-tv" style="margin-bottom: 0; display: none;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">📺</span> TV <span id="badge-tv" style="margin-left:auto; cursor:pointer;" onclick="toggleLight('light.tv')">⚪</span>
+          </div>
+          <div class="light-section-content">
+            <div class="light-row">
+              <div class="light-card light-off" id="card-tv-l" onclick="toggleLight('light.tv_living_links')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Links</div></div>
+              </div>
+              <div class="light-card light-off" id="card-tv-m" onclick="toggleLight('light.tv_living_midden')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Midden</div></div>
+              </div>
+            </div>
+            <div class="light-row">
+              <div class="light-card light-off" id="card-tv-r" onclick="toggleLight('light.tv_living_rechts')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Rechts</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BUREAU LIVING -->
+        <div class="light-section" id="sec-bureau" style="margin-bottom: 0; display: none;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">💻</span> BUREAU LIVING <span id="badge-computer" style="margin-left:auto; cursor:pointer;" onclick="toggleLight('light.computer')">⚪</span>
+          </div>
+          <div class="light-section-content">
+            <div class="light-row">
+              <div class="light-card light-off" id="card-bur-l" onclick="toggleLight('light.bureau_living_links')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Links</div></div>
+              </div>
+              <div class="light-card light-off" id="card-bur-r" onclick="toggleLight('light.bureau_living_rechts')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Rechts</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ZETELS -->
+        <div class="light-section" id="sec-zetels" style="margin-bottom: 0; display: none;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">🛋️</span> ZETELS <span id="badge-zetels" style="margin-left:auto; cursor:pointer;" onclick="toggleLight('light.zetels')">⚪</span>
+          </div>
+          <div class="light-section-content">
+            <div class="light-row">
+              <div class="light-card light-off" id="card-zetel-ll" onclick="toggleLight('light.zetel_linda_links')">
+                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Linda L</div></div>
+              </div>
+              <div class="light-card light-off" id="card-zetel-lr" onclick="toggleLight('light.zetel_linda_rechts')">
+                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Linda R</div></div>
+              </div>
+            </div>
+            <div class="light-row">
+              <div class="light-card light-off" id="card-zetel-bl" onclick="toggleLight('light.zetel_bart_links')">
+                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Bart L</div></div>
+              </div>
+              <div class="light-card light-off" id="card-zetel-br" onclick="toggleLight('light.zetel_bart_rechts')">
+                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Bart R</div></div>
+              </div>
+            </div>
+            <div class="light-card light-off" id="card-leeslamp" onclick="toggleLight('light.leeslamp')">
+              <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Leeslamp</div></div>
+            </div>
+          </div>
+        </div>
+
         <div class="light-section" style="margin-bottom: 0;">
           <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
             <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🚪</span> AANKOMST</div>
@@ -318,99 +272,172 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Collapsible AMBILIGHT -->
-        <details class="light-section light-collapsible" id="sec-ambilight" style="margin-bottom: 0;">
-          <summary><span style="font-size: 16px;">📺</span> AMBILIGHT <span id="badge-ambilight" style="margin-left:8px;" onclick="event.preventDefault(); toggleLight('light.ambilight')">⚪</span></summary>
+      <!-- ROW 2: Trap (Left) / Eetgedeelte (Right) -->
+      <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="light-section" style="margin-bottom: 0;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">📶</span> TRAP</div>
+            <div id="badge-trap" style="cursor:pointer;" onclick="toggleLight('light.trap')">⚪</div>
+          </div>
           <div class="light-section-content">
             <div class="light-row">
-              <div class="light-card light-off" id="card-liv-vl" onclick="toggleLight('light.living_voor_links')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Voor L</div></div>
+              <div class="light-card light-off" id="card-1e-verdieping" onclick="toggleLight('light.1e_verdieping')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-1e-verdieping">💡</div>
+                  <div class="light-title">1e Verd.</div>
+                </div>
+                <div class="light-value" id="val-1e-verdieping">UIT</div>
               </div>
-              <div class="light-card light-off" id="card-liv-sv" onclick="toggleLight('light.living_strip_voor')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Strip</div></div>
-              </div>
-            </div>
-            <div class="light-row">
-              <div class="light-card light-off" id="card-liv-vr" onclick="toggleLight('light.living_voor_rechts')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Voor R</div></div>
-              </div>
-              <div class="light-card light-off" id="card-liv-al" onclick="toggleLight('light.living_achter_links')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Achter L</div></div>
-              </div>
-            </div>
-            <div class="light-row">
-              <div class="light-card light-off" id="card-liv-ar" onclick="toggleLight('light.living_achter_rechts')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Achter R</div></div>
+              <div class="light-card light-off" id="card-2de-verdieping" onclick="toggleLight('light.2de_verdieping')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-2de-verdieping">💡</div>
+                  <div class="light-title">2de Verd.</div>
+                </div>
+                <div class="light-value" id="val-2de-verdieping">UIT</div>
               </div>
             </div>
           </div>
-        </details>
+        </div>
+      </div>
 
-        <!-- Collapsible TV -->
-        <details class="light-section light-collapsible" id="sec-tv" style="margin-bottom: 0;">
-          <summary><span style="font-size: 16px;">📺</span> TV <span id="badge-tv" style="margin-left:8px;" onclick="event.preventDefault(); toggleLight('light.tv')">⚪</span></summary>
+      <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="light-section" style="margin-bottom: 0;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🍽️</span> EETGEDEELTE</div>
+          </div>
           <div class="light-section-content">
             <div class="light-row">
-              <div class="light-card light-off" id="card-tv-l" onclick="toggleLight('light.tv_living_links')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Links</div></div>
+              <div class="light-card light-off" id="card-keuken" onclick="toggleLight('light.keuken_2')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-keuken">💡</div>
+                  <div class="light-title">Keuken</div>
+                </div>
+                <div class="light-value" id="val-keuken">UIT</div>
               </div>
-              <div class="light-card light-off" id="card-tv-m" onclick="toggleLight('light.tv_living_midden')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Midden</div></div>
-              </div>
-            </div>
-            <div class="light-row">
-              <div class="light-card light-off" id="card-tv-r" onclick="toggleLight('light.tv_living_rechts')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Rechts</div></div>
+              <div class="light-card light-off" id="card-eetkamer" onclick="toggleLight('light.eetkamer')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-eetkamer">💡</div>
+                  <div class="light-title">Eetkamer</div>
+                </div>
+                <div class="light-value" id="val-eetkamer">UIT</div>
               </div>
             </div>
           </div>
-        </details>
+        </div>
+      </div>
 
-        <!-- Collapsible BUREAU LIVING -->
-        <details class="light-section light-collapsible" id="sec-bureau" style="margin-bottom: 0;">
-          <summary><span style="font-size: 16px;">💻</span> BUREAU LIVING <span id="badge-computer" style="margin-left:8px;" onclick="event.preventDefault(); toggleLight('light.computer')">⚪</span></summary>
+      <!-- ROW 3: Slaapkamer (Left) / Buiten & Conditionals (Right) -->
+      <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="light-section" style="margin-bottom: 0;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🛏️</span> SLAAPKAMER</div>
+            <div id="badge-slaapkamer" style="cursor:pointer;" onclick="toggleLight('light.slaapkamer')">⚪</div>
+          </div>
           <div class="light-section-content">
             <div class="light-row">
-              <div class="light-card light-off" id="card-bur-l" onclick="toggleLight('light.bureau_living_links')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Links</div></div>
+              <div class="light-card light-off" id="card-nachtlampje-bart" onclick="toggleLight('light.nachtlampje_bart')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-nachtlampje-bart">💡</div>
+                  <div class="light-title">Bart</div>
+                </div>
+                <div class="light-value" id="val-nachtlampje-bart">UIT</div>
               </div>
-              <div class="light-card light-off" id="card-bur-r" onclick="toggleLight('light.bureau_living_rechts')">
-                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Rechts</div></div>
+              <div class="light-card light-off" id="card-nachtlampje-linda" onclick="toggleLight('light.nachtlampje_linda')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-nachtlampje-linda">💡</div>
+                  <div class="light-title">Linda</div>
+                </div>
+                <div class="light-value" id="val-nachtlampje-linda">UIT</div>
               </div>
             </div>
           </div>
-        </details>
+        </div>
+      </div>
 
-        <!-- Collapsible ZETELS -->
-        <details class="light-section light-collapsible" id="sec-zetels" style="margin-bottom: 0;">
-          <summary><span style="font-size: 16px;">🛋️</span> ZETELS <span id="badge-zetels" style="margin-left:8px;" onclick="event.preventDefault(); toggleLight('light.zetels')">⚪</span></summary>
-          <div class="light-section-content">
-            <div class="light-row">
-              <div class="light-card light-off" id="card-zetel-ll" onclick="toggleLight('light.zetel_linda_links')">
-                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Linda L</div></div>
-              </div>
-              <div class="light-card light-off" id="card-zetel-lr" onclick="toggleLight('light.zetel_linda_rechts')">
-                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Linda R</div></div>
-              </div>
-            </div>
-            <div class="light-row">
-              <div class="light-card light-off" id="card-zetel-bl" onclick="toggleLight('light.zetel_bart_links')">
-                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Bart L</div></div>
-              </div>
-              <div class="light-card light-off" id="card-zetel-br" onclick="toggleLight('light.zetel_bart_rechts')">
-                <div class="light-card-info"><div class="light-icon">🛋️</div><div class="light-title">Bart R</div></div>
-              </div>
-            </div>
-            <div class="light-card light-off" id="card-leeslamp" onclick="toggleLight('light.leeslamp')">
-              <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Leeslamp</div></div>
+      <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="light-section" style="margin-bottom: 0;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🌳</span> BUITEN</div>
+            <div style="display:flex; gap: 8px;">
+              <div id="badge-buiten" style="cursor:pointer;" onclick="toggleLight('light.buiten')">⚪</div>
+              <div id="badge-plantentuin" style="cursor:pointer;" onclick="toggleLight('light.plantentuin')">⚪</div>
             </div>
           </div>
-        </details>
+          <div class="light-section-content">
+            <div class="light-row">
+              <div class="light-card light-off" id="card-buiten" onclick="toggleLight('light.buiten')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-buiten">💡</div>
+                  <div class="light-title">Buiten</div>
+                </div>
+                <div class="light-value" id="val-buiten">UIT</div>
+              </div>
+              <div class="light-card light-off" id="card-plantentuin" onclick="toggleLight('light.plantentuin')">
+                <div class="light-card-info">
+                  <div class="light-icon" id="icon-plantentuin">💡</div>
+                  <div class="light-title">Plantentuin</div>
+                </div>
+                <div class="light-value" id="val-plantentuin">UIT</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <!-- Collapsible KERSTVERLICHTING -->
-        <details class="light-section light-collapsible" id="sec-kerst" style="margin-bottom: 0;">
-          <summary><span style="font-size: 16px;">🎄</span> KERSTVERLICHTING <span id="badge-kerstverlichting" style="margin-left:8px;" onclick="event.preventDefault(); toggleLight('light.kerstverlichting')">⚪</span></summary>
+        <!-- CONDITIONAL SUB-BUITEN -->
+        <!-- TERRAS -->
+        <div class="light-section" id="sec-terras" style="margin-bottom: 0; display: none;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">🏖️</span> TERRAS
+          </div>
+          <div class="light-section-content">
+            <div class="light-row">
+              <div class="light-card light-off" id="card-buiten1" onclick="toggleLight('light.buiten_1')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Buiten 1</div></div>
+              </div>
+              <div class="light-card light-off" id="card-buiten2" onclick="toggleLight('light.buiten_2')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Buiten 2</div></div>
+              </div>
+            </div>
+            <div class="light-card light-off" id="card-ledstrip-buiten" onclick="toggleLight('light.ledstrip_buiten')">
+              <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Ledstrip</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLANTENTUIN -->
+        <div class="light-section" id="sec-plantentuin" style="margin-bottom: 0; display: none;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">🌿</span> PLANTENTUIN
+          </div>
+          <div class="light-section-content">
+            <div class="light-row">
+              <div class="light-card light-off" id="card-tuin-spot1" onclick="toggleLight('light.tuin_spot_1')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 1</div></div>
+              </div>
+              <div class="light-card light-off" id="card-tuin-spot2" onclick="toggleLight('light.tuin_spot_2')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 2</div></div>
+              </div>
+            </div>
+            <div class="light-row">
+              <div class="light-card light-off" id="card-tuin-spot3" onclick="toggleLight('light.tuin_spot_3')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 3</div></div>
+              </div>
+              <div class="light-card light-off" id="card-tuin-spot4" onclick="toggleLight('light.tuin_spot_4')">
+                <div class="light-card-info"><div class="light-icon">💡</div><div class="light-title">Spot 4</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 4: Kerstverlichting (Full Width, Conditional) -->
+      <div class="col-12" id="sec-kerst" style="display: none;">
+        <div class="light-section" style="margin-bottom: 0;">
+          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">🎄</span> KERSTVERLICHTING <span id="badge-kerstverlichting" style="margin-left:auto; cursor:pointer;" onclick="toggleLight('light.kerstverlichting')">⚪</span>
+          </div>
           <div class="light-section-content">
             <div class="light-row">
               <div class="light-card light-off" id="card-kerst-gang" onclick="toggleLight('light.kerst_gang')">
@@ -450,7 +477,7 @@
               </div>
             </div>
           </div>
-        </details>
+        </div>
       </div>
 
     </div>
@@ -488,10 +515,10 @@
     { id: 'light.1e_verdieping', cardId: 'card-1e-verdieping', valId: 'val-1e-verdieping', onClass: 'light-on' },
     { id: 'light.2de_verdieping', cardId: 'card-2de-verdieping', valId: 'val-2de-verdieping', onClass: 'light-on' },
 
-    { id: 'light.zetels', cardId: 'card-zetels', valId: 'val-zetels', badgeId: 'badge-zetels', onClass: 'light-on', sectionId: 'sec-zetels' },
-    { id: 'light.tv', cardId: 'card-tv', valId: 'val-tv', badgeId: 'badge-tv', onClass: 'light-on', sectionId: 'sec-tv' },
+    { id: 'light.zetels', cardId: 'card-zetels', valId: 'val-zetels', badgeId: 'badge-zetels', onClass: 'light-on' },
+    { id: 'light.tv', cardId: 'card-tv', valId: 'val-tv', badgeId: 'badge-tv', onClass: 'light-on' },
     { id: 'light.tv_woonkamer_ambilight', cardId: 'card-tv-ambilight', valId: 'val-tv-ambilight', onClass: 'light-on' },
-    { id: 'light.computer', cardId: 'card-computer', valId: 'val-computer', badgeId: 'badge-computer', onClass: 'light-on', sectionId: 'sec-bureau' },
+    { id: 'light.computer', cardId: 'card-computer', valId: 'val-computer', badgeId: 'badge-computer', onClass: 'light-on' },
 
     { id: 'light.keuken_2', cardId: 'card-keuken', valId: 'val-keuken', onClass: 'light-on' },
     { id: 'light.eetkamer', cardId: 'card-eetkamer', valId: 'val-eetkamer', onClass: 'light-on' },
@@ -500,10 +527,10 @@
     { id: 'light.nachtlampje_bart', cardId: 'card-nachtlampje-bart', valId: 'val-nachtlampje-bart', onClass: 'light-on' },
     { id: 'light.nachtlampje_linda', cardId: 'card-nachtlampje-linda', valId: 'val-nachtlampje-linda', onClass: 'light-on' },
 
-    { id: 'light.buiten', cardId: 'card-buiten', valId: 'val-buiten', badgeId: 'badge-buiten', onClass: 'light-on', sectionId: 'sec-terras' },
-    { id: 'light.plantentuin', cardId: 'card-plantentuin', valId: 'val-plantentuin', badgeId: 'badge-plantentuin', onClass: 'light-on', sectionId: 'sec-plantentuin' },
+    { id: 'light.buiten', cardId: 'card-buiten', valId: 'val-buiten', badgeId: 'badge-buiten', onClass: 'light-on' },
+    { id: 'light.plantentuin', cardId: 'card-plantentuin', valId: 'val-plantentuin', badgeId: 'badge-plantentuin', onClass: 'light-on' },
 
-    { id: 'light.ambilight', badgeId: 'badge-ambilight', sectionId: 'sec-ambilight' },
+    { id: 'light.ambilight', badgeId: 'badge-ambilight' },
     { id: 'light.living_voor_links', cardId: 'card-liv-vl', onClass: 'light-on' },
     { id: 'light.living_strip_voor', cardId: 'card-liv-sv', onClass: 'light-on' },
     { id: 'light.living_voor_rechts', cardId: 'card-liv-vr', onClass: 'light-on' },
@@ -593,37 +620,64 @@
             badge.textContent = isOn ? '🟡' : '⚪';
           }
         }
-
-        // Expand/collapse logic (visibility logic from yaml)
-        if (entity.sectionId && document.getElementById(entity.sectionId)) {
-          // If the group state is off, collapse it (if it isn't Ambilight dependent on TV, handle specially if needed)
-          // Based on yaml: visibility - condition: state entity: light.buiten state_not: "off" etc.
-          const sec = document.getElementById(entity.sectionId);
-          if (isOn) {
-            sec.style.display = 'block';
-            if(!sec.hasAttribute('open')) sec.setAttribute('open', '');
-          } else {
-            // Keep it in DOM, just hide it to save space when off
-            sec.style.display = 'none';
-          }
-        }
       });
 
-      // Ambilight visibility is based on TV state
-      const tvState = stateMap['light.tv_woonkamer_ambilight'];
-      const tvWoon = document.getElementById('card-tv-ambilight');
-      if (tvState && tvState.state === 'unavailable') {
-         if (tvWoon) tvWoon.style.display = 'none';
+      // Update visibility for sub-sections based on YAML logic
+
+      // Ambilight sub-section: visible if tv_woonkamer_ambilight is "off"
+      const tvAmbilight = stateMap['light.tv_woonkamer_ambilight'];
+      if (tvAmbilight && tvAmbilight.state === 'off') {
+         document.getElementById('sec-ambilight').style.display = 'block';
+      } else {
+         document.getElementById('sec-ambilight').style.display = 'none';
       }
 
-      // Hide/Show Ambilight section based on light.tv_woonkamer_ambilight state
-      const secAmbi = document.getElementById('sec-ambilight');
-      if (secAmbi && tvState) {
-         if (tvState.state === 'off') {
-            secAmbi.style.display = 'block';
-         } else {
-            secAmbi.style.display = 'none'; // Because in YAML: visibility condition state light.tv_woonkamer_ambilight state: "off"
-         }
+      // TV sub-section: visible if tv is NOT "off"
+      const tvState = stateMap['light.tv'];
+      if (tvState && tvState.state !== 'off' && tvState.state !== 'unavailable') {
+         document.getElementById('sec-tv').style.display = 'block';
+      } else {
+         document.getElementById('sec-tv').style.display = 'none';
+      }
+
+      // Bureau Living sub-section: visible if computer is NOT "off"
+      const compState = stateMap['light.computer'];
+      if (compState && compState.state !== 'off' && compState.state !== 'unavailable') {
+         document.getElementById('sec-bureau').style.display = 'block';
+      } else {
+         document.getElementById('sec-bureau').style.display = 'none';
+      }
+
+      // Zetels sub-section: visible if zetels is NOT "off"
+      const zetelsState = stateMap['light.zetels'];
+      if (zetelsState && zetelsState.state !== 'off' && zetelsState.state !== 'unavailable') {
+         document.getElementById('sec-zetels').style.display = 'block';
+      } else {
+         document.getElementById('sec-zetels').style.display = 'none';
+      }
+
+      // Terras sub-section: visible if buiten is NOT "off"
+      const buitenState = stateMap['light.buiten'];
+      if (buitenState && buitenState.state !== 'off' && buitenState.state !== 'unavailable') {
+         document.getElementById('sec-terras').style.display = 'block';
+      } else {
+         document.getElementById('sec-terras').style.display = 'none';
+      }
+
+      // Plantentuin sub-section: visible if plantentuin is NOT "off"
+      const plantState = stateMap['light.plantentuin'];
+      if (plantState && plantState.state !== 'off' && plantState.state !== 'unavailable') {
+         document.getElementById('sec-plantentuin').style.display = 'block';
+      } else {
+         document.getElementById('sec-plantentuin').style.display = 'none';
+      }
+
+      // Kerstverlichting main section: visible if kerstboom is NOT "unavailable"
+      const kerstState = stateMap['light.kerstboom'];
+      if (kerstState && kerstState.state !== 'unavailable') {
+         document.getElementById('sec-kerst').style.display = 'block';
+      } else {
+         document.getElementById('sec-kerst').style.display = 'none';
       }
     }
 
