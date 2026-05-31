@@ -55,5 +55,11 @@
         "category": "verjaardag",
         "name": "Oud Event",
         "date": "1990-05-01"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Oudjaar",
+        "date": "12-31"
     }
 ]
