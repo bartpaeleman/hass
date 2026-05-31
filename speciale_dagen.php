@@ -355,7 +355,7 @@ $currentMonth = (int)$today->format('n');
             return (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
         });
       ?>
-      <details class="month-details <?php echo $isActive; ?>">
+      <details class="month-details <?php echo $isActive; ?>" data-month="<?php echo $m; ?>">
         <summary class="month-summary">
           <div class="month-title"><?php echo $fullMonthNames[$m]; ?></div>
           <div class="month-count"><?php echo count($monthEvents); ?></div>
@@ -427,10 +427,43 @@ $currentMonth = (int)$today->format('n');
   document.addEventListener('DOMContentLoaded', () => {
     const filterBtns = document.querySelectorAll('.filter-btn');
 
+    // Load saved filters
+    const savedFilters = localStorage.getItem('speciale_dagen_filters');
+    if (savedFilters) {
+      try {
+        const filtersArray = JSON.parse(savedFilters);
+        // Reset all filter buttons (except toggle-all)
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+          if (filtersArray.includes(btn.dataset.filter)) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      } catch(e) {}
+    }
+
+    // Load saved open months
+    const savedMonths = localStorage.getItem('speciale_dagen_months_open');
+    if (savedMonths) {
+      try {
+        const monthsArray = JSON.parse(savedMonths);
+        document.querySelectorAll('.month-details').forEach(month => {
+          if (month.dataset.month && monthsArray.includes(month.dataset.month)) {
+            month.open = true;
+          }
+        });
+      } catch(e) {}
+    }
+
     function applyFilters() {
       // Get all active filters
       const activeFilters = Array.from(document.querySelectorAll('.filter-btn.active'))
-                                 .map(btn => btn.dataset.filter);
+                                 .map(btn => btn.dataset.filter)
+                                 .filter(f => f); // filter out undefined from toggle-all
+
+      // Save to localStorage
+      localStorage.setItem('speciale_dagen_filters', JSON.stringify(activeFilters));
 
       // Filter upcoming cards items
       document.querySelectorAll('.upcoming-card').forEach(card => {
@@ -498,6 +531,16 @@ $currentMonth = (int)$today->format('n');
           applyFilters();
         });
       }
+    });
+
+    // Save open months on toggle
+    document.querySelectorAll('.month-details').forEach(month => {
+      month.addEventListener('toggle', () => {
+        const openMonths = Array.from(document.querySelectorAll('.month-details[open]'))
+                                .map(m => m.dataset.month)
+                                .filter(m => m);
+        localStorage.setItem('speciale_dagen_months_open', JSON.stringify(openMonths));
+      });
     });
 
     // Initial apply
