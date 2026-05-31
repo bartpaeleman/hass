@@ -1,0 +1,284 @@
+<?php
+$eventsFile = '../events.json';
+
+// Process form submission
+$message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+
+    // Read current events
+    $events = [];
+    if (file_exists($eventsFile)) {
+        $eventsData = json_decode(file_get_contents($eventsFile), true);
+        if (is_array($eventsData)) {
+            $events = $eventsData;
+        }
+    }
+
+    if ($action === 'delete') {
+        $index = isset($_POST['index']) ? (int)$_POST['index'] : -1;
+        if ($index >= 0 && $index < count($events)) {
+            array_splice($events, $index, 1);
+            file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            $message = "Event succesvol verwijderd.";
+        }
+    } elseif ($action === 'save') {
+        $index = isset($_POST['index']) && $_POST['index'] !== '' ? (int)$_POST['index'] : -1;
+
+        $newEvent = [
+            'type' => $_POST['type'] ?? 'vast',
+            'category' => $_POST['category'] ?? 'andere',
+            'name' => $_POST['name'] ?? '',
+        ];
+
+        if ($newEvent['type'] === 'vast') {
+            $newEvent['date'] = $_POST['date'] ?? '';
+        } else {
+            $newEvent['formula'] = $_POST['formula'] ?? '';
+        }
+
+        if (!empty($_POST['info'])) {
+            $newEvent['info'] = $_POST['info'];
+        }
+
+        if (!empty($_POST['boodschap'])) {
+            $newEvent['boodschap'] = $_POST['boodschap'];
+        }
+
+        // Validate mandatory fields
+        if (empty($newEvent['name'])) {
+            $message = "Fout: Naam is verplicht.";
+        } elseif ($newEvent['type'] === 'vast' && empty($newEvent['date'])) {
+            $message = "Fout: Datum is verplicht voor een vast event.";
+        } elseif ($newEvent['type'] === 'flexibel' && empty($newEvent['formula'])) {
+            $message = "Fout: Formule is verplicht voor een flexibel event.";
+        } else {
+            if ($index >= 0 && $index < count($events)) {
+                $events[$index] = $newEvent;
+                $message = "Event succesvol gewijzigd.";
+            } else {
+                $events[] = $newEvent;
+                $message = "Nieuw event succesvol toegevoegd.";
+            }
+            file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        }
+    }
+}
+
+// Read events for display
+$events = [];
+if (file_exists($eventsFile)) {
+    $eventsData = json_decode(file_get_contents($eventsFile), true);
+    if (is_array($eventsData)) {
+        $events = $eventsData;
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Beheer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/common.css">
+    <style>
+        body { margin: 0; padding: 20px; font-family: 'Share Tech Mono', monospace; background: var(--bg); color: var(--text-bright); }
+        .admin-container { max-width: 1000px; margin: 0 auto; background: var(--surface); padding: 20px; border-radius: 8px; }
+        h1, h2 { font-family: 'Barlow Condensed', sans-serif; color: var(--text-bright); }
+        .message { padding: 10px; margin-bottom: 20px; border-radius: 4px; background: rgba(0, 230, 118, 0.1); border: 1px solid var(--ok); color: var(--ok); }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { text-align: left; padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        th { background: rgba(0, 0, 0, 0.2); }
+        .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 14px; }
+        .btn-edit { background: var(--accent); color: var(--bg); }
+        .btn-delete { background: var(--alert); color: var(--text-bright); }
+        .btn-add { background: var(--ok); color: var(--bg); padding: 10px 20px; font-size: 16px; margin-bottom: 20px; }
+
+        /* Form styling */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: var(--text-muted); }
+        input[type="text"], select { width: 100%; padding: 8px; box-sizing: border-box; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: var(--text-bright); border-radius: 4px; font-family: inherit; }
+        .form-container { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.1); display: none; }
+        .form-container.active { display: block; }
+        .help-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <h1>Events.json Beheer</h1>
+
+    <?php if ($message): ?>
+        <div class="message"><?php echo htmlspecialchars($message); ?></div>
+    <?php endif; ?>
+
+    <button class="btn btn-add" onclick="openForm()">+ Nieuw Event Toevoegen</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Type</th>
+                <th>Categorie</th>
+                <th>Datum / Formule</th>
+                <th>Info / Boodschap</th>
+                <th>Acties</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($events as $index => $event): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($event['name'] ?? ''); ?></td>
+                    <td><?php echo htmlspecialchars($event['type'] ?? ''); ?></td>
+                    <td><?php echo htmlspecialchars($event['category'] ?? ''); ?></td>
+                    <td>
+                        <?php
+                        if (($event['type'] ?? '') === 'vast') echo htmlspecialchars($event['date'] ?? '');
+                        else echo htmlspecialchars($event['formula'] ?? '');
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $extras = [];
+                        if (!empty($event['info'])) $extras[] = "Info: " . htmlspecialchars($event['info']);
+                        if (!empty($event['boodschap'])) $extras[] = "Boodschap: " . htmlspecialchars($event['boodschap']);
+                        echo implode('<br>', $extras);
+                        ?>
+                    </td>
+                    <td>
+                        <button class="btn btn-edit" onclick="editForm(<?php echo $index; ?>, <?php echo htmlspecialchars(json_encode($event), ENT_QUOTES, 'UTF-8'); ?>)">Bewerk</button>
+                        <form method="POST" style="display:inline;" onsubmit="return confirm('Zeker dat je dit event wil wissen?');">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="index" value="<?php echo $index; ?>">
+                            <button type="submit" class="btn btn-delete">Wis</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            <?php if (empty($events)): ?>
+                <tr><td colspan="6" style="text-align: center;">Geen events gevonden.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <div id="eventFormContainer" class="form-container">
+        <h2 id="formTitle">Nieuw Event</h2>
+        <form method="POST">
+            <input type="hidden" name="action" value="save">
+            <input type="hidden" name="index" id="formIndex" value="">
+
+            <div class="form-group">
+                <label for="formName">Naam *</label>
+                <input type="text" id="formName" name="name" required placeholder="Bijv. Alice, Pasen, Vakantie">
+            </div>
+
+            <div class="form-group">
+                <label for="formCategory">Categorie *</label>
+                <select id="formCategory" name="category" required>
+                    <option value="verjaardag">Verjaardag</option>
+                    <option value="huwelijk">Huwelijk</option>
+                    <option value="feestdag">Feestdag</option>
+                    <option value="interessant">Interessant</option>
+                    <option value="andere">Andere</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="formType">Type *</label>
+                <select id="formType" name="type" required onchange="toggleTypeFields()">
+                    <option value="vast">Vast</option>
+                    <option value="flexibel">Flexibel</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="dateGroup">
+                <label for="formDate">Datum *</label>
+                <input type="text" id="formDate" name="date" placeholder="YYYY-MM-DD of MM-DD">
+                <span class="help-text">Gebruik YYYY-MM-DD (bijv. 1990-05-30) voor leeftijd/jaren, of MM-DD (bijv. 12-31) voor jaarlijkse vaste dagen.</span>
+            </div>
+
+            <div class="form-group" id="formulaGroup" style="display:none;">
+                <label for="formFormula">Formule *</label>
+                <input type="text" id="formFormula" name="formula" placeholder="Bijv. easter 0, weekday 2 0 6">
+                <span class="help-text">Syntax: 'easter [offset]', 'weekday [occurrence 1-5,last] [day 0-6] [month 1-12]', of 'thanksgiving [offset]'.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="formInfo">Info (Optioneel)</label>
+                <input type="text" id="formInfo" name="info" placeholder="Bijv. Gezin, Familie, of een info bericht">
+                <span class="help-text">Bepaalt de filter voor verjaardag/huwelijk, toont tekst voor 'interessant'.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="formBoodschap">Boodschap (Optioneel)</label>
+                <input type="text" id="formBoodschap" name="boodschap" placeholder="Bijv. Eindelijk vakantie!">
+                <span class="help-text">Wordt prominent getoond onder de naam (vooral handig voor 'andere').</span>
+            </div>
+
+            <button type="submit" class="btn btn-add">Opslaan</button>
+            <button type="button" class="btn" style="background:var(--text-muted); color:var(--surface);" onclick="closeForm()">Annuleren</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleTypeFields() {
+        const type = document.getElementById('formType').value;
+        const dateGroup = document.getElementById('dateGroup');
+        const formulaGroup = document.getElementById('formulaGroup');
+        const dateInput = document.getElementById('formDate');
+        const formulaInput = document.getElementById('formFormula');
+
+        if (type === 'vast') {
+            dateGroup.style.display = 'block';
+            formulaGroup.style.display = 'none';
+            dateInput.required = true;
+            formulaInput.required = false;
+        } else {
+            dateGroup.style.display = 'none';
+            formulaGroup.style.display = 'block';
+            dateInput.required = false;
+            formulaInput.required = true;
+        }
+    }
+
+    function openForm() {
+        document.getElementById('eventFormContainer').classList.add('active');
+        document.getElementById('formTitle').innerText = 'Nieuw Event';
+        document.getElementById('formIndex').value = '';
+        document.getElementById('formName').value = '';
+        document.getElementById('formCategory').value = 'andere';
+        document.getElementById('formType').value = 'vast';
+        document.getElementById('formDate').value = '';
+        document.getElementById('formFormula').value = '';
+        document.getElementById('formInfo').value = '';
+        document.getElementById('formBoodschap').value = '';
+        toggleTypeFields();
+        document.getElementById('eventFormContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function editForm(index, event) {
+        document.getElementById('eventFormContainer').classList.add('active');
+        document.getElementById('formTitle').innerText = 'Event Bewerken';
+        document.getElementById('formIndex').value = index;
+
+        document.getElementById('formName').value = event.name || '';
+        document.getElementById('formCategory').value = event.category || 'andere';
+        document.getElementById('formType').value = event.type || 'vast';
+        document.getElementById('formDate').value = event.date || '';
+        document.getElementById('formFormula').value = event.formula || '';
+        document.getElementById('formInfo').value = event.info || '';
+        document.getElementById('formBoodschap').value = event.boodschap || '';
+
+        toggleTypeFields();
+        document.getElementById('eventFormContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeForm() {
+        document.getElementById('eventFormContainer').classList.remove('active');
+    }
+</script>
+
+</body>
+</html>
