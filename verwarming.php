@@ -51,9 +51,6 @@
     </div>
 
     <div class="hub-bar" id="hubBar">
-      <button class="hub-btn" onclick="haButton('button.tado_ce_hub_alle_hervatten')" title="Hervat schema voor alle zones">
-        ↺ HERVAT SCHEMA'S
-      </button>
       <div class="hub-stat">
         <span class="hub-stat-label">API Gebruik</span>
         <span class="hub-stat-val" id="hub-api-gebruik">—</span>
@@ -67,8 +64,12 @@
         <span class="hub-stat-val" id="hub-api-status">—</span>
       </div>
       <div class="hub-stat">
-        <span class="hub-stat-label">API Reset</span>
+        <span class="hub-stat-label">Reset</span>
         <span class="hub-stat-val" id="hub-api-reset">—</span>
+      </div>
+      <div class="hub-stat">
+        <span class="hub-stat-label">Zones</span>
+        <span class="hub-stat-val" id="hub-zones">—</span>
       </div>
       <div class="hub-stat">
         <span class="hub-stat-label">Laatste sync</span>
@@ -78,6 +79,9 @@
         <span class="hub-stat-label">Warm water</span>
         <span class="hub-stat-val" id="hub-ww">—</span>
       </div>
+      <button class="hub-btn" onclick="haButton('button.tado_ce_hub_alle_hervatten')" title="Hervat schema voor alle zones">
+        ↺ ALLE HERVATTEN
+      </button>
       <button class="hub-btn ww-btn" onclick="haButton('button.warm_water_30min_timer')" title="Warm water 30 min">
         🚿 30 MIN
       </button>
@@ -481,6 +485,7 @@ const HUB_ENTITIES = {
   'sensor.tado_ce_hub_api_limiet':            'hub-api-limiet',
   'sensor.tado_ce_hub_api_status':            'hub-api-status',
   'sensor.tado_ce_hub_api_opnieuw_instellen': 'hub-api-reset',
+  'sensor.tado_ce_hub_zonetelling':           'hub-zones',
   'sensor.tado_ce_hub_laatste_synchronisatie':'hub-sync',
   'sensor.warm_water_overlay':                'hub-ww',
 };
