@@ -205,8 +205,11 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
         </div>
     <?php endif; ?>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()">+ Nieuw Event Toevoegen</button>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; gap: 10px;">
+            <a href="../speciale_dagen.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
+            <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()">+ Nieuw Event Toevoegen</button>
+        </div>
 
         <?php if ($totalPages > 1): ?>
         <div class="pagination" style="display: flex; gap: 5px;">
