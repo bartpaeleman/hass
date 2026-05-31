@@ -153,23 +153,28 @@
     const stopSection = document.getElementById('tvPauzeStopSection');
     const timerEl = document.getElementById('tvPauzeTimer');
 
-    container.style.display = 'block';
+    container.style.display = 'flex';
 
     if (tvPauzeInterval) {
         clearInterval(tvPauzeInterval);
         tvPauzeInterval = null;
     }
 
-    if (scriptState === 'off') {
-        startSection.style.display = 'block';
+    const isTimerActive = (timerStateObj && timerStateObj.state === 'active');
+    const isScriptRunning = (scriptState !== 'off');
+
+    if (!isScriptRunning && !isTimerActive) {
+        startSection.style.display = 'flex';
         stopSection.style.display = 'none';
         container.style.height = 'auto';
+        container.style.gridColumn = 'auto';
     } else {
         startSection.style.display = 'none';
         stopSection.style.display = 'flex';
         container.style.height = '60vh';
+        container.style.gridColumn = '1 / -1';
 
-        if (timerStateObj && timerStateObj.state === 'active' && timerStateObj.attributes && timerStateObj.attributes.finishes_at) {
+        if (isTimerActive && timerStateObj.attributes && timerStateObj.attributes.finishes_at) {
             const finishesAt = new Date(timerStateObj.attributes.finishes_at).getTime();
 
             const updateTimer = () => {
