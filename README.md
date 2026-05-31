@@ -39,6 +39,7 @@ Bepaalt het icoontje, de kleurcodering in de UI en de automatische tekstgenerati
 - **`verjaardag`**: (Kleur: Groen / `var(--ok)`) Berekent automatisch de leeftijd (bijv. "wordt 36 jaar").
 - **`huwelijk`**: (Kleur: Oranje / `var(--warn)`) Berekent automatisch de jubileumjaren (bijv. "10 jaar getrouwd").
 - **`feestdag`**: (Kleur: Rood / `var(--alert)`) Gebruikt standaard "Feestdag" als label.
+- **`sport`**: (Kleur: Blauw / `var(--accent)`) Voor sportevenementen (zoals WK2026).
 - **`andere`** (of **`interessant`**): (Kleur: Blauw / `var(--accent)`) Een algemene categorie. Ideaal in combinatie met een eigen `boodschap`.
 
 ### 3. `name` (Verplicht)

@@ -100,7 +100,24 @@ if ($f_type !== '') {
 }
 if ($f_cat !== '') {
     $mappedEvents = array_filter($mappedEvents, function($item) use ($f_cat) {
-        return strtolower($item['event']['category'] ?? '') === strtolower($f_cat);
+        $cat = strtolower($item['event']['category'] ?? '');
+        $info = $item['event']['info'] ?? '';
+
+        $itemFilter = 'andere';
+        if (($cat === 'verjaardag' || $cat === 'huwelijk') && stripos($info, 'gezin') !== false) {
+            $itemFilter = 'gezin';
+        } elseif (($cat === 'verjaardag' || $cat === 'huwelijk') && stripos($info, 'familie') !== false) {
+            $itemFilter = 'familie';
+        } elseif ($cat === 'feestdag') {
+            $itemFilter = 'feestdag';
+        } elseif ($cat === 'sport') {
+            $itemFilter = 'sport';
+        }
+
+        if ($f_cat === 'andere') {
+            return !in_array($itemFilter, ['gezin', 'familie', 'feestdag', 'sport']);
+        }
+        return $itemFilter === $f_cat;
     });
 }
 
@@ -224,15 +241,15 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
             <option value="flexibel" <?php echo $f_type==='flexibel'?'selected':''; ?>>Flexibel</option>
         </select>
 
-        <label for="f_cat">Categorie:</label>
-        <select name="f_cat" id="f_cat">
-            <option value="">Alle</option>
-            <option value="verjaardag" <?php echo $f_cat==='verjaardag'?'selected':''; ?>>Verjaardag</option>
-            <option value="huwelijk" <?php echo $f_cat==='huwelijk'?'selected':''; ?>>Huwelijk</option>
-            <option value="feestdag" <?php echo $f_cat==='feestdag'?'selected':''; ?>>Feestdag</option>
-            <option value="interessant" <?php echo $f_cat==='interessant'?'selected':''; ?>>Interessant</option>
-            <option value="andere" <?php echo $f_cat==='andere'?'selected':''; ?>>Andere</option>
-        </select>
+        <input type="hidden" name="f_cat" id="f_cat" value="<?php echo htmlspecialchars($f_cat); ?>">
+        <div class="cat-filters" style="display: flex; gap: 5px; flex-wrap: wrap;">
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat===''?'btn-edit':''; ?>" style="<?php echo $f_cat!==''?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="">🔄 ALLE</button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='gezin'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='gezin'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="gezin">🎂 GEZIN</button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='familie'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='familie'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="familie">🎂 FAMILIE</button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='feestdag'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='feestdag'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="feestdag">🎉 FEESTDAGEN</button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='sport'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='sport'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="sport">⚽ SPORT</button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='andere'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='andere'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="andere">📅 ANDERE</button>
+        </div>
 
         <input type="hidden" name="sort" value="<?php echo htmlspecialchars($sort); ?>">
         <input type="hidden" name="dir" value="<?php echo htmlspecialchars($dir); ?>">
@@ -241,6 +258,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
         <button type="button" class="btn" style="background: rgba(255,255,255,0.1); color: var(--text-bright);" onclick="clearState()">Wis Filters</button>
     </form>
 
+    <div style="overflow-x: auto;">
     <table>
         <thead>
             <tr>
@@ -261,6 +279,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
                 if ($cat === 'verjaardag') $icon = '🎂';
                 elseif ($cat === 'huwelijk') $icon = '💍';
                 elseif ($cat === 'feestdag') $icon = '🎉';
+                elseif ($cat === 'sport') $icon = '⚽';
             ?>
                 <tr>
                     <td class="event-name"><?php echo $icon . ' ' . htmlspecialchars($event['name'] ?? ''); ?></td>
@@ -290,6 +309,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
             <?php endif; ?>
         </tbody>
     </table>
+    </div>
 
     <div id="eventFormContainer" class="form-container">
         <h2 id="formTitle">Nieuw Event</h2>
@@ -308,6 +328,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
                     <option value="verjaardag">Verjaardag</option>
                     <option value="huwelijk">Huwelijk</option>
                     <option value="feestdag">Feestdag</option>
+                    <option value="sport">Sport</option>
                     <option value="interessant">Interessant</option>
                     <option value="andere">Andere</option>
                 </select>
@@ -428,6 +449,13 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
     function closeForm() {
         document.getElementById('eventFormContainer').classList.remove('active');
     }
+
+    document.querySelectorAll('.filter-cat-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('f_cat').value = this.dataset.val;
+            this.closest('form').submit();
+        });
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);

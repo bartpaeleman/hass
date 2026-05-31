@@ -165,6 +165,8 @@ foreach ($events as $event) {
         $filterClass = 'filter-familie';
     } elseif ($category === 'feestdag') {
         $filterClass = 'filter-feestdagen';
+    } elseif ($category === 'sport') {
+        $filterClass = 'filter-sport';
     }
 
     $formattedDate = $nextDate->format('j') . ' ' . $months[(int)$nextDate->format('n')];
@@ -292,6 +294,7 @@ $currentMonth = (int)$today->format('n');
               if ($cat === 'verjaardag') $icon = '🎂';
               elseif ($cat === 'huwelijk') $icon = '💍';
               elseif ($cat === 'feestdag') $icon = '🎉';
+              elseif ($cat === 'sport') $icon = '⚽';
 
               // Date is the same for all events in this group
               $formattedDate = $eventsInCat[0]['formattedDate'];
@@ -329,12 +332,13 @@ $currentMonth = (int)$today->format('n');
     </div>
 
     <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-      <a href="ADMIN/events_admin.php" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ BEHEER</a>
-      <button class="filter-btn active" id="toggle-all-filters">🔄 ALLE</button>
-      <button class="filter-btn active" data-filter="filter-gezin">🎂 GEZIN</button>
-      <button class="filter-btn active" data-filter="filter-familie">🎂 FAMILIE</button>
-      <button class="filter-btn active" data-filter="filter-feestdagen">🎉 FEESTDAGEN</button>
-      <button class="filter-btn active" data-filter="filter-andere">📅 ANDERE</button>
+      <a href="ADMIN/events_admin.php" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
+      <button class="filter-btn active" id="toggle-all-filters">🔄 <span class="filter-text">ALLE</span></button>
+      <button class="filter-btn active" data-filter="filter-gezin">🎂 <span class="filter-text">GEZIN</span></button>
+      <button class="filter-btn active" data-filter="filter-familie">🎂 <span class="filter-text">FAMILIE</span></button>
+      <button class="filter-btn active" data-filter="filter-feestdagen">🎉 <span class="filter-text">FEESTDAGEN</span></button>
+      <button class="filter-btn active" data-filter="filter-sport">⚽ <span class="filter-text">SPORT</span></button>
+      <button class="filter-btn active" data-filter="filter-andere">📅 <span class="filter-text">ANDERE</span></button>
     </div>
 
     <div class="months-grid">
@@ -370,6 +374,7 @@ $currentMonth = (int)$today->format('n');
                   if ($cat === 'verjaardag') $icon = '🎂';
                   elseif ($cat === 'huwelijk') $icon = '💍';
                   elseif ($cat === 'feestdag') $icon = '🎉';
+                  elseif ($cat === 'sport') $icon = '⚽';
               ?>
               <div class="event-row" data-filter="<?php echo $e['filterClass']; ?>">
                 <div class="er-icon"><?php echo $icon; ?></div>
