@@ -87,19 +87,73 @@ if (file_exists($eventsFile)) {
     }
 }
 
-// Pagination logic
-$itemsPerPage = 10;
-$totalEvents = count($events);
-$totalPages = max(1, ceil($totalEvents / $itemsPerPage));
-$currentPage = isset($_GET['page']) ? max(1, min($totalPages, (int)$_GET['page'])) : 1;
-$startIndex = ($currentPage - 1) * $itemsPerPage;
-
 // Preserve original index for editing/deleting by creating a mapped array
 $mappedEvents = [];
 foreach ($events as $index => $event) {
     $mappedEvents[] = ['index' => $index, 'event' => $event];
 }
+
+// Filtering
+$f_type = $_GET['f_type'] ?? '';
+$f_cat = $_GET['f_cat'] ?? '';
+
+if ($f_type !== '') {
+    $mappedEvents = array_filter($mappedEvents, function($item) use ($f_type) {
+        return strtolower($item['event']['type'] ?? '') === strtolower($f_type);
+    });
+}
+if ($f_cat !== '') {
+    $mappedEvents = array_filter($mappedEvents, function($item) use ($f_cat) {
+        return strtolower($item['event']['category'] ?? '') === strtolower($f_cat);
+    });
+}
+
+// Sorting
+$sort = $_GET['sort'] ?? '';
+$dir = $_GET['dir'] ?? 'asc';
+
+if ($sort !== '') {
+    usort($mappedEvents, function($a, $b) use ($sort, $dir) {
+        $valA = strtolower($a['event'][$sort] ?? '');
+        $valB = strtolower($b['event'][$sort] ?? '');
+
+        if ($sort === 'date_formula') {
+            $valA = strtolower(($a['event']['type'] ?? '') === 'vast' ? ($a['event']['date'] ?? '') : ($a['event']['formula'] ?? ''));
+            $valB = strtolower(($b['event']['type'] ?? '') === 'vast' ? ($b['event']['date'] ?? '') : ($b['event']['formula'] ?? ''));
+        }
+
+        if ($valA == $valB) return 0;
+
+        if ($dir === 'desc') {
+            return ($valA < $valB) ? 1 : -1;
+        } else {
+            return ($valA < $valB) ? -1 : 1;
+        }
+    });
+}
+
+// Pagination logic
+$itemsPerPage = 10;
+$totalEvents = count($mappedEvents);
+$totalPages = max(1, ceil($totalEvents / $itemsPerPage));
+$currentPage = isset($_GET['page']) ? max(1, min($totalPages, (int)$_GET['page'])) : 1;
+$startIndex = ($currentPage - 1) * $itemsPerPage;
+
 $pagedEvents = array_slice($mappedEvents, $startIndex, $itemsPerPage);
+
+// Query builders for links
+function getSortLink($col, $currentSort, $currentDir) {
+    $newDir = ($currentSort === $col && $currentDir === 'asc') ? 'desc' : 'asc';
+    $params = $_GET;
+    $params['sort'] = $col;
+    $params['dir'] = $newDir;
+    return '?' . http_build_query($params);
+}
+
+$queryParams = $_GET;
+unset($queryParams['page']);
+$baseQuery = http_build_query($queryParams);
+$pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -116,7 +170,11 @@ $pagedEvents = array_slice($mappedEvents, $startIndex, $itemsPerPage);
         .message { padding: 10px; margin-bottom: 20px; border-radius: 4px; background: rgba(0, 230, 118, 0.1); border: 1px solid var(--ok); color: var(--ok); }
         table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         th, td { text-align: left; padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        th { background: rgba(0, 0, 0, 0.2); }
+        th { background: rgba(0, 0, 0, 0.2); white-space: nowrap; }
+        th a { color: var(--text-bright); text-decoration: none; display: block; }
+        th a:hover { color: var(--accent); }
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; flex-wrap: wrap; }
+        .filter-bar select { width: auto; min-width: 150px; }
         .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 14px; }
         .btn-edit { background: var(--accent); color: var(--bg); }
         .btn-delete { background: var(--alert); color: var(--text-bright); }
@@ -153,19 +211,44 @@ $pagedEvents = array_slice($mappedEvents, $startIndex, $itemsPerPage);
         <?php if ($totalPages > 1): ?>
         <div class="pagination" style="display: flex; gap: 5px;">
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <a href="?page=<?php echo $i; ?>" class="btn" style="text-decoration: none; background: <?php echo $i === $currentPage ? 'var(--accent)' : 'rgba(255,255,255,0.1)'; ?>; color: var(--text-bright);"><?php echo $i; ?></a>
+                <a href="<?php echo $pagePrefix . $i; ?>" class="btn" style="text-decoration: none; background: <?php echo $i === $currentPage ? 'var(--accent)' : 'rgba(255,255,255,0.1)'; ?>; color: var(--text-bright);"><?php echo $i; ?></a>
             <?php endfor; ?>
         </div>
         <?php endif; ?>
     </div>
 
+    <form method="GET" class="filter-bar">
+        <label for="f_type">Type:</label>
+        <select name="f_type" id="f_type">
+            <option value="">Alle</option>
+            <option value="vast" <?php echo $f_type==='vast'?'selected':''; ?>>Vast</option>
+            <option value="flexibel" <?php echo $f_type==='flexibel'?'selected':''; ?>>Flexibel</option>
+        </select>
+
+        <label for="f_cat">Categorie:</label>
+        <select name="f_cat" id="f_cat">
+            <option value="">Alle</option>
+            <option value="verjaardag" <?php echo $f_cat==='verjaardag'?'selected':''; ?>>Verjaardag</option>
+            <option value="huwelijk" <?php echo $f_cat==='huwelijk'?'selected':''; ?>>Huwelijk</option>
+            <option value="feestdag" <?php echo $f_cat==='feestdag'?'selected':''; ?>>Feestdag</option>
+            <option value="interessant" <?php echo $f_cat==='interessant'?'selected':''; ?>>Interessant</option>
+            <option value="andere" <?php echo $f_cat==='andere'?'selected':''; ?>>Andere</option>
+        </select>
+
+        <input type="hidden" name="sort" value="<?php echo htmlspecialchars($sort); ?>">
+        <input type="hidden" name="dir" value="<?php echo htmlspecialchars($dir); ?>">
+
+        <button type="submit" class="btn btn-edit">Filter</button>
+        <button type="button" class="btn" style="background: rgba(255,255,255,0.1); color: var(--text-bright);" onclick="clearState()">Wis Filters</button>
+    </form>
+
     <table>
         <thead>
             <tr>
-                <th>Naam</th>
-                <th>Type</th>
-                <th>Categorie</th>
-                <th>Datum / Formule</th>
+                <th><a href="<?php echo getSortLink('name', $sort, $dir); ?>">Naam <?php echo $sort==='name' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
+                <th><a href="<?php echo getSortLink('type', $sort, $dir); ?>">Type <?php echo $sort==='type' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
+                <th><a href="<?php echo getSortLink('category', $sort, $dir); ?>">Categorie <?php echo $sort==='category' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
+                <th><a href="<?php echo getSortLink('date_formula', $sort, $dir); ?>">Datum / Formule <?php echo $sort==='date_formula' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
                 <th>Info / Boodschap</th>
                 <th>Acties</th>
             </tr>
@@ -358,6 +441,32 @@ $pagedEvents = array_slice($mappedEvents, $startIndex, $itemsPerPage);
 
     function closeForm() {
         document.getElementById('eventFormContainer').classList.remove('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // If clear is set, clear localStorage and redirect
+        if (urlParams.has('clear')) {
+            localStorage.removeItem('events_admin_state');
+            window.location.href = window.location.pathname;
+            return;
+        }
+
+        // If no query string but we have saved state, restore it
+        if (!window.location.search && localStorage.getItem('events_admin_state')) {
+            window.location.href = window.location.pathname + localStorage.getItem('events_admin_state');
+            return;
+        }
+
+        // If there is a query string, save it
+        if (window.location.search) {
+            localStorage.setItem('events_admin_state', window.location.search);
+        }
+    });
+
+    function clearState() {
+        window.location.href = '?clear=1';
     }
 </script>
 
