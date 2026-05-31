@@ -2,7 +2,7 @@
 
 Het "Speciale Dagen" dashboard (`speciale_dagen.php`) laadt zijn gegevens in vanuit het configuratiebestand `events.json`. Dit bestand gebruikt het JSON (JavaScript Object Notation) formaat.
 
-Dit document beschrijft in detail hoe je nieuwe gelegenheden (events) kunt toevoegen, wijzigen en welke flexibele formules er allemaal ondersteund worden.
+Dit document beschrijft in detail hoe je nieuwe gelegenheden (events) kunt toevoegen, wijzigen en welke flexibele formules er allemaal ondersteund worden. Ook beschrijft het hoe de data in de UI automatisch gekoppeld wordt aan de dynamische filters (ALLE, GEZIN, FAMILIE, FEESTDAGEN, ANDERE).
 
 ## Basisstructuur
 
@@ -79,6 +79,11 @@ Berekent een datum ten opzichte van de Amerikaanse Thanksgiving (de 4e donderdag
 Een aangepaste tekst die getoond wordt onder de naam (in de grote/gekleurde `msg-highlight` weergave). Dit is zeer handig voor de categorie `andere`.
 - Voorbeeld: `"boodschap": "Eindelijk vakantie!"`
 
+### 7. `info` (Optioneel)
+Een multifunctioneel veld dat gebruikt wordt voor zowel weergave als voor filtering via de UI-knoppen bovenaan het dashboard.
+- Voor categorie **`interessant`**: De waarde wordt na de naam en datum getoond als een informatief bericht (bijv. `"info": "Klok gaat 1 uur achteruit"`).
+- Voor categorieën **`verjaardag`** en **`huwelijk`**: De tekst wordt verborgen op het scherm, maar gebruikt om te bepalen of het event onder de UI-filter **GEZIN** of **FAMILIE** valt. (bijv. `"info": "Gezin"` of `"info": "Familie"`).
+
 ---
 
 ## Complete Voorbeelden
@@ -91,13 +96,15 @@ Hier is een combinatie van verschillende correcte formats:
     "type": "vast", 
     "category": "verjaardag", 
     "name": "Linda", 
-    "date": "1969-10-05" 
+    "date": "1969-10-05",
+    "info": "Gezin"
   },
   { 
     "type": "vast", 
     "category": "huwelijk", 
     "name": "Matthijs & Steffie", 
-    "date": "2018-08-09" 
+    "date": "2018-08-09",
+    "info": "Familie"
   },  
   { 
     "type": "vast", 

@@ -3,13 +3,15 @@
         "type": "vast",
         "category": "verjaardag",
         "name": "Alice",
-        "date": "1990-05-30"
+        "date": "1990-05-30",
+        "info": "Gezin"
     },
     {
         "type": "vast",
         "category": "huwelijk",
         "name": "Bob & Eve",
-        "date": "2015-05-30"
+        "date": "2015-05-30",
+        "info": "Familie"
     },
     {
         "type": "vast",
