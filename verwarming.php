@@ -352,9 +352,9 @@ function renderCard(container, room, stateMap) {
   if (isHeating) badges += `<span class="thermo-badge badge-heating">● VERWARMT</span>`;
   else if (isOff) badges += `<span class="thermo-badge badge-off">UIT</span>`;
   else            badges += `<span class="thermo-badge badge-idle">STAND-BY</span>`;
-  if (windowOpen)  badges += `<span class="thermo-badge badge-window">🪟 VENSTER</span>`;
+  if (windowOpen)  badges += `<span class="thermo-badge badge-window">🪟 VENSTER</span>`;// Toon HANDMATIG alleen als de thermostaat NIET op UIT staat
   if (hasOverlay && !isOff)  badges += `<span class="thermo-badge badge-overlay">HANDMATIG</span>`;
-
+  
   // ── Mode button classes ──
   const modeHeat = (hvacMode === 'heat' && isHeating) ? 'active-heat' : (hvacMode === 'heat' ? 'active-heat-idle' : '');
   const modeAuto = (hvacMode === 'auto') ? 'active-auto' : '';
@@ -444,6 +444,10 @@ function renderCard(container, room, stateMap) {
         </div>
       </div>
 
+    </div> <div class="thermo-badges-wrapper">
+       <div class="thermo-badges">
+          ${badges}
+       </div>
     </div>`;
 }
 
