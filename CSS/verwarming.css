@@ -317,8 +317,8 @@
 }
 
 .badge-heating  { color: var(--heat); border-color: rgba(255,140,66,0.4); background: rgba(255,140,66,0.08); }
-.badge-idle     { color: var(--text-muted); border-color: var(--border); }
-.badge-off      { color: var(--text); border-color: var(--muted); background: var(--muted); font-weight: 600; }
+.badge-idle     { color: var(--text-muted); /* Lighter for readability */ border-color: var(--border); }
+.badge-off      { color: var(--text-bright); border-color: var(--text-muted); background: rgba(160, 168, 181, 0.1); }
 .badge-window   { color: var(--accent); border-color: rgba(0,180,216,0.4); background: rgba(0,180,216,0.08); }
 .badge-overlay  { color: var(--warn); border-color: rgba(255,179,0,0.4); background: rgba(255,179,0,0.08); }
 .badge-boost    { color: #ff4500; border-color: rgba(255,69,0,0.4); background: rgba(255,69,0,0.08); }
