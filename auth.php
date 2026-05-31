@@ -7,19 +7,25 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
     // Uitloggen
     if (isset($_GET['logout'])) {
         unset($_SESSION['authenticated']);
+        unset($_SESSION['authenticated_user']);
         header("Location: index.php");
         exit();
     }
 
     // Inloggen
-    if (isset($_POST['app_password'])) {
-        if ($_POST['app_password'] === APP_PASSWORD) {
+    if (isset($_POST['app_username']) && isset($_POST['app_password'])) {
+        global $APP_USERS;
+        $username = $_POST['app_username'];
+        $password = $_POST['app_password'];
+
+        if (isset($APP_USERS[$username]) && $APP_USERS[$username] === $password) {
             $_SESSION['authenticated'] = true;
+            $_SESSION['authenticated_user'] = $username;
             // Redirect to the same page without POST data
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
         } else {
-            $auth_error = "Ongeldig wachtwoord.";
+            $auth_error = "Ongeldige gebruikersnaam of wachtwoord.";
         }
     }
 
@@ -128,7 +134,8 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
               <div class="error-msg"><?php echo htmlspecialchars($auth_error); ?></div>
             <?php endif; ?>
             <form method="POST">
-              <input type="password" name="app_password" class="login-input" placeholder="Voer wachtwoord in" required autofocus>
+              <input type="text" name="app_username" class="login-input" placeholder="Gebruikersnaam" required autofocus>
+              <input type="password" name="app_password" class="login-input" placeholder="Wachtwoord" required>
               <button type="submit" class="login-btn">INLOGGEN</button>
             </form>
           </div>
