@@ -156,10 +156,6 @@ foreach ($events as $event) {
         $highlightMessage = "$nextYears jaar getrouwd";
     } elseif ($category === 'feestdag') {
         $highlightMessage = "Feestdag";
-    } elseif ($category === 'interessant' && !empty($info)) {
-        $highlightMessage = $info;
-    } elseif (isset($event['boodschap'])) {
-        $highlightMessage = $event['boodschap'];
     }
 
     $filterClass = 'filter-andere';
@@ -186,7 +182,8 @@ foreach ($events as $event) {
         'nextYears' => $nextYears,
         'highlightMessage' => $highlightMessage,
         'hasPassedThisYear' => $hasPassedThisYear,
-        'filterClass' => $filterClass
+        'filterClass' => $filterClass,
+        'info' => $info
     ];
 }
 
@@ -309,6 +306,9 @@ $currentMonth = (int)$today->format('n');
                 <div class="uc-name-wrap">
                   <span class="cat-label cat-<?php echo htmlspecialchars($e['category']); ?>"><?php echo strtoupper(htmlspecialchars($e['category'])); ?>:</span>
                   <span class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
+                  <?php if (!empty($e['info'])): ?>
+                    <span style="color:var(--text-muted); font-size: 0.9em; margin-left: 5px;">- <?php echo htmlspecialchars($e['info']); ?></span>
+                  <?php endif; ?>
                 </div>
                 <?php if ($e['highlightMessage']): ?>
                   <span class="msg-highlight"><?php echo $e['highlightMessage']; ?></span>
@@ -380,6 +380,9 @@ $currentMonth = (int)$today->format('n');
                   </div>
                   <div class="er-meta">
                     <span class="er-date"><?php echo $e['formattedDate']; ?></span>
+                    <?php if (!empty($e['info'])): ?>
+                      <span class="msg-highlight" style="color:var(--text-muted);">&bull; <?php echo htmlspecialchars($e['info']); ?></span>
+                    <?php endif; ?>
                     <?php if ($e['highlightMessage']): ?>
                       <span class="msg-highlight">&bull; <?php echo $e['highlightMessage']; ?></span>
                     <?php endif; ?>
