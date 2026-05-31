@@ -353,7 +353,7 @@ function renderCard(container, room, stateMap) {
   else if (isOff) badges += `<span class="thermo-badge badge-off">UIT</span>`;
   else            badges += `<span class="thermo-badge badge-idle">STAND-BY</span>`;
   if (windowOpen)  badges += `<span class="thermo-badge badge-window">🪟 VENSTER</span>`;
-  if (hasOverlay)  badges += `<span class="thermo-badge badge-overlay">HANDMATIG</span>`;
+  if (hasOverlay && !isOff)  badges += `<span class="thermo-badge badge-overlay">HANDMATIG</span>`;
 
   // ── Mode button classes ──
   const modeHeat = (hvacMode === 'heat' && isHeating) ? 'active-heat' : (hvacMode === 'heat' ? 'active-heat-idle' : '');
@@ -440,7 +440,7 @@ function renderCard(container, room, stateMap) {
       </div>
 
       <div style="display:flex; justify-content:flex-end; align-items:flex-end; margin-top:8px;">
-         <div class="thermo-badges" style="display:flex; gap:5px;">
+         <div class="thermo-badges" style="display:flex; gap:5px; flex-wrap:wrap;">
             ${badges}
          </div>
       </div>
