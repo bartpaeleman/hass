@@ -10,4 +10,11 @@ define('HA_URL', '');
 
 
 define('HA_TOKEN', ''); 
+
+// Authentication (Auth)
+define('REQUIRE_AUTH', false); // Zet op true om paswoordbeveiliging in te schakelen
+define('APP_PASSWORD', 'geheim123'); // Paswoord om in te loggen indien REQUIRE_AUTH true is
+
+// Zorg ervoor dat het auth mechanisme geladen wordt (indien ingeschakeld)
+require_once 'auth.php';
 ?>
