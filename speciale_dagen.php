@@ -147,6 +147,8 @@ foreach ($events as $event) {
         $nextYears = ((int)$nextDate->format('Y')) - $originalYear;
     }
 
+    $info = isset($event['info']) ? $event['info'] : '';
+
     $highlightMessage = '';
     if ($category === 'verjaardag' && $nextYears !== null) {
         $highlightMessage = "wordt $nextYears jaar";
@@ -154,8 +156,19 @@ foreach ($events as $event) {
         $highlightMessage = "$nextYears jaar getrouwd";
     } elseif ($category === 'feestdag') {
         $highlightMessage = "Feestdag";
+    } elseif ($category === 'interessant' && !empty($info)) {
+        $highlightMessage = $info;
     } elseif (isset($event['boodschap'])) {
         $highlightMessage = $event['boodschap'];
+    }
+
+    $filterClass = 'filter-andere';
+    if (($category === 'verjaardag' || $category === 'huwelijk') && stripos($info, 'gezin') !== false) {
+        $filterClass = 'filter-gezin';
+    } elseif (($category === 'verjaardag' || $category === 'huwelijk') && stripos($info, 'familie') !== false) {
+        $filterClass = 'filter-familie';
+    } elseif ($category === 'feestdag') {
+        $filterClass = 'filter-feestdagen';
     }
 
     $formattedDate = $nextDate->format('j') . ' ' . $months[(int)$nextDate->format('n')];
@@ -172,7 +185,8 @@ foreach ($events as $event) {
         'currentYears' => $currentYears,
         'nextYears' => $nextYears,
         'highlightMessage' => $highlightMessage,
-        'hasPassedThisYear' => $hasPassedThisYear
+        'hasPassedThisYear' => $hasPassedThisYear,
+        'filterClass' => $filterClass
     ];
 }
 
@@ -291,7 +305,7 @@ $currentMonth = (int)$today->format('n');
           <div class="uc-date"><?php echo $dayText; ?> (<?php echo $formattedDate; ?>)</div>
           <div class="uc-items-list">
             <?php foreach ($eventsInCat as $e): ?>
-              <div class="uc-item">
+              <div class="uc-item" data-filter="<?php echo $e['filterClass']; ?>">
                 <div class="uc-name-wrap">
                   <span class="cat-label cat-<?php echo htmlspecialchars($e['category']); ?>"><?php echo strtoupper(htmlspecialchars($e['category'])); ?>:</span>
                   <span class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
@@ -311,7 +325,14 @@ $currentMonth = (int)$today->format('n');
     <!-- Alle Speciale Dagen per Maand -->
     <div class="section-label" style="margin-top:24px; margin-bottom:12px;">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M2 3h8M2 6h8M2 9h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      Kalender
+      Events
+    </div>
+
+    <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+      <button class="filter-btn active" data-filter="filter-gezin">🎂 GEZIN</button>
+      <button class="filter-btn active" data-filter="filter-familie">🎂 FAMILIE</button>
+      <button class="filter-btn active" data-filter="filter-feestdagen">🎉 FEESTDAGEN</button>
+      <button class="filter-btn active" data-filter="filter-andere">📅 ANDERE</button>
     </div>
 
     <div class="months-grid">
@@ -348,7 +369,7 @@ $currentMonth = (int)$today->format('n');
                   elseif ($cat === 'huwelijk') $icon = '💍';
                   elseif ($cat === 'feestdag') $icon = '🎉';
               ?>
-              <div class="event-row">
+              <div class="event-row" data-filter="<?php echo $e['filterClass']; ?>">
                 <div class="er-icon"><?php echo $icon; ?></div>
                 <div class="er-main">
                   <div class="er-name-wrap">
@@ -401,6 +422,61 @@ $currentMonth = (int)$today->format('n');
   }
   tick();
   setInterval(tick, 1000);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    function applyFilters() {
+      // Get all active filters
+      const activeFilters = Array.from(document.querySelectorAll('.filter-btn.active'))
+                                 .map(btn => btn.dataset.filter);
+
+      // Filter upcoming cards items
+      document.querySelectorAll('.upcoming-card').forEach(card => {
+        let hasVisibleItem = false;
+        card.querySelectorAll('.uc-item').forEach(item => {
+          const itemFilter = item.dataset.filter;
+          if (activeFilters.includes(itemFilter)) {
+            item.style.display = 'flex';
+            hasVisibleItem = true;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+        card.style.display = hasVisibleItem ? 'flex' : 'none';
+      });
+
+      // Filter month grids items
+      document.querySelectorAll('.month-details').forEach(month => {
+        let visibleCount = 0;
+        month.querySelectorAll('.event-row').forEach(row => {
+          const itemFilter = row.dataset.filter;
+          if (activeFilters.includes(itemFilter)) {
+            row.style.display = 'flex';
+            visibleCount++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        const countBadge = month.querySelector('.month-count');
+        if (countBadge) {
+            countBadge.textContent = visibleCount;
+        }
+        month.style.display = visibleCount > 0 ? 'block' : 'none';
+      });
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        applyFilters();
+      });
+    });
+
+    // Initial apply
+    applyFilters();
+  });
 </script>
 </body>
 </html>
