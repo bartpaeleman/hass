@@ -349,7 +349,7 @@ function renderCard(container, room, stateMap) {
   const hasOverlay = overlayVal && overlayVal !== 'none' && overlayVal !== 'unavailable' && overlayVal !== 'None';
 
   let badges = '';
-  if (isHeating) badges += `<span class="thermo-badge badge-heating">● VERWARMT</span>`;
+  if (isHeating) s += `<span class="thermo-badge badge-heating">● VERWARMT</span>`;
   else if (isOff) badges += `<span class="thermo-badge badge-off">UIT</span>`;
   else            badges += `<span class="thermo-badge badge-idle">STAND-BY</span>`;
   if (windowOpen)  badges += `<span class="thermo-badge badge-window">🪟 VENSTER</span>`;// Toon HANDMATIG alleen als de thermostaat NIET op UIT staat
@@ -413,6 +413,14 @@ function renderCard(container, room, stateMap) {
       <div style="display:flex; flex-direction:column; align-items:flex-start; margin-bottom: 12px; gap: 8px; width:100%;">
         <div class="thermo-name" style="margin-bottom:0; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${room.name}</div>
       </div>
+
+
+      <div style="display:flex; justify-content:flex-end; width:100%;">
+        <div class="thermo-badges" style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
+          ${badges}
+        </div>
+      </div>
+
 
       <div class="thermo-mode-row" style="margin-bottom:12px;">
         <button class="mode-btn ${modeHeat}" onclick="setMode('${room.climate}','heat')">🔥 MAN</button>
