@@ -67,5 +67,11 @@
         "category": "interessant",
         "name": "Test",
         "date": "12-31"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "TestNew",
+        "date": "12-31"
     }
 ]
