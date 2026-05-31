@@ -412,11 +412,6 @@ function renderCard(container, room, stateMap) {
 
       <div style="display:flex; flex-direction:column; align-items:flex-start; margin-bottom: 12px; gap: 8px; width:100%;">
         <div class="thermo-name" style="margin-bottom:0; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${room.name}</div>
-        <div style="display:flex; justify-content:flex-end; width:100%;">
-          <div class="thermo-badges" style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
-            ${badges}
-          </div>
-        </div>
       </div>
 
       <div class="thermo-mode-row" style="margin-bottom:12px;">
