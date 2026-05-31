@@ -438,12 +438,13 @@ function renderCard(container, room, stateMap) {
           <span class="thermo-stat-val">${humid !== 'unavailable' ? humid + '%' : '—'}</span>
         </div>
       </div>
-
+<!--
     </div> <div class="thermo-badges-wrapper">
        <div class="thermo-badges">
           ${badges}
        </div>
     </div>`;
+-->  
 }
 
 const adjTimers = {};
