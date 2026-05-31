@@ -353,7 +353,7 @@ function renderCard(container, room, stateMap) {
   else if (isOff) badges += `<span class="thermo-badge badge-off">UIT</span>`;
   else            badges += `<span class="thermo-badge badge-idle">STAND-BY</span>`;
   if (windowOpen)  badges += `<span class="thermo-badge badge-window">🪟 VENSTER</span>`;
-  if (hasOverlay)  badges += `<span class="thermo-badge badge-overlay">HANDMATIG</span>`;
+  if (hasOverlay && !isOff)  badges += `<span class="thermo-badge badge-overlay">HANDMATIG</span>`;
 
   // ── Mode button classes ──
   const modeHeat = (hvacMode === 'heat' && isHeating) ? 'active-heat' : (hvacMode === 'heat' ? 'active-heat-idle' : '');
@@ -410,8 +410,13 @@ function renderCard(container, room, stateMap) {
 
     <div class="thermo-info" style="display:flex; flex-direction:column; justify-content:space-between; height:100%; width:100%;">
 
-      <div style="display:flex; flex-direction:column; align-items:flex-start; margin-bottom: 12px; gap: 8px;">
+      <div style="display:flex; flex-direction:column; align-items:flex-start; margin-bottom: 12px; gap: 8px; width:100%;">
         <div class="thermo-name" style="margin-bottom:0; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${room.name}</div>
+        <div style="display:flex; justify-content:flex-end; width:100%;">
+          <div class="thermo-badges" style="display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end;">
+            ${badges}
+          </div>
+        </div>
       </div>
 
       <div class="thermo-mode-row" style="margin-bottom:12px;">
@@ -437,12 +442,6 @@ function renderCard(container, room, stateMap) {
           <span class="thermo-stat-label">Vocht</span>
           <span class="thermo-stat-val">${humid !== 'unavailable' ? humid + '%' : '—'}</span>
         </div>
-      </div>
-
-      <div style="display:flex; justify-content:flex-end; align-items:flex-end; margin-top:8px;">
-         <div class="thermo-badges" style="display:flex; gap:5px;">
-            ${badges}
-         </div>
       </div>
 
     </div>`;
