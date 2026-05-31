@@ -329,6 +329,7 @@ $currentMonth = (int)$today->format('n');
     </div>
 
     <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+      <a href="ADMIN/events_admin.php" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ BEHEER</a>
       <button class="filter-btn active" id="toggle-all-filters">🔄 ALLE</button>
       <button class="filter-btn active" data-filter="filter-gezin">🎂 GEZIN</button>
       <button class="filter-btn active" data-filter="filter-familie">🎂 FAMILIE</button>
