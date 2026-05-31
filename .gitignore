@@ -1,6 +1,6 @@
 config.php
 *.md
-md
+README.md
 *.json
 *.log
 events.json
