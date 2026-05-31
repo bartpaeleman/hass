@@ -435,12 +435,10 @@ function renderCard(container, room, stateMap) {
         </div>
       </div>
 
-      <div style="display:flex; justify-content:flex-end; align-items:flex-end; margin-top:8px;">
-         <div class="thermo-badges" style="display:flex; gap:5px;">
-            ${badges}
-         </div>
-      </div>
-
+    </div> <div class="thermo-badges-wrapper">
+       <div class="thermo-badges">
+          ${badges}
+       </div>
     </div>`;
 }
 
