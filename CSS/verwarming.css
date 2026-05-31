@@ -25,7 +25,7 @@
 .hub-stat-label {
   font-size: 9px;
   letter-spacing: 2.5px;
-  color: var(--text-muted); /* Lighter for readability */
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
@@ -44,7 +44,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 10px 16px;
-  color: var(--text-muted); /* Lighter for readability */
+  color: var(--text-muted);
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   letter-spacing: 1.5px;
@@ -99,6 +99,7 @@
   border-radius: 8px;
   padding: 16px;
   display: flex;
+  flex-wrap: wrap; /* Belangrijk: zorgt dat de badge-balk onderaan kan breken */
   align-items: flex-start;
   gap: 18px;
   position: relative;
@@ -142,7 +143,7 @@
 /* ── Rechter info ── */
 .thermo-info {
   flex: 1;
-  min-width: 0;
+  min-width: 140px; /* Voorkomt dat de info-kolom te ver in elkaar knijpt */
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -156,13 +157,6 @@
   color: var(--text-bright);
 }
 
-
-/* ── Verticale Zuilen ── */
-
-
-
-
-
 /* ── Actuele Temperatuur ── */
 .thermo-actual-row {
   display: flex;
@@ -172,7 +166,7 @@
 .thermo-actual-label {
   font-size: 9px;
   letter-spacing: 2px;
-  color: var(--text-muted); /* Lighter for readability */
+  color: var(--text-muted);
   text-transform: uppercase;
   flex-shrink: 0;
 }
@@ -192,7 +186,7 @@
 .thermo-target-label {
   font-size: 9px;
   letter-spacing: 2px;
-  color: var(--text-muted); /* Lighter for readability */
+  color: var(--text-muted);
   text-transform: uppercase;
   flex-shrink: 0;
 }
@@ -210,7 +204,7 @@
 .thermo-temp-btn {
   background: none;
   border: none;
-  color: var(--text-muted); /* Lighter for readability */
+  color: var(--text-muted);
   font-family: 'Share Tech Mono', monospace;
   font-size: 16px;
   width: 28px;
@@ -283,7 +277,7 @@
 .thermo-stat-label {
   font-size: 9px;
   letter-spacing: 2px;
-  color: var(--text-muted); /* Lighter for readability */
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
@@ -294,21 +288,32 @@
   margin-top: 1px;
 }
 
-/* Badges */
+/* Badges balk onderaan over de hele breedte */
+.thermo-badges-wrapper {
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.03); /* Subtiel scheidingslijntje */
+}
+
 .thermo-badges {
   display: flex;
-  gap: 5px;
+  flex-direction: row;
   flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end; /* Netjes rechts uitgelijnd */
 }
 
 .thermo-badge {
+  display: inline-block;
   font-family: 'Share Tech Mono', monospace;
   font-size: 9px;
   letter-spacing: 1px;
-  padding: 2px 7px;
+  padding: 2px 8px;
   border-radius: 3px;
   border: 1px solid;
   text-transform: uppercase;
+  white-space: nowrap; /* Voorkomt tekstafbreking binnen de badge */
 }
 
 .badge-heating  { color: var(--heat); border-color: rgba(255,140,66,0.4); background: rgba(255,140,66,0.08); }
@@ -329,7 +334,7 @@
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
-  color: var(--text-muted); /* Lighter for readability */
+  color: var(--text-muted);
   font-family: 'Share Tech Mono', monospace;
   font-size: 9px;
   letter-spacing: 1px;
@@ -369,5 +374,3 @@
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
-
-/* ── Ticks styling ── */
