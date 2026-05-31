@@ -1,8 +1,9 @@
 <?php
-$eventsFile = '../events.json';
+$eventsFile = __DIR__ . '/../events.json';
 
 // Process form submission
 $message = '';
+$error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -19,8 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $index = isset($_POST['index']) ? (int)$_POST['index'] : -1;
         if ($index >= 0 && $index < count($events)) {
             array_splice($events, $index, 1);
-            file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-            $message = "Event succesvol verwijderd.";
+            if (file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)) !== false) {
+                $message = "Event succesvol verwijderd.";
+            } else {
+                $error = "Fout bij opslaan. Controleer of de webserver schrijfrechten heeft op events.json.";
+            }
         }
     } elseif ($action === 'save') {
         $index = isset($_POST['index']) && $_POST['index'] !== '' ? (int)$_POST['index'] : -1;
@@ -52,20 +56,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Validate mandatory fields
         if (empty($newEvent['name'])) {
-            $message = "Fout: Naam is verplicht.";
+            $error = "Fout: Naam is verplicht.";
         } elseif ($newEvent['type'] === 'vast' && empty($newEvent['date'])) {
-            $message = "Fout: Datum is verplicht voor een vast event.";
+            $error = "Fout: Datum is verplicht voor een vast event.";
         } elseif ($newEvent['type'] === 'flexibel' && empty($newEvent['formula'])) {
-            $message = "Fout: Formule is verplicht voor een flexibel event.";
+            $error = "Fout: Formule is verplicht voor een flexibel event.";
         } else {
             if ($index >= 0 && $index < count($events)) {
                 $events[$index] = $newEvent;
-                $message = "Event succesvol gewijzigd.";
+                $successMsg = "Event succesvol gewijzigd.";
             } else {
                 $events[] = $newEvent;
-                $message = "Nieuw event succesvol toegevoegd.";
+                $successMsg = "Nieuw event succesvol toegevoegd.";
             }
-            file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            if (file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)) !== false) {
+                $message = $successMsg;
+            } else {
+                $error = "Fout bij opslaan. Controleer of de webserver schrijfrechten heeft op events.json.";
+            }
         }
     }
 }
@@ -132,6 +140,11 @@ $pagedEvents = array_slice($mappedEvents, $startIndex, $itemsPerPage);
 
     <?php if ($message): ?>
         <div class="message"><?php echo htmlspecialchars($message); ?></div>
+    <?php endif; ?>
+    <?php if ($error): ?>
+        <div class="message" style="background: rgba(255, 61, 61, 0.1); border-color: var(--alert); color: var(--alert);">
+            <?php echo htmlspecialchars($error); ?>
+        </div>
     <?php endif; ?>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
