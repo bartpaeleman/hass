@@ -50,10 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newEvent['info'] = $_POST['info'];
         }
 
-        if (!empty($_POST['boodschap'])) {
-            $newEvent['boodschap'] = $_POST['boodschap'];
-        }
-
         // Validate mandatory fields
         if (empty($newEvent['name'])) {
             $error = "Fout: Naam is verplicht.";
@@ -252,7 +248,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
                 <th><a href="<?php echo getSortLink('type', $sort, $dir); ?>">Type <?php echo $sort==='type' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
                 <th><a href="<?php echo getSortLink('category', $sort, $dir); ?>">Categorie <?php echo $sort==='category' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
                 <th><a href="<?php echo getSortLink('date_formula', $sort, $dir); ?>">Datum / Formule <?php echo $sort==='date_formula' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
-                <th>Info / Boodschap</th>
+                <th>Info</th>
                 <th>Acties</th>
             </tr>
         </thead>
@@ -277,12 +273,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
                         ?>
                     </td>
                     <td>
-                        <?php
-                        $extras = [];
-                        if (!empty($event['info'])) $extras[] = "Info: " . htmlspecialchars($event['info']);
-                        if (!empty($event['boodschap'])) $extras[] = "Boodschap: " . htmlspecialchars($event['boodschap']);
-                        echo implode('<br>', $extras);
-                        ?>
+                        <?php echo htmlspecialchars($event['info'] ?? ''); ?>
                     </td>
                     <td class="actions-cell">
                         <button class="btn btn-edit" onclick="editForm(<?php echo $index; ?>, <?php echo htmlspecialchars(json_encode($event), ENT_QUOTES, 'UTF-8'); ?>)">Bewerk</button>
@@ -364,13 +355,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
                     <option value="Gezin"></option>
                     <option value="Familie"></option>
                 </datalist>
-                <span class="help-text">Bepaalt de filter voor verjaardag/huwelijk, toont tekst voor 'interessant'.</span>
-            </div>
-
-            <div class="form-group">
-                <label for="formBoodschap">Boodschap (Optioneel)</label>
-                <input type="text" id="formBoodschap" name="boodschap" placeholder="Bijv. Eindelijk vakantie!">
-                <span class="help-text">Wordt prominent getoond onder de naam (vooral handig voor 'andere').</span>
+                <span class="help-text">Bepaalt de filter voor verjaardag/huwelijk, toont ook extra info onder de naam.</span>
             </div>
 
             <button type="submit" class="btn btn-add">Opslaan</button>
@@ -410,7 +395,6 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
         document.getElementById('formDate').value = '';
         document.getElementById('formFormula').value = '';
         document.getElementById('formInfo').value = '';
-        document.getElementById('formBoodschap').value = '';
         toggleTypeFields();
         document.getElementById('eventFormContainer').scrollIntoView({ behavior: 'smooth' });
     }
@@ -436,7 +420,6 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
 
         document.getElementById('formFormula').value = event.formula || '';
         document.getElementById('formInfo').value = event.info || '';
-        document.getElementById('formBoodschap').value = event.boodschap || '';
 
         toggleTypeFields();
         document.getElementById('eventFormContainer').scrollIntoView({ behavior: 'smooth' });
