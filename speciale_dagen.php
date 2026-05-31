@@ -329,6 +329,7 @@ $currentMonth = (int)$today->format('n');
     </div>
 
     <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+      <button class="filter-btn active" id="toggle-all-filters">🔄 ALLE</button>
       <button class="filter-btn active" data-filter="filter-gezin">🎂 GEZIN</button>
       <button class="filter-btn active" data-filter="filter-familie">🎂 FAMILIE</button>
       <button class="filter-btn active" data-filter="filter-feestdagen">🎉 FEESTDAGEN</button>
@@ -463,15 +464,40 @@ $currentMonth = (int)$today->format('n');
         if (countBadge) {
             countBadge.textContent = visibleCount;
         }
-        month.style.display = visibleCount > 0 ? 'block' : 'none';
       });
+
+      // Update the toggle-all button state
+      const toggleAllBtn = document.getElementById('toggle-all-filters');
+      if (toggleAllBtn) {
+        const catBtns = Array.from(document.querySelectorAll('.filter-btn[data-filter]'));
+        const allActive = catBtns.every(b => b.classList.contains('active'));
+        if (allActive) {
+          toggleAllBtn.classList.add('active');
+        } else {
+          toggleAllBtn.classList.remove('active');
+        }
+      }
     }
 
     filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('active');
-        applyFilters();
-      });
+      if (btn.id === 'toggle-all-filters') {
+        btn.addEventListener('click', () => {
+          const isTurningOn = !btn.classList.contains('active');
+          document.querySelectorAll('.filter-btn[data-filter]').forEach(catBtn => {
+            if (isTurningOn) {
+              catBtn.classList.add('active');
+            } else {
+              catBtn.classList.remove('active');
+            }
+          });
+          applyFilters();
+        });
+      } else {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('active');
+          applyFilters();
+        });
+      }
     });
 
     // Initial apply
