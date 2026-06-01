@@ -4,7 +4,18 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
-    global $APP_USERS;
+    global $APP_USERS, $APP_ROLES;
+
+    if (!isset($APP_ROLES)) {
+        $APP_ROLES = [];
+    }
+
+    $role_levels = [
+        'admin' => 99,
+        'user' => 50,
+        'viewer' => 10,
+        'restricted' => 0
+    ];
 
     // Uitloggen
     if (isset($_GET['logout'])) {
@@ -23,6 +34,9 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
         if (isset($APP_USERS[$username]) && $APP_USERS[$username] === $password) {
             $_SESSION['authenticated'] = true;
             $_SESSION['authenticated_user'] = $username;
+            $role = isset($APP_ROLES[$username]) ? $APP_ROLES[$username] : 'viewer';
+            $_SESSION['role'] = $role;
+            $_SESSION['role_level'] = isset($role_levels[$role]) ? $role_levels[$role] : 10;
 
             // Zet een "remember me" cookie voor 30 dagen
             $token = base64_encode($username . ':' . hash_hmac('sha256', $username, $password));
@@ -47,6 +61,9 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
                     if (hash_equals($expectedHash, $cookieHash)) {
                         $_SESSION['authenticated'] = true;
                         $_SESSION['authenticated_user'] = $cookieUser;
+                        $role = isset($APP_ROLES[$cookieUser]) ? $APP_ROLES[$cookieUser] : 'viewer';
+                        $_SESSION['role'] = $role;
+                        $_SESSION['role_level'] = isset($role_levels[$role]) ? $role_levels[$role] : 10;
                     }
                 }
             }

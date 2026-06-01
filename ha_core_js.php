@@ -17,6 +17,7 @@ require_once 'CLASSES/Comfort.php';
 const HA_URL   = "<?php echo HA_URL; ?>";
 const HA_TOKEN = "<?php echo HA_TOKEN; ?>";
 const COMFORT_BOUNDARIES = <?php echo json_encode(Comfort::getBoundaries()); ?>;
+const USER_ROLE_LEVEL = <?php echo isset($_SESSION['role_level']) ? $_SESSION['role_level'] : 10; ?>;
 
 function getComfortColor(currentTemp, roomName) {
   if (currentTemp == null || isNaN(currentTemp)) return 'var(--text)';
@@ -43,6 +44,10 @@ async function haGet(entityId) {
 }
 
 async function haPost(domain, service, entityId = "", payload = {}) {
+  if (USER_ROLE_LEVEL < 50) {
+    console.warn("Actie geweigerd: Je hebt niet de juiste rechten (minimaal user) om acties uit te voeren.");
+    return;
+  }
   const url = `${HA_URL}/api/services/${domain}/${service}`;
   const body = { ...payload };
   if (entityId) body.entity_id = entityId;

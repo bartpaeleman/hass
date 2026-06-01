@@ -332,7 +332,9 @@ $currentMonth = (int)$today->format('n');
     </div>
 
     <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+      <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
       <a href="ADMIN/events_admin.php" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
+      <?php endif; ?>
       <button class="filter-btn active" id="toggle-all-filters">🔄 <span class="filter-text">ALLE</span></button>
       <button class="filter-btn active" data-filter="filter-gezin">🎂 <span class="filter-text">GEZIN</span></button>
       <button class="filter-btn active" data-filter="filter-familie">🎂 <span class="filter-text">FAMILIE</span></button>
