@@ -4,3 +4,4 @@ README.md
 *.json
 *.log
 events.json
+.DS_Store
