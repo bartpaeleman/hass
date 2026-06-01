@@ -1,0 +1,60 @@
+# Role-Based Access Control (RBAC)
+
+Dit document beschrijft het vernieuwde authenticatie- en rollensysteem voor de dashboards. Naast het controleren op een geldige gebruiker (via wachtwoord of remember-me cookie), wordt er nu ook een specifieke rol en bijbehorend toegangsniveau (role level) aan de sessie toegewezen.
+
+## Authenticatie & Configuratie
+Het authenticatiemechanisme controleert of er ingelogd is op basis van de array `$APP_USERS` in `config.php`. Om rollen toe te kennen, is het mechanisme uitgebreid met een tweede array: `$APP_ROLES`.
+
+**Voorbeeld in `config.php`:**
+```php
+$APP_USERS = [
+    'beheerder' => 'geheim123',
+    'bewoner'   => 'geheim456',
+    'gast'      => 'geheim789'
+];
+
+$APP_ROLES = [
+    'beheerder' => 'admin',
+    'bewoner'   => 'user',
+    'gast'      => 'viewer'
+];
+```
+
+Wanneer er geen rol is gedefinieerd in `$APP_ROLES` voor een specifieke gebruiker, krijgt deze standaard de `viewer` rol.
+
+## Beschikbare Rollen en Niveaus
+
+Om de vergelijking van rechten in de code eenvoudig en schaalbaar te houden, wordt aan elke rol een numeriek 'level' gekoppeld. Hoe hoger het getal, hoe meer rechten de sessie heeft.
+
+| Rolnaam      | Level | Beschrijving |
+| :---         | :---: | :--- |
+| `admin`      | `99`  | Volledige toegang tot alle pagina's, acties en instellingen (zoals configurators en backend editors). |
+| `user`       | `50`  | Een bewoner met de rechten om acties en apparaten in het huis aan te sturen en privacy-gevoelige statusgegevens in te zien. |
+| `viewer`     | `10`  | Een algemene gebruiker (zoals een gast). Kan enkel informatie bekijken. Krijgt geen toegang tot acties, en kan bepaalde gevoelige informatie niet zien. |
+| `restricted` | `0`   | De meest beperkte gebruiker. Kan slechts een gelimiteerd overzicht bekijken. |
+
+*De toegekende rol wordt bewaard in `$_SESSION['role']` en het bijbehorende niveau in `$_SESSION['role_level']`.*
+
+## Afgeschermde Componenten en Functionaliteiten
+
+Momenteel zijn de volgende specifieke restricties geïmplementeerd binnen de frontend en backend:
+
+### 1. Acties naar Home Assistant (API Executie)
+- **Bestand:** `ha_core_js.php`
+- **Rechten Vereist:** `user` (Level >= 50)
+- **Beschrijving:** In de centrale JavaScript helper is de functie `haPost()` geblokkeerd voor accounts onder level 50. Dit betekent dat `viewers` en `restricted` gebruikers op alle dashboards wel de huidige statussen kunnen zien, maar geen scripts kunnen starten, apparaten kunnen bedienen (aan/uit), noch andere instellingen en parameters kunnen overschrijven via de REST API.
+
+### 2. Beheer Speciale Dagen ("Editor")
+- **Bestanden:** `speciale_dagen.php` en `ADMIN/events_admin.php`
+- **Rechten Vereist:** `user` (Level >= 50)
+- **Beschrijving:**
+  - De knop (`⚙️ BEHEER`) bovenaan het Speciale Dagen dashboard wordt uitsluitend getoond aan gebruikers met voldoende rechten.
+  - De eigenlijke backend-editor interface (`ADMIN/events_admin.php`) blokkeert actief de toegang en retourneert een `403 Forbidden` foutmelding als een onbevoegde gebruiker toch probeert de URL rechtstreeks te openen.
+
+### 3. Aanwezigheid (Monitoring Dashboard / Alarm)
+- **Bestand:** `monitoring.php`
+- **Rechten Vereist:** `user` (Level >= 50)
+- **Beschrijving:** De lijst met personen en hun huidige locatie (zoals 'Thuis' of 'Weg'), weergegeven onder de sectie "Aanwezigheid", is afgeschermd. Zowel de HTML-structuur van de lijst als de onderliggende JavaScript logica die de data inlaadt, worden niet opgebouwd en uitgevoerd voor gebruikers met lagere rechten (`viewer` of `restricted`).
+
+---
+_In de toekomst kunnen er eenvoudig extra restricties in PHP/HTML worden ingebouwd door secties in te sluiten in een if-statement met `$_SESSION['role_level']` of door in JavaScript validaties toe te voegen met behulp van de globale constante `USER_ROLE_LEVEL`._
