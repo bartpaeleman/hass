@@ -202,6 +202,23 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
         .help-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; }
         .event-name { font-weight: bold; color: var(--accent); font-size: 1.1em; }
         .actions-cell { display: flex; gap: 10px; align-items: center; }
+
+        /* Responsive styling for small screens */
+        @media (max-width: 600px) {
+            .hide-mobile { display: none !important; }
+            .filter-cat-btn { padding: 10px !important; }
+            .filter-text { display: none; }
+            .top-buttons-container { flex-wrap: nowrap !important; overflow-x: auto; gap: 5px !important; }
+            .top-buttons-container .btn { padding: 8px 12px !important; white-space: nowrap; font-size: 14px !important; }
+            .btn-add-text-desktop { display: none; }
+            .btn-add-text-mobile { display: inline; }
+            .actions-cell { flex-wrap: nowrap; gap: 5px; }
+            .actions-cell .btn { padding: 6px 10px; font-size: 12px; }
+        }
+        @media (min-width: 601px) {
+            .btn-add-text-mobile { display: none; }
+            .btn-add-text-desktop { display: inline; }
+        }
     </style>
 </head>
 <body>
@@ -219,9 +236,9 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
     <?php endif; ?>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-        <div style="display: flex; gap: 10px;">
+        <div class="top-buttons-container" style="display: flex; gap: 10px;">
             <a href="../speciale_dagen.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
-            <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()">+ Nieuw Event Toevoegen</button>
+            <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()"><span class="btn-add-text-desktop">+ Nieuw Event Toevoegen</span><span class="btn-add-text-mobile">+ Nieuw</span></button>
         </div>
 
         <?php if ($totalPages > 1): ?>
@@ -243,12 +260,12 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
 
         <input type="hidden" name="f_cat" id="f_cat" value="<?php echo htmlspecialchars($f_cat); ?>">
         <div class="cat-filters" style="display: flex; gap: 5px; flex-wrap: wrap;">
-            <button type="button" class="btn filter-cat-btn <?php echo $f_cat===''?'btn-edit':''; ?>" style="<?php echo $f_cat!==''?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="">🔄 ALLE</button>
-            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='gezin'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='gezin'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="gezin">🎂 GEZIN</button>
-            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='familie'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='familie'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="familie">🎂 FAMILIE</button>
-            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='feestdag'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='feestdag'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="feestdag">🎉 FEESTDAGEN</button>
-            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='sport'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='sport'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="sport">⚽ SPORT</button>
-            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='andere'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='andere'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="andere">📅 ANDERE</button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat===''?'btn-edit':''; ?>" style="<?php echo $f_cat!==''?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="">🔄 <span class="filter-text">ALLE</span></button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='gezin'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='gezin'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="gezin">🎂 <span class="filter-text">GEZIN</span></button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='familie'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='familie'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="familie">🎂 <span class="filter-text">FAMILIE</span></button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='feestdag'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='feestdag'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="feestdag">🎉 <span class="filter-text">FEESTDAGEN</span></button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='sport'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='sport'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="sport">⚽ <span class="filter-text">SPORT</span></button>
+            <button type="button" class="btn filter-cat-btn <?php echo $f_cat==='andere'?'btn-edit':''; ?>" style="<?php echo $f_cat!=='andere'?'background: rgba(255,255,255,0.1); color: var(--text-bright);':''; ?>" data-val="andere">📅 <span class="filter-text">ANDERE</span></button>
         </div>
 
         <input type="hidden" name="sort" value="<?php echo htmlspecialchars($sort); ?>">
@@ -263,10 +280,10 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
         <thead>
             <tr>
                 <th><a href="<?php echo getSortLink('name', $sort, $dir); ?>">Naam <?php echo $sort==='name' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
-                <th><a href="<?php echo getSortLink('type', $sort, $dir); ?>">Type <?php echo $sort==='type' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
-                <th><a href="<?php echo getSortLink('category', $sort, $dir); ?>">Categorie <?php echo $sort==='category' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
-                <th><a href="<?php echo getSortLink('date_formula', $sort, $dir); ?>">Datum / Formule <?php echo $sort==='date_formula' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
-                <th>Info</th>
+                <th class="hide-mobile"><a href="<?php echo getSortLink('type', $sort, $dir); ?>">Type <?php echo $sort==='type' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
+                <th class="hide-mobile"><a href="<?php echo getSortLink('category', $sort, $dir); ?>">Categorie <?php echo $sort==='category' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
+                <th class="hide-mobile"><a href="<?php echo getSortLink('date_formula', $sort, $dir); ?>">Datum / Formule <?php echo $sort==='date_formula' ? ($dir==='asc'?'▲':'▼') : ''; ?></a></th>
+                <th class="hide-mobile">Info</th>
                 <th>Acties</th>
             </tr>
         </thead>
@@ -283,15 +300,15 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
             ?>
                 <tr>
                     <td class="event-name"><?php echo $icon . ' ' . htmlspecialchars($event['name'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($event['type'] ?? ''); ?></td>
-                    <td><?php echo htmlspecialchars($event['category'] ?? ''); ?></td>
-                    <td>
+                    <td class="hide-mobile"><?php echo htmlspecialchars($event['type'] ?? ''); ?></td>
+                    <td class="hide-mobile"><?php echo htmlspecialchars($event['category'] ?? ''); ?></td>
+                    <td class="hide-mobile">
                         <?php
                         if (($event['type'] ?? '') === 'vast') echo htmlspecialchars($event['date'] ?? '');
                         else echo htmlspecialchars($event['formula'] ?? '');
                         ?>
                     </td>
-                    <td>
+                    <td class="hide-mobile">
                         <?php echo htmlspecialchars($event['info'] ?? ''); ?>
                     </td>
                     <td class="actions-cell">
