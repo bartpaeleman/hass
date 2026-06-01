@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/verlichting.css">
 <script>
+  const PAGE_MIN_ACTION_LEVEL = 10;
   (function() {
     var theme = localStorage.getItem('theme');
     if (theme) {

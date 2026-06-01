@@ -71,6 +71,7 @@
 
 
     <!-- Persons -->
+    <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
     <div class="section-label" style="margin-top:4px;">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       Aanwezigheid
@@ -78,6 +79,7 @@
     <div class="persons-grid" id="personsGrid">
       <!-- injected by JS -->
     </div>
+    <?php endif; ?>
 
     <!-- Sensors -->
     <div class="section-label">
@@ -267,6 +269,8 @@
   // ── Update persons ──
   function updatePersons(stateMap) {
     const grid = document.getElementById('personsGrid');
+    if (!grid) return;
+
     if (grid.children.length === 0) {
       PERSON_CONFIG.forEach((p, i) => {
         const card = document.createElement('div');

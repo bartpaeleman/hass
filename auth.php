@@ -6,6 +6,26 @@ if (session_status() === PHP_SESSION_NONE) {
 if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
     global $APP_USERS;
 
+    // Converteer de nieuwe 1-lijn syntax ('name, pass, level') naar een makkelijker formaat
+    $parsed_users = [];
+    if (isset($APP_USERS) && is_array($APP_USERS)) {
+        foreach ($APP_USERS as $key => $val) {
+            if (is_int($key) && is_string($val) && strpos($val, ',') !== false) {
+                // Nieuwe syntax: 'name, pass, level'
+                $parts = array_map('trim', explode(',', $val));
+                if (count($parts) >= 2) {
+                    $u = $parts[0];
+                    $p = $parts[1];
+                    $lvl = isset($parts[2]) ? (int)$parts[2] : 10;
+                    $parsed_users[$u] = ['password' => $p, 'level' => $lvl];
+                }
+            } else {
+                // Oude syntax fallback (key = name, val = pass)
+                $parsed_users[$key] = ['password' => $val, 'level' => 10];
+            }
+        }
+    }
+
     // Uitloggen
     if (isset($_GET['logout'])) {
         unset($_SESSION['authenticated']);
@@ -20,9 +40,10 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
         $username = $_POST['app_username'];
         $password = $_POST['app_password'];
 
-        if (isset($APP_USERS[$username]) && $APP_USERS[$username] === $password) {
+        if (isset($parsed_users[$username]) && $parsed_users[$username]['password'] === $password) {
             $_SESSION['authenticated'] = true;
             $_SESSION['authenticated_user'] = $username;
+            $_SESSION['role_level'] = $parsed_users[$username]['level'];
 
             // Zet een "remember me" cookie voor 30 dagen
             $token = base64_encode($username . ':' . hash_hmac('sha256', $username, $password));
@@ -42,11 +63,12 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
             $decoded = base64_decode($_COOKIE['auth_token']);
             if (strpos($decoded, ':') !== false) {
                 list($cookieUser, $cookieHash) = explode(':', $decoded, 2);
-                if (isset($APP_USERS[$cookieUser])) {
-                    $expectedHash = hash_hmac('sha256', $cookieUser, $APP_USERS[$cookieUser]);
+                if (isset($parsed_users[$cookieUser])) {
+                    $expectedHash = hash_hmac('sha256', $cookieUser, $parsed_users[$cookieUser]['password']);
                     if (hash_equals($expectedHash, $cookieHash)) {
                         $_SESSION['authenticated'] = true;
                         $_SESSION['authenticated_user'] = $cookieUser;
+                        $_SESSION['role_level'] = $parsed_users[$cookieUser]['level'];
                     }
                 }
             }

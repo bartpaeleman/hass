@@ -17,6 +17,9 @@ require_once 'CLASSES/Comfort.php';
 const HA_URL   = "<?php echo HA_URL; ?>";
 const HA_TOKEN = "<?php echo HA_TOKEN; ?>";
 const COMFORT_BOUNDARIES = <?php echo json_encode(Comfort::getBoundaries()); ?>;
+const USER_ROLE_LEVEL = <?php echo isset($_SESSION['role_level']) ? $_SESSION['role_level'] : 10; ?>;
+// Use PAGE_MIN_ACTION_LEVEL if defined in the specific dashboard, otherwise default to 50
+const MIN_ACTION_LEVEL = typeof PAGE_MIN_ACTION_LEVEL !== 'undefined' ? PAGE_MIN_ACTION_LEVEL : 50;
 
 function getComfortColor(currentTemp, roomName) {
   if (currentTemp == null || isNaN(currentTemp)) return 'var(--text)';
@@ -43,6 +46,10 @@ async function haGet(entityId) {
 }
 
 async function haPost(domain, service, entityId = "", payload = {}) {
+  if (USER_ROLE_LEVEL < MIN_ACTION_LEVEL) {
+    console.warn(`Actie geweigerd: Je hebt niet de juiste rechten (minimaal level ${MIN_ACTION_LEVEL}) om acties uit te voeren.`);
+    return;
+  }
   const url = `${HA_URL}/api/services/${domain}/${service}`;
   const body = { ...payload };
   if (entityId) body.entity_id = entityId;
@@ -111,3 +118,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ── Global Click Interceptor for RBAC ──
+// Intercepts clicks on actionable items in the left content area if the user lacks permissions.
+document.addEventListener('click', (e) => {
+  if (USER_ROLE_LEVEL >= MIN_ACTION_LEVEL) return;
+
+  // We only block clicks within the main content area (so header/sidebar remain functional).
+  const mainContent = e.target.closest('main .left');
+  if (!mainContent) return;
+
+  // Do not block <details> summary clicks (collapsible sections).
+  if (e.target.closest('summary')) return;
+
+  // Check if the clicked element looks like a button or actionable item
+  const isActionable = e.target.closest('button') || e.target.closest('.filter-btn') || e.target.closest('[style*="cursor: pointer"]') || e.target.closest('[onclick]');
+
+  if (isActionable) {
+    console.warn(`Klik genegeerd: Je hebt level ${USER_ROLE_LEVEL}, maar level ${MIN_ACTION_LEVEL} is vereist om deze knop te gebruiken.`);
+    e.stopPropagation();
+    e.preventDefault();
+  }
+}, true); // Use capture phase to intercept before component listeners trigger
