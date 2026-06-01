@@ -3,24 +3,19 @@
 Dit document beschrijft het vernieuwde authenticatie- en rollensysteem voor de dashboards. Naast het controleren op een geldige gebruiker (via wachtwoord of remember-me cookie), wordt er nu ook een specifieke rol en bijbehorend toegangsniveau (role level) aan de sessie toegewezen.
 
 ## Authenticatie & Configuratie
-Het authenticatiemechanisme controleert of er ingelogd is op basis van de array `$APP_USERS` in `config.php`. Om rollen toe te kennen, is het mechanisme uitgebreid met een tweede array: `$APP_ROLES`.
+Het authenticatiemechanisme controleert of er ingelogd is op basis van de array `$APP_USERS` in `config.php`. Elke gebruiker wordt op 1 lijn gedefinieerd met een naam, wachtwoord, en het numerieke toegangsniveau, gescheiden door een komma.
 
 **Voorbeeld in `config.php`:**
 ```php
 $APP_USERS = [
-    'beheerder' => 'geheim123',
-    'bewoner'   => 'geheim456',
-    'gast'      => 'geheim789'
-];
-
-$APP_ROLES = [
-    'beheerder' => 'admin',
-    'bewoner'   => 'user',
-    'gast'      => 'viewer'
+    'beheerder, geheim123, 99', // admin
+    'bewoner, geheim456, 50',   // user
+    'gast, geheim789, 10',      // viewer
+    'kind, geheim000, 0'        // restricted
 ];
 ```
 
-Wanneer er geen rol is gedefinieerd in `$APP_ROLES` voor een specifieke gebruiker, krijgt deze standaard de `viewer` rol.
+Wanneer er geen niveau wordt meegegeven, of bij gebruik van het verouderde `key => value` formaat, krijgt de gebruiker standaard niveau `10` (viewer).
 
 ## Beschikbare Rollen en Niveaus
 
@@ -33,7 +28,7 @@ Om de vergelijking van rechten in de code eenvoudig en schaalbaar te houden, wor
 | `viewer`     | `10`  | Een algemene gebruiker (zoals een gast). Kan enkel informatie bekijken. Krijgt geen toegang tot acties, en kan bepaalde gevoelige informatie niet zien. |
 | `restricted` | `0`   | De meest beperkte gebruiker. Kan slechts een gelimiteerd overzicht bekijken. |
 
-*De toegekende rol wordt bewaard in `$_SESSION['role']` en het bijbehorende niveau in `$_SESSION['role_level']`.*
+*Het bijbehorende niveau wordt na het inloggen bewaard in `$_SESSION['role_level']`.*
 
 ## Afgeschermde Componenten en Functionaliteiten
 
