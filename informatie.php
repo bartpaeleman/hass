@@ -233,7 +233,7 @@
     openEl.style.color = open ? 'var(--alert)' : 'var(--ok)';
 
     const slotEl = document.getElementById('deur-slot');
-    slotEl.textContent = locked ? '🔒 VERGRENDELD' : '🔓 OPEN';
+    slotEl.textContent = locked ? '🔒 VERGRENDELD' : '🔓 ONTGRENDELD';
     slotEl.style.color = locked ? 'var(--ok)' : 'var(--alert)';
 
     const batEl = document.getElementById('deur-bat');
