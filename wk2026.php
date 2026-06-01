@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 // Data processing logic
-$eventsFile = 'JSON/events.json';
+$eventsFile = 'JSON/wk2026.json';
 $events = [];
 if (file_exists($eventsFile)) {
     $eventsData = json_decode(file_get_contents($eventsFile), true);
@@ -334,14 +334,8 @@ $currentMonth = (int)$today->format('n');
 
     <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
       <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
-      <a href="ADMIN/events_admin.php?json-events=events.json" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
+      <a href="ADMIN/events_admin.php?json-events=wk2026.json" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
       <?php endif; ?>
-      <button class="filter-btn active" id="toggle-all-filters">🔄 <span class="filter-text">ALLE</span></button>
-      <button class="filter-btn active" data-filter="filter-gezin">🎂 <span class="filter-text">GEZIN</span></button>
-      <button class="filter-btn active" data-filter="filter-familie">🎂 <span class="filter-text">FAMILIE</span></button>
-      <button class="filter-btn active" data-filter="filter-feestdagen">🎉 <span class="filter-text">FEESTDAGEN</span></button>
-      <button class="filter-btn active" data-filter="filter-sport">⚽ <span class="filter-text">SPORT</span></button>
-      <button class="filter-btn active" data-filter="filter-andere">📅 <span class="filter-text">ANDERE</span></button>
     </div>
 
     <div class="months-grid">
@@ -437,23 +431,6 @@ $currentMonth = (int)$today->format('n');
   setInterval(tick, 1000);
 
   document.addEventListener('DOMContentLoaded', () => {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-
-    // Load saved filters
-    const savedFilters = localStorage.getItem('speciale_dagen_filters');
-    if (savedFilters) {
-      try {
-        const filtersArray = JSON.parse(savedFilters);
-        // Reset all filter buttons (except toggle-all)
-        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
-          if (filtersArray.includes(btn.dataset.filter)) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-      } catch(e) {}
-    }
 
     // Load saved open months
     const savedMonths = localStorage.getItem('speciale_dagen_months_open');
@@ -468,82 +445,8 @@ $currentMonth = (int)$today->format('n');
       } catch(e) {}
     }
 
-    function applyFilters() {
-      // Get all active filters
-      const activeFilters = Array.from(document.querySelectorAll('.filter-btn.active'))
-                                 .map(btn => btn.dataset.filter)
-                                 .filter(f => f); // filter out undefined from toggle-all
 
-      // Save to localStorage
-      localStorage.setItem('speciale_dagen_filters', JSON.stringify(activeFilters));
 
-      // Filter upcoming cards items
-      document.querySelectorAll('.upcoming-card').forEach(card => {
-        let hasVisibleItem = false;
-        card.querySelectorAll('.uc-item').forEach(item => {
-          const itemFilter = item.dataset.filter;
-          if (activeFilters.includes(itemFilter)) {
-            item.style.display = 'flex';
-            hasVisibleItem = true;
-          } else {
-            item.style.display = 'none';
-          }
-        });
-        card.style.display = hasVisibleItem ? 'flex' : 'none';
-      });
-
-      // Filter month grids items
-      document.querySelectorAll('.month-details').forEach(month => {
-        let visibleCount = 0;
-        month.querySelectorAll('.event-row').forEach(row => {
-          const itemFilter = row.dataset.filter;
-          if (activeFilters.includes(itemFilter)) {
-            row.style.display = 'flex';
-            visibleCount++;
-          } else {
-            row.style.display = 'none';
-          }
-        });
-
-        const countBadge = month.querySelector('.month-count');
-        if (countBadge) {
-            countBadge.textContent = visibleCount;
-        }
-      });
-
-      // Update the toggle-all button state
-      const toggleAllBtn = document.getElementById('toggle-all-filters');
-      if (toggleAllBtn) {
-        const catBtns = Array.from(document.querySelectorAll('.filter-btn[data-filter]'));
-        const allActive = catBtns.every(b => b.classList.contains('active'));
-        if (allActive) {
-          toggleAllBtn.classList.add('active');
-        } else {
-          toggleAllBtn.classList.remove('active');
-        }
-      }
-    }
-
-    filterBtns.forEach(btn => {
-      if (btn.id === 'toggle-all-filters') {
-        btn.addEventListener('click', () => {
-          const isTurningOn = !btn.classList.contains('active');
-          document.querySelectorAll('.filter-btn[data-filter]').forEach(catBtn => {
-            if (isTurningOn) {
-              catBtn.classList.add('active');
-            } else {
-              catBtn.classList.remove('active');
-            }
-          });
-          applyFilters();
-        });
-      } else {
-        btn.addEventListener('click', () => {
-          btn.classList.toggle('active');
-          applyFilters();
-        });
-      }
-    });
 
     // Save open months on toggle
     document.querySelectorAll('.month-details').forEach(month => {
@@ -556,7 +459,6 @@ $currentMonth = (int)$today->format('n');
     });
 
     // Initial apply
-    applyFilters();
   });
 </script>
 </body>

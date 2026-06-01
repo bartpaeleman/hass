@@ -128,8 +128,9 @@ document.addEventListener('click', (e) => {
   const mainContent = e.target.closest('main .left');
   if (!mainContent) return;
 
-  // Do not block <details> summary clicks (collapsible sections).
+  // Do not block <details> summary clicks (collapsible sections) or links.
   if (e.target.closest('summary')) return;
+  if (e.target.closest('a')) return;
 
   // Check if the clicked element looks like a button or actionable item
   const isActionable = e.target.closest('button') || e.target.closest('.filter-btn') || e.target.closest('[style*="cursor: pointer"]') || e.target.closest('[onclick]');
