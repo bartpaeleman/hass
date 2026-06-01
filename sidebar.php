@@ -29,6 +29,12 @@
 
   <?php if (defined('REQUIRE_AUTH') && REQUIRE_AUTH): ?>
   <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
+    <?php
+      $displayUser = isset($_SESSION['authenticated_user']) ? strtoupper($_SESSION['authenticated_user']) : 'ACCOUNT';
+    ?>
+    <div style="font-family:'Share Tech Mono', monospace; font-size:14px; color:var(--text); text-align:center; margin-bottom:10px; letter-spacing:1px; font-weight:bold;">
+      <?php echo htmlspecialchars($displayUser, ENT_QUOTES, 'UTF-8'); ?>
+    </div>
     <a href="?logout=1" style="display:flex; align-items:center; gap:8px; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none; font-family:'Share Tech Mono', monospace; font-size:14px; transition:border-color 0.3s;" onmouseover="this.style.borderColor='var(--alert)'" onmouseout="this.style.borderColor='var(--border)'">
       <span style="font-size:18px;">🔓</span> UITLOGGEN
     </a>
