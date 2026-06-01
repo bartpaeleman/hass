@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/airco.css">
 <script>
+  const PAGE_MIN_ACTION_LEVEL = 50;
   (function() {
     var theme = localStorage.getItem('theme');
     if (theme) {
