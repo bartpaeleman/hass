@@ -1,6 +1,8 @@
 config.php
 *.md
 README.md
+RBAC.md
 *.json
 *.log
 events.json
+.DS_Store
