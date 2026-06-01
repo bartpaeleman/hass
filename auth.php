@@ -4,23 +4,30 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
+    global $APP_USERS;
+
     // Uitloggen
     if (isset($_GET['logout'])) {
         unset($_SESSION['authenticated']);
         unset($_SESSION['authenticated_user']);
+        setcookie('auth_token', '', time() - 3600, '/');
         header("Location: index.php");
         exit();
     }
 
-    // Inloggen
+    // Inloggen via formulier
     if (isset($_POST['app_username']) && isset($_POST['app_password'])) {
-        global $APP_USERS;
         $username = $_POST['app_username'];
         $password = $_POST['app_password'];
 
         if (isset($APP_USERS[$username]) && $APP_USERS[$username] === $password) {
             $_SESSION['authenticated'] = true;
             $_SESSION['authenticated_user'] = $username;
+
+            // Zet een "remember me" cookie voor 30 dagen
+            $token = base64_encode($username . ':' . hash_hmac('sha256', $username, $password));
+            setcookie('auth_token', $token, time() + (30 * 24 * 60 * 60), '/');
+
             // Redirect to the same page without POST data
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
@@ -29,7 +36,24 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
         }
     }
 
-    // Controleer of de gebruiker is ingelogd
+    // Controleer cookie als sessie niet actief is
+    if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+        if (isset($_COOKIE['auth_token'])) {
+            $decoded = base64_decode($_COOKIE['auth_token']);
+            if (strpos($decoded, ':') !== false) {
+                list($cookieUser, $cookieHash) = explode(':', $decoded, 2);
+                if (isset($APP_USERS[$cookieUser])) {
+                    $expectedHash = hash_hmac('sha256', $cookieUser, $APP_USERS[$cookieUser]);
+                    if (hash_equals($expectedHash, $cookieHash)) {
+                        $_SESSION['authenticated'] = true;
+                        $_SESSION['authenticated_user'] = $cookieUser;
+                    }
+                }
+            }
+        }
+    }
+
+    // Controleer definitief of de gebruiker is ingelogd
     if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
         $isJs = (basename($_SERVER['PHP_SELF']) === 'ha_core_js.php');
         if ($isJs) {
