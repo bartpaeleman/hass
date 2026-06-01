@@ -34,10 +34,19 @@ Om de vergelijking van rechten in de code eenvoudig en schaalbaar te houden, wor
 
 Momenteel zijn de volgende specifieke restricties geïmplementeerd binnen de frontend en backend:
 
-### 1. Acties naar Home Assistant (API Executie)
-- **Bestand:** `ha_core_js.php`
-- **Rechten Vereist:** `user` (Level >= 50)
-- **Beschrijving:** In de centrale JavaScript helper is de functie `haPost()` geblokkeerd voor accounts onder level 50. Dit betekent dat `viewers` en `restricted` gebruikers op alle dashboards wel de huidige statussen kunnen zien, maar geen scripts kunnen starten, apparaten kunnen bedienen (aan/uit), noch andere instellingen en parameters kunnen overschrijven via de REST API.
+### 1. Acties naar Home Assistant en UI interacties
+- **Bestand:** `ha_core_js.php` (Geldt voor elk dashboard dat dit script gebruikt)
+- **Standaard Rechten Vereist:** `user` (Level >= 50)
+- **Beschrijving:** In de centrale JavaScript helper is een globale klik interceptor gebouwd en de API-functie `haPost()` geblokkeerd voor accounts onder het vereiste niveau. Standaard is dit ingesteld op level 50, wat betekent dat `viewers` (10) en `restricted` (0) gebruikers geen scripts kunnen starten, apparaten kunnen bedienen (aan/uit) of andere instellingen kunnen overschrijven. Knoppen, filter elementen en clickables in het hoofd content gedeelte (buiten header en navigatie) worden eveneens geblokkeerd en de JavaScript API executie wordt gestopt.
+
+**Afwijken per dashboard:**
+Het vereiste minimum level kan per dashboard overschreven worden door in de `<head>` de variabele `PAGE_MIN_ACTION_LEVEL` in JavaScript te definiëren, *voordat* `ha_core_js.php` is ingeladen.
+```html
+<script>
+  const PAGE_MIN_ACTION_LEVEL = 10;
+</script>
+```
+Hierdoor is het bijvoorbeeld mogelijk om op het **Verlichting** dashboard `viewers` (10) wél knoppen te laten gebruiken, terwijl **Energie** en **Verwarming** standaard streng (50) blijven. Op het **Speciale Dagen** dashboard staat dit overschreven op `0`, zodat iedere ingelogde gebruiker door de maand-/categorie-filters kan navigeren.
 
 ### 2. Beheer Speciale Dagen ("Editor")
 - **Bestanden:** `speciale_dagen.php` en `ADMIN/events_admin.php`
@@ -52,4 +61,4 @@ Momenteel zijn de volgende specifieke restricties geïmplementeerd binnen de fro
 - **Beschrijving:** De lijst met personen en hun huidige locatie (zoals 'Thuis' of 'Weg'), weergegeven onder de sectie "Aanwezigheid", is afgeschermd. Zowel de HTML-structuur van de lijst als de onderliggende JavaScript logica die de data inlaadt, worden niet opgebouwd en uitgevoerd voor gebruikers met lagere rechten (`viewer` of `restricted`).
 
 ---
-_In de toekomst kunnen er eenvoudig extra restricties in PHP/HTML worden ingebouwd door secties in te sluiten in een if-statement met `$_SESSION['role_level']` of door in JavaScript validaties toe te voegen met behulp van de globale constante `USER_ROLE_LEVEL`._
+_In de toekomst kunnen er eenvoudig extra restricties in PHP/HTML worden ingebouwd door secties in te sluiten in een if-statement met `$_SESSION['role_level']` of door in JavaScript validaties toe te voegen met behulp van de globale constante `USER_ROLE_LEVEL` of `MIN_ACTION_LEVEL`._

@@ -236,6 +236,7 @@ $currentMonth = (int)$today->format('n');
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/speciale_dagen.css">
 <script>
+  const PAGE_MIN_ACTION_LEVEL = 0;
   (function() {
     var theme = localStorage.getItem('theme');
     if (theme) {
