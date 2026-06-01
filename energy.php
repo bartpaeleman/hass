@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="CSS/energie.css">
 <script>
   (function() {
+  const PAGE_MIN_ACTION_LEVEL = 50;    
     var theme = localStorage.getItem('theme');
     if (theme) {
       document.documentElement.setAttribute('data-theme', theme);
