@@ -5,7 +5,12 @@ require_once 'config.php';
 $eventsFile = __DIR__ . '/JSON/events.json';
 $events = [];
 if (file_exists($eventsFile)) {
-    $eventsData = json_decode(file_get_contents($eventsFile), true);
+    $content = file_get_contents($eventsFile);
+    // Strip BOM if present
+    if (substr($content, 0, 3) === "\xef\xbb\xbf") {
+        $content = substr($content, 3);
+    }
+    $eventsData = json_decode($content, true);
     if (is_array($eventsData)) {
         $events = $eventsData;
     }
