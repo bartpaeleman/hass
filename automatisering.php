@@ -40,10 +40,13 @@
 <main>
   <div class="left">
 
-    <div class="energy-subtitle" style="margin-top: 24px;">
-        <span>🤖</span> Automatisering
-    </div>
-    <div class="auto-grid">
+    <div class="top-sections-wrapper">
+    <details class="auto-section" open style="margin-bottom:0;">
+      <summary class="energy-subtitle">
+        <span>🤖</span> SCRIPTS
+      </summary>
+      <div class="auto-section-content">
+        <div class="auto-grid">
         <div id="tvPauzeContainer" style="display:none; text-align: center; display: flex; flex-direction: column;">
             <div id="tvPauzeStartSection" style="padding: 20px; border: 2px solid grey; background: rgb(95,95,95,0.1); border-radius: 8px; cursor: pointer; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 10px; color: grey;">
@@ -70,12 +73,68 @@
             </svg>
             <div style="font-size: 18px; font-weight: bold; color: var(--text);" id="lichtEtenText">LICHT ETEN AAN</div>
         </div>
-    </div>
+      </div>
+    </details>
 
-    <div class="energy-subtitle" style="margin-top: 24px;">
+    <details class="auto-section" open style="margin-bottom:0;">
+      <summary class="energy-subtitle">
+        <span>⏰</span> WEKKER
+      </summary>
+      <div class="auto-section-content">
+        <!-- WEKKER AAN / UIT -->
+        <div id="wekkerMainContainer" class="wekker-main-toggle wekker-off">
+            <div class="wekker-title">
+                <span class="wekker-icon">💡</span> WEKKER
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="wekkertoggle" onchange="toggleWekker('input_boolean.wekker')">
+              <span class="slider"></span>
+            </label>
+        </div>
+
+        <!-- WEKKER ALARM NOTIFICATIONS -->
+        <div class="wekker-row">
+            <div class="wekker-label">Geluid</div>
+            <select id="wekkerKeuzeSelect" class="wekker-select" onchange="setWekkerSelect('input_select.wekkerkeuze', this.value)">
+                <option value="Geen geluid">Geen geluid</option>
+                <option value="Zachte klankschalen">Zachte klankschalen</option>
+                <option value="Middelmatig">Middelmatig</option>
+                <option value="Luid en irritant">Luid en irritant</option>
+                <option value="Radio">Radio</option>
+            </select>
+        </div>
+
+        <div class="wekker-row">
+            <div class="wekker-label">Aankondiging Voice</div>
+            <label class="switch">
+              <input type="checkbox" id="wekkerAankondigingToggle" onchange="toggleWekker('input_boolean.wekker_aankondiging')">
+              <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="wekker-row">
+            <div class="wekker-label">Licht Auto-Aan</div>
+            <label class="switch">
+              <input type="checkbox" id="wekkerLichtToggle" onchange="toggleWekker('input_boolean.wekker_licht')">
+              <span class="slider"></span>
+            </label>
+        </div>
+
+        <!-- WEKKER DATETIME -->
+        <div class="wekker-row">
+            <div class="wekker-label">Tijdstip Alarm</div>
+            <input type="time" id="wekkerTijdInput" class="wekker-time" onchange="setWekkerTime('input_datetime.tijd_alarm', this.value)">
+        </div>
+      </div>
+    </details>
+    </div> <!-- end .top-sections-wrapper -->
+
+    <details class="auto-section" open>
+      <summary class="energy-subtitle">
         <span>📊</span> Energie Intelligentie
-    </div>
-    <div class="energy-grid">
+      </summary>
+      <div class="auto-section-content">
+        <div class="energy-grid">
         <div class="energy-card compact-card col-4">
             <div class="energy-card-header">
                 <div class="energy-icon green" style="width:28px;height:28px;font-size:14px;">⚡</div>
@@ -120,12 +179,15 @@
             </div>
             <div class="energy-value" id="val-airco-bureau">—</div>
         </div>
-    </div>
+      </div>
+    </details>
 
-    <div class="energy-subtitle" style="margin-top: 24px;">
+    <details class="auto-section" open>
+      <summary class="energy-subtitle">
         <span>💡</span> AUTOLICHTEN
-    </div>
-    <div class="auto-grid">
+      </summary>
+      <div class="auto-section-content">
+        <div class="auto-grid">
         <div class="light-card light-off" id="card-avondlichten" onclick="toggleLight('input_boolean.avondlichten')">
             <div class="light-card-info">
             <div class="light-icon" id="icon-avondlichten">💡</div>
@@ -181,7 +243,8 @@
             </div>
             <div class="light-value" id="val-achtertuin-licht">UIT</div>
         </div>
-    </div>
+      </div>
+    </details>
 
   </div>
 
@@ -211,7 +274,13 @@
     aircoSlaap:    'input_boolean.auto_airco_slaapkamer',
     aircoBureau:   'input_boolean.auto_airco_bureau',
     aircoOverschot:'sensor.airco_solar_eligible',
-    huisverbruik:  'sensor.huisverbruik_totaal'
+    huisverbruik:  'sensor.huisverbruik_totaal',
+
+    wekker:              'input_boolean.wekker',
+    wekkerKeuze:         'input_select.wekkerkeuze',
+    wekkerAankondiging:  'input_boolean.wekker_aankondiging',
+    wekkerLicht:         'input_boolean.wekker_licht',
+    wekkerTijd:          'input_datetime.tijd_alarm'
   };
 
   const LIGHT_ENTITIES = [
@@ -351,6 +420,33 @@
     }
   }
 
+  async function toggleWekker(entityId) {
+      try {
+          await haPost('input_boolean', 'toggle', entityId);
+          setTimeout(refresh, 500);
+      } catch (err) {
+          console.error('Failed to toggle wekker boolean', err);
+      }
+  }
+
+  async function setWekkerSelect(entityId, optionStr) {
+      try {
+          await haPost('input_select', 'select_option', entityId, { option: optionStr });
+          setTimeout(refresh, 500);
+      } catch (err) {
+          console.error('Failed to set wekker select', err);
+      }
+  }
+
+  async function setWekkerTime(entityId, timeStr) {
+      try {
+          await haPost('input_datetime', 'set_datetime', entityId, { time: timeStr });
+          setTimeout(refresh, 500);
+      } catch (err) {
+          console.error('Failed to set wekker time', err);
+      }
+  }
+
   async function refresh() {
     const allIds = [
       ...Object.values(ENTITIES),
@@ -394,6 +490,45 @@
 
       const elHuis = document.getElementById('val-huisverbruik');
       if (elHuis) elHuis.innerHTML = formatVal(stateMap[ENTITIES.huisverbruik]);
+
+      // Wekker updates
+      const wekkerObj = stateMap[ENTITIES.wekker];
+      if (wekkerObj) {
+          const isOn = wekkerObj.state === 'on';
+          const container = document.getElementById('wekkerMainContainer');
+          const checkbox = document.getElementById('wekkertoggle');
+          if (container) {
+              container.className = 'wekker-main-toggle ' + (isOn ? 'wekker-on' : 'wekker-off');
+          }
+          if (checkbox) checkbox.checked = isOn;
+      }
+
+      const wekkerAankObj = stateMap[ENTITIES.wekkerAankondiging];
+      if (wekkerAankObj) {
+          const cb = document.getElementById('wekkerAankondigingToggle');
+          if (cb) cb.checked = (wekkerAankObj.state === 'on');
+      }
+
+      const wekkerLichtObj = stateMap[ENTITIES.wekkerLicht];
+      if (wekkerLichtObj) {
+          const cb = document.getElementById('wekkerLichtToggle');
+          if (cb) cb.checked = (wekkerLichtObj.state === 'on');
+      }
+
+      const wekkerKeuzeObj = stateMap[ENTITIES.wekkerKeuze];
+      if (wekkerKeuzeObj && wekkerKeuzeObj.state !== 'unavailable') {
+          const sel = document.getElementById('wekkerKeuzeSelect');
+          if (sel) sel.value = wekkerKeuzeObj.state;
+      }
+
+      const wekkerTijdObj = stateMap[ENTITIES.wekkerTijd];
+      if (wekkerTijdObj && wekkerTijdObj.state !== 'unavailable') {
+          const tm = document.getElementById('wekkerTijdInput');
+          // HA returns HH:MM:SS, time input expects HH:MM (though it tolerates HH:MM:SS usually)
+          if (tm && wekkerTijdObj.state.length >= 5) {
+              tm.value = wekkerTijdObj.state.substring(0,5);
+          }
+      }
 
       LIGHT_ENTITIES.forEach(le => {
         const obj = stateMap[le.id];
