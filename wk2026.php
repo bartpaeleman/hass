@@ -137,7 +137,7 @@ $currentMonth = (int)$today->format('n');
 <title>WK VOETBAL 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
-<link rel="stylesheet" href="CSS/speciale_dagen.css">
+<link rel="stylesheet" href="CSS/kalender.css">
 <link rel="stylesheet" href="CSS/wk2026.css">
 <script>
   const PAGE_MIN_ACTION_LEVEL = 0;

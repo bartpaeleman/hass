@@ -1,6 +1,6 @@
 # Handleiding `events.json` (Speciale Dagen Dashboard)
 
-Het "Speciale Dagen" dashboard (`speciale_dagen.php`) laadt zijn gegevens in vanuit het configuratiebestand `events.json`. Dit bestand gebruikt het JSON (JavaScript Object Notation) formaat.
+Het "Speciale Dagen" dashboard (`kalender.php`) laadt zijn gegevens in vanuit het configuratiebestand `events.json`. Dit bestand gebruikt het JSON (JavaScript Object Notation) formaat.
 
 Dit document beschrijft in detail hoe je nieuwe gelegenheden (events) kunt toevoegen, wijzigen en welke flexibele formules er allemaal ondersteund worden. Ook beschrijft het hoe de data in de UI automatisch gekoppeld wordt aan de dynamische filters (ALLE, GEZIN, FAMILIE, FEESTDAGEN, ANDERE).
 
