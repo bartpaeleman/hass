@@ -49,7 +49,7 @@ Het vereiste minimum level kan per dashboard overschreven worden door in de `<he
 Hierdoor is het bijvoorbeeld mogelijk om op het **Verlichting** dashboard `viewers` (10) wél knoppen te laten gebruiken, terwijl **Energie** en **Verwarming** standaard streng (50) blijven. Op het **Speciale Dagen** dashboard staat dit overschreven op `0`, zodat iedere ingelogde gebruiker door de maand-/categorie-filters kan navigeren.
 
 ### 2. Beheer Speciale Dagen ("Editor")
-- **Bestanden:** `speciale_dagen.php` en `ADMIN/events_admin.php`
+- **Bestanden:** `kalender.php` en `ADMIN/events_admin.php`
 - **Rechten Vereist:** `user` (Level >= 50)
 - **Beschrijving:**
   - De knop (`⚙️ BEHEER`) bovenaan het Speciale Dagen dashboard wordt uitsluitend getoond aan gebruikers met voldoende rechten.

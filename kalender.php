@@ -236,10 +236,10 @@ $currentMonth = (int)$today->format('n');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Speciale Dagen</title>
+<title>KALENDER</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
-<link rel="stylesheet" href="CSS/speciale_dagen.css">
+<link rel="stylesheet" href="CSS/kalender.css">
 <script>
   const PAGE_MIN_ACTION_LEVEL = 0;
   (function() {
@@ -256,7 +256,7 @@ $currentMonth = (int)$today->format('n');
   <div class="logo">
     <div class="logo-icon"></div>
     <div>
-      <h1>Speciale Dagen</h1>
+      <h1>KALENDER</h1>
       <span>DASHBOARD</span>
     </div>
   </div>
@@ -270,7 +270,7 @@ $currentMonth = (int)$today->format('n');
 <main>
   <div class="left">
 
-    <!-- Aankomende Speciale Dagen (Max 5 dagen) -->
+    <!-- Aankomende KALENDER (Max 5 dagen) -->
     <?php if (count($upcomingGrouped) > 0): ?>
     <div class="section-label" style="margin-bottom:12px;">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M6 1v6.5M6 10a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M8 3h1M8 5h1" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
@@ -331,7 +331,7 @@ $currentMonth = (int)$today->format('n');
     </div>
     <?php endif; ?>
 
-    <!-- Alle Speciale Dagen per Maand -->
+    <!-- Alle KALENDER per Maand -->
     <div class="section-label" style="margin-top:24px; margin-bottom:12px;">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M2 3h8M2 6h8M2 9h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       Events

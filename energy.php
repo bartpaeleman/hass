@@ -65,56 +65,6 @@
       </div>
 
       <div class="energy-subtitle">
-          <span>📊</span> Energie Intelligentie
-      </div>
-      <div class="energy-grid">
-          <div class="energy-card compact-card col-4">
-              <div class="energy-card-header">
-                  <div class="energy-icon green" style="width:28px;height:28px;font-size:14px;">⚡</div>
-                  <div class="energy-title">Overschot</div>
-              </div>
-              <div class="energy-value" id="val-airco-overschot">—</div>
-          </div>
-          <div class="energy-card airco-card col-4" id="card-airco-auto" onclick="toggleAirco('input_boolean.autoairco')">
-              <div class="energy-card-header">
-                  <div class="energy-icon" id="icon-airco-auto">❄️</div>
-                  <div class="energy-title">AUTO AIRCO</div>
-              </div>
-              <div class="energy-value" id="val-airco-auto">—</div>
-          </div>
-          <div class="energy-card compact-card col-4">
-              <div class="energy-card-header">
-                  <div class="energy-icon yellow" style="width:28px;height:28px;font-size:14px;">🏠</div>
-                  <div class="energy-title">Verbruik</div>
-              </div>
-              <div class="energy-value" id="val-huisverbruik">—</div>
-          </div>
-      </div>
-      <div class="energy-grid">
-          <div class="energy-card airco-card col-4" id="card-airco-living" onclick="toggleAirco('input_boolean.auto_airco_living')">
-              <div class="energy-card-header">
-                  <div class="energy-icon" id="icon-airco-living">❄️</div>
-                  <div class="energy-title">LIVING</div>
-              </div>
-              <div class="energy-value" id="val-airco-living">—</div>
-          </div>
-          <div class="energy-card airco-card col-4" id="card-airco-slaap" onclick="toggleAirco('input_boolean.auto_airco_slaapkamer')">
-              <div class="energy-card-header">
-                  <div class="energy-icon" id="icon-airco-slaap">❄️</div>
-                  <div class="energy-title">SLAAPKAMER</div>
-              </div>
-              <div class="energy-value" id="val-airco-slaap">—</div>
-          </div>
-          <div class="energy-card airco-card col-4" id="card-airco-bureau" onclick="toggleAirco('input_boolean.auto_airco_bureau')">
-              <div class="energy-card-header">
-                  <div class="energy-icon" id="icon-airco-bureau">❄️</div>
-                  <div class="energy-title">BUREAU</div>
-              </div>
-              <div class="energy-value" id="val-airco-bureau">—</div>
-          </div>
-      </div>
-
-      <div class="energy-subtitle">
           <span>🌍</span> Zelfvoorziening
       </div>
       <div class="energy-grid">
@@ -226,29 +176,9 @@
     battVermogen: 'sensor.batterij_vermogen',
     battStatus: 'sensor.batterij_status',
     netImport: 'sensor.electriciteit_netverbruik_nu',
-    netInjectie: 'sensor.electriciteit_injectie_nu',
-    aircoAuto: 'input_boolean.autoairco',
-    aircoLiving: 'input_boolean.auto_airco_living',
-    aircoSlaap: 'input_boolean.auto_airco_slaapkamer',
-    aircoBureau: 'input_boolean.auto_airco_bureau'
+    netInjectie: 'sensor.electriciteit_injectie_nu'
   };
 
-  async function toggleAirco(entityId) {
-      try {
-          const r = await fetch(`${HA_URL}/api/services/input_boolean/toggle`, {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${HA_TOKEN}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ entity_id: entityId })
-          });
-          if (!r.ok) throw new Error(`HA Service error: ${r.status}`);
-          setTimeout(refresh, 500);
-      } catch (err) {
-          console.error('Failed to toggle airco', err);
-      }
-  }
 
   async function refresh() {
     const allIds = Object.values(ENERGY_ENTITIES);
@@ -309,32 +239,7 @@
           document.getElementById('val-bruto-verbruik').innerHTML = '—';
       }
 
-      document.getElementById('val-airco-overschot').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.aircoOverschot]);
-      document.getElementById('val-huisverbruik').innerHTML = formatVal(stateMap[ENERGY_ENTITIES.huisverbruik]);
 
-      const aircos = [
-        { id: 'aircoAuto', cardId: 'card-airco-auto', valId: 'val-airco-auto' },
-        { id: 'aircoLiving', cardId: 'card-airco-living', valId: 'val-airco-living' },
-        { id: 'aircoSlaap', cardId: 'card-airco-slaap', valId: 'val-airco-slaap' },
-        { id: 'aircoBureau', cardId: 'card-airco-bureau', valId: 'val-airco-bureau' }
-      ];
-
-      aircos.forEach(airco => {
-        const obj = stateMap[ENERGY_ENTITIES[airco.id]];
-        const card = document.getElementById(airco.cardId);
-        const valEl = document.getElementById(airco.valId);
-
-        if (obj && obj.state !== 'unavailable') {
-            const isOn = obj.state === 'on';
-            if (valEl) valEl.textContent = isOn ? 'AAN' : 'UIT';
-            if (card) {
-                card.className = `energy-card airco-card col-4 ${isOn ? 'airco-on' : 'airco-off'}`;
-            }
-        } else {
-            if (valEl) valEl.textContent = '—';
-            if (card) card.className = 'energy-card airco-card col-4 airco-off';
-        }
-      });
 
       const socObj = stateMap[ENERGY_ENTITIES.soc];
       const cardSoc = document.getElementById('card-soc');

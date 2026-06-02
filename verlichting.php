@@ -41,76 +41,7 @@
     <div class="light-grid">
 
       <!-- ROW 1: Autolichten (Left) / Zones + Conditionals + Aankomst (Right) -->
-      <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
-        <!-- AUTOLICHTEN -->
-        <div class="light-section" style="background: rgba(0, 230, 118, 0.05); border-color: rgba(0, 230, 118, 0.2); margin-bottom: 0; flex: 1; display: flex; flex-direction: column;">
-          <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 16px;">💡</span> AUTOLICHTEN
-          </div>
-          <div class="light-section-content" style="flex: 1; display: flex; flex-direction: column; justify-content: space-evenly;">
-            <div class="light-card light-off" id="card-avondlichten" onclick="toggleLight('input_boolean.avondlichten')">
-              <div class="light-card-info">
-                <div class="light-icon" id="icon-avondlichten">💡</div>
-                <div class="light-title">Avondlichten</div>
-              </div>
-              <div class="light-value" id="val-avondlichten">UIT</div>
-            </div>
-
-            <div class="light-row">
-              <div class="light-card light-off" id="card-portaal-licht" onclick="toggleLight('input_boolean.portaal_licht')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-portaal-licht">💡</div>
-                  <div class="light-title">Portaal</div>
-                </div>
-                <div class="light-value" id="val-portaal-licht">UIT</div>
-              </div>
-              <div class="light-card light-off" id="card-koepel-licht" onclick="toggleLight('input_boolean.koepel_licht')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-koepel-licht">💡</div>
-                  <div class="light-title">Koepel</div>
-                </div>
-                <div class="light-value" id="val-koepel-licht">UIT</div>
-              </div>
-            </div>
-
-            <div class="light-row">
-              <div class="light-card light-off" id="card-kerstkrans-switch" onclick="toggleLight('input_boolean.kerstkrans_switch')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-kerstkrans-switch">💡</div>
-                  <div class="light-title">Kerstkrans</div>
-                </div>
-                <div class="light-value" id="val-kerstkrans-switch">UIT</div>
-              </div>
-              <div class="light-card light-off" id="card-auto-licht-garage" onclick="toggleLight('input_boolean.auto_licht_garage_kerst')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-auto-licht-garage">💡</div>
-                  <div class="light-title">Garage</div>
-                </div>
-                <div class="light-value" id="val-auto-licht-garage">UIT</div>
-              </div>
-            </div>
-
-            <div class="light-row">
-              <div class="light-card light-off" id="card-plantentuin-licht" onclick="toggleLight('input_boolean.plantentuin_licht')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-plantentuin-licht">💡</div>
-                  <div class="light-title">Plantentuin</div>
-                </div>
-                <div class="light-value" id="val-plantentuin-licht">UIT</div>
-              </div>
-              <div class="light-card light-off" id="card-achtertuin-licht" onclick="toggleLight('input_boolean.achtertuin_licht')">
-                <div class="light-card-info">
-                  <div class="light-icon" id="icon-achtertuin-licht">💡</div>
-                  <div class="light-title">Tuinhuis</div>
-                </div>
-                <div class="light-value" id="val-achtertuin-licht">UIT</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6" style="display: flex; flex-direction: column; gap: 16px;">
+      <div class="col-12" style="display: flex; flex-direction: column; gap: 16px;">
         <div class="light-section" style="margin-bottom: 0;">
           <div style="padding: 12px 16px; font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
             <div style="display:flex; align-items:center; gap:8px;"><span style="font-size: 16px;">🏠</span> ZONES</div>
@@ -500,13 +431,6 @@
   setInterval(tick, 1000);
 
   const LIGHT_ENTITIES = [
-    { id: 'input_boolean.avondlichten', cardId: 'card-avondlichten', valId: 'val-avondlichten', onClass: 'light-alert' },
-    { id: 'input_boolean.portaal_licht', cardId: 'card-portaal-licht', valId: 'val-portaal-licht', onClass: 'light-warn' },
-    { id: 'input_boolean.koepel_licht', cardId: 'card-koepel-licht', valId: 'val-koepel-licht', onClass: 'light-ok' },
-    { id: 'input_boolean.kerstkrans_switch', cardId: 'card-kerstkrans-switch', valId: 'val-kerstkrans-switch', onClass: 'light-ok' },
-    { id: 'input_boolean.auto_licht_garage_kerst', cardId: 'card-auto-licht-garage', valId: 'val-auto-licht-garage', onClass: 'light-ok' },
-    { id: 'input_boolean.plantentuin_licht', cardId: 'card-plantentuin-licht', valId: 'val-plantentuin-licht', onClass: 'light-ok' },
-    { id: 'input_boolean.achtertuin_licht', cardId: 'card-achtertuin-licht', valId: 'val-achtertuin-licht', onClass: 'light-ok' },
 
     { id: 'light.aankomst', badgeId: 'badge-aankomst' },
     { id: 'light.portaal', cardId: 'card-portaal', valId: 'val-portaal', onClass: 'light-on' },

@@ -223,7 +223,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
             <?php if ($requestedFile === 'wk2026.json'): ?>
             <a href="../wk2026.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
         <?php else: ?>
-            <a href="../speciale_dagen.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
+            <a href="../kalender.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
         <?php endif; ?>
             <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()"><span class="btn-add-text-desktop">+ Nieuw Event Toevoegen</span><span class="btn-add-text-mobile">+ Nieuw</span></button>
         </div>
