@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 // Data processing logic
-$eventsFile = 'JSON/events.json';
+$eventsFile = __DIR__ . '/JSON/events.json';
 $events = [];
 if (file_exists($eventsFile)) {
     $eventsData = json_decode(file_get_contents($eventsFile), true);
