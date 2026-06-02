@@ -1,1 +1,709 @@
-﻿[ { "type": "vast", "category": "sport", "name": "Mexico - Zuid-Afrika", "date": "2026-06-11", "info": "🏟️ Estadio Azteca (Mexico-Stad) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep A Team 3 - Groep A Team 4", "date": "2026-06-11", "info": "🏟️ Estadio Guadalajara (Guadalajara) · ⏱️ Aftrap 23u30" }, { "type": "vast", "category": "sport", "name": "Canada - Bosnië en Herzegovina", "date": "2026-06-12", "info": "🏟️ BMO Field (Toronto) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Zuid-Korea - Tsjechië", "date": "2026-06-12", "info": "🏟️ BC Place (Vancouver) · ⏱️ Aftrap 04u00" }, { "type": "vast", "category": "sport", "name": "Groep B Team 3 - Groep B Team 4", "date": "2026-06-12", "info": "🏟️ Levi's Stadium (San Francisco) · ⏱️ Aftrap 18u30" }, { "type": "vast", "category": "sport", "name": "Groep C Team 1 - Groep C Team 2", "date": "2026-06-12", "info": "🏟️ Aztecastadion (Mexico-Stad) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Verenigde Staten - Paraguay", "date": "2026-06-13", "info": "🏟️ SoFi Stadium (Los Angeles) · ⏱️ Aftrap 03u00" }, { "type": "vast", "category": "sport", "name": "Groep D Team 3 - Groep D Team 4", "date": "2026-06-13", "info": "🏟️ Lumen Field (Seattle) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep E Team 1 - Groep E Team 2", "date": "2026-06-13", "info": "🏟️ Lincoln Financial Field (Philadelphia) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep E Team 3 - Groep E Team 4", "date": "2026-06-13", "info": "🏟️ NRG Stadium (Houston) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep F Team 1 - Groep F Team 2", "date": "2026-06-13", "info": "🏟️ Gillette Stadium (Boston) · ⏱️ Aftrap 19u00" }, { "type": "vast", "category": "sport", "name": "Groep F Team 3 - Groep F Team 4", "date": "2026-06-13", "info": "🏟️ Arrowhead Stadium (Kansas City) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Duitsland - Curaçao", "date": "2026-06-14", "info": "🏟️ Hard Rock Stadium (Miami) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Nederland - Japan", "date": "2026-06-14", "info": "🏟️ AT&T Stadium (Dallas) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Brazilië - Marokko", "date": "2026-06-14", "info": "🏟️ MetLife Stadium (New York/New Jersey) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep H Team 3 - Groep H Team 4", "date": "2026-06-14", "info": "🏟️ Mercedes-Benz Stadium (Atlanta) · ⏱️ Aftrap 03u00" }, { "type": "vast", "category": "sport", "name": "Groep I Team 1 - Groep I Team 2", "date": "2026-06-14", "info": "🏟️ Estadio BBVA (Monterrey) · ⏱️ Aftrap 19u30" }, { "type": "vast", "category": "sport", "name": "Groep I Team 3 - Groep I Team 4", "date": "2026-06-14", "info": "🏟️ Estadio Guadalajara (Guadalajara) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Spanje - Kaapverdië", "date": "2026-06-15", "info": "🏟️ Lincoln Financial Field (Philadelphia) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep J Team 3 - Groep J Team 4", "date": "2026-06-15", "info": "🏟️ Gillette Stadium (Boston) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "België - Egypte", "date": "2026-06-15", "info": "🏟️ Lumen Field (Seattle) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep K Team 3 - Groep K Team 4", "date": "2026-06-15", "info": "🏟️ BC Place (Vancouver) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep L Team 1 - Groep L Team 2", "date": "2026-06-15", "info": "🏟️ BMO Field (Toronto) · ⏱️ Aftrap 19u00" }, { "type": "vast", "category": "sport", "name": "Groep L Team 3 - Groep L Team 4", "date": "2026-06-15", "info": "🏟️ Mercedes-Benz Stadium (Atlanta) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Groep A Team 1 - Groep A Team 3", "date": "2026-06-16", "info": "🏟️ Aztecastadion (Mexico-Stad) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep A Team 4 - Groep A Team 2", "date": "2026-06-16", "info": "🏟️ Estadio Guadalajara (Guadalajara) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Frankrijk - Senegal", "date": "2026-06-16", "info": "🏟️ MetLife Stadium (New York/New Jersey) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep B Team 4 - Groep B Team 2", "date": "2026-06-16", "info": "🏟️ Levi's Stadium (San Francisco) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep C Team 1 - Groep C Team 3", "date": "2026-06-17", "info": "🏟️ Estadio BBVA (Monterrey) · ⏱️ Aftrap 19u30" }, { "type": "vast", "category": "sport", "name": "Groep C Team 4 - Groep C Team 2", "date": "2026-06-17", "info": "🏟️ NRG Stadium (Houston) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Argentinië - Algerije", "date": "2026-06-17", "info": "🏟️ Arrowhead Stadium (Kansas City) · ⏱️ Aftrap 03u00" }, { "type": "vast", "category": "sport", "name": "Engeland - Kroatië", "date": "2026-06-17", "info": "🏟️ AT&T Stadium (Dallas) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Groep E Team 1 - Groep E Team 3", "date": "2026-06-18", "info": "🏟️ Mercedes-Benz Stadium (Atlanta) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep E Team 4 - Groep E Team 2", "date": "2026-06-18", "info": "🏟️ Hard Rock Stadium (Miami) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep F Team 1 - Groep F Team 3", "date": "2026-06-18", "info": "🏟️ Lincoln Financial Field (Philadelphia) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep F Team 4 - Groep F Team 2", "date": "2026-06-18", "info": "🏟️ Gillette Stadium (Boston) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep G Team 1 - Groep G Team 3", "date": "2026-06-19", "info": "🏟️ Gillette Stadium (Boston) · ⏱️ Aftrap 19u00" }, { "type": "vast", "category": "sport", "name": "Groep G Team 4 - Groep G Team 2", "date": "2026-06-19", "info": "🏟️ Lincoln Financial Field (Philadelphia) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Groep H Team 1 - Groep H Team 3", "date": "2026-06-19", "info": "🏟️ Hard Rock Stadium (Miami) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep H Team 4 - Groep H Team 2", "date": "2026-06-19", "info": "🏟️ NRG Stadium (Houston) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep I Team 1 - Groep I Team 3", "date": "2026-06-20", "info": "🏟️ Aztecastadion (Mexico-Stad) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep I Team 4 - Groep I Team 2", "date": "2026-06-20", "info": "🏟️ Estadio BBVA (Monterrey) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep J Team 1 - Groep J Team 3", "date": "2026-06-20", "info": "🏟️ Arrowhead Stadium (Kansas City) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep J Team 4 - Groep J Team 2", "date": "2026-06-20", "info": "🏟️ AT&T Stadium (Dallas) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep K Team 1 - Groep K Team 3", "date": "2026-06-21", "info": "🏟️ BMO Field (Toronto) · ⏱️ Aftrap 19u00" }, { "type": "vast", "category": "sport", "name": "Groep K Team 4 - Groep K Team 2", "date": "2026-06-21", "info": "🏟️ Mercedes-Benz Stadium (Atlanta) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "België - Iran", "date": "2026-06-21", "info": "🏟️ SoFi Stadium (Los Angeles) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep L Team 4 - Groep L Team 2", "date": "2026-06-21", "info": "🏟️ Vancouver Stadium (Vancouver) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep A Team 4 - Groep A Team 1", "date": "2026-06-22", "info": "🏟️ Aztecastadion (Mexico-Stad) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep A Team 2 - Groep A Team 3", "date": "2026-06-22", "info": "🏟️ Estadio Guadalajara (Guadalajara) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep B Team 4 - Groep B Team 1", "date": "2026-06-22", "info": "🏟️ Lumen Field (Seattle) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep B Team 2 - Groep B Team 3", "date": "2026-06-22", "info": "🏟️ BC Place (Vancouver) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep C Team 4 - Groep C Team 1", "date": "2026-06-23", "info": "🏟️ Estadio BBVA (Monterrey) · ⏱️ Aftrap 19u30" }, { "type": "vast", "category": "sport", "name": "Groep C Team 2 - Groep C Team 3", "date": "2026-06-23", "info": "🏟️ NRG Stadium (Houston) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Groep D Team 4 - Groep D Team 1", "date": "2026-06-23", "info": "🏟️ SoFi Stadium (Los Angeles) · ⏱️ Aftrap 03u00" }, { "type": "vast", "category": "sport", "name": "Groep D Team 2 - Groep D Team 3", "date": "2026-06-23", "info": "🏟️ Levi's Stadium (San Francisco) · ⏱️ Aftrap 06u00" }, { "type": "vast", "category": "sport", "name": "Groep E Team 4 - Groep E Team 1", "date": "2026-06-24", "info": "🏟️ Hard Rock Stadium (Miami) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep E Team 2 - Groep E Team 3", "date": "2026-06-24", "info": "🏟️ Mercedes-Benz Stadium (Atlanta) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep F Team 4 - Groep F Team 1", "date": "2026-06-24", "info": "🏟️ MetLife Stadium (New York/New Jersey) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep F Team 2 - Groep F Team 3", "date": "2026-06-24", "info": "🏟️ AT&T Stadium (Dallas) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep G Team 4 - Groep G Team 1", "date": "2026-06-25", "info": "🏟️ Lincoln Financial Field (Philadelphia) · ⏱️ Aftrap 19u00" }, { "type": "vast", "category": "sport", "name": "Groep G Team 2 - Groep G Team 3", "date": "2026-06-25", "info": "🏟️ Gillette Stadium (Boston) · ⏱️ Aftrap 22u00" }, { "type": "vast", "category": "sport", "name": "Groep H Team 4 - Groep H Team 1", "date": "2026-06-25", "info": "🏟️ Arrowhead Stadium (Kansas City) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep H Team 2 - Groep H Team 3", "date": "2026-06-25", "info": "🏟️ NRG Stadium (Houston) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep I Team 4 - Groep I Team 1", "date": "2026-06-26", "info": "🏟️ Aztecastadion (Mexico-Stad) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep I Team 2 - Groep I Team 3", "date": "2026-06-26", "info": "🏟️ Estadio BBVA (Monterrey) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep J Team 4 - Groep J Team 1", "date": "2026-06-26", "info": "🏟️ Gillette Stadium (Boston) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Groep J Team 2 - Groep J Team 3", "date": "2026-06-26", "info": "🏟️ Lincoln Financial Field (Philadelphia) · ⏱️ Aftrap 00u00" }, { "type": "vast", "category": "sport", "name": "Groep K Team 4 - Groep K Team 1", "date": "2026-06-27", "info": "🏟️ Hard Rock Stadium (Miami) · ⏱️ Aftrap 18u00" }, { "type": "vast", "category": "sport", "name": "Groep K Team 2 - Groep K Team 3", "date": "2026-06-27", "info": "🏟️ AT&T Stadium (Dallas) · ⏱️ Aftrap 21u00" }, { "type": "vast", "category": "sport", "name": "Nieuw-Zeeland - België", "date": "2026-06-27", "info": "🏟️ Vancouver Stadium (Vancouver) · ⏱️ Aftrap 05u00" }, { "type": "vast", "category": "sport", "name": "Groep L Team 2 - Groep L Team 3", "date": "2026-06-27", "info": "🏟️ BMO Field (Toronto) · ⏱️ Aftrap 00u00" } ]
+﻿[
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇲🇽 Mexico - Zuid-Afrika 🇿🇦",
+        "date": "2026-06-11",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇰🇷 Zuid-Korea - Tsjechië 🇨🇿",
+        "date": "2026-06-12",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇨🇦 Canada - Bosnië-Herzegovina 🇧🇦",
+        "date": "2026-06-12",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇶🇦 Qatar - Zwitserland 🇨🇭",
+        "date": "2026-06-13",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇧🇷 Brazilië - Marokko 🇲🇦",
+        "date": "2026-06-14",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇭🇹 Haïti - Schotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+        "date": "2026-06-14",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇺🇸 Verenigde Staten - Paraguay 🇵🇾",
+        "date": "2026-06-13",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇦🇺 Australië - Turkije 🇹🇷",
+        "date": "2026-06-13",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 06:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇩🇪 Duitsland - Curaçao 🇨🇼",
+        "date": "2026-06-14",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 19:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇨🇮 Ivoorkust - Ecuador 🇪🇨",
+        "date": "2026-06-15",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 01:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇸🇪 Zweden - Tunesië 🇹🇳",
+        "date": "2026-06-15",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇧🇪 België - Egypte 🇪🇬",
+        "date": "2026-06-15",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇮🇷 Iran - Nieuw-Zeeland 🇳🇿",
+        "date": "2026-06-16",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇪🇸 Spanje - Kaapverdië 🇨🇻",
+        "date": "2026-06-15",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 18:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇸🇦 Saoedi-Arabië - Uruguay 🇺🇾",
+        "date": "2026-06-16",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇫🇷 Frankrijk - Senegal 🇸🇳",
+        "date": "2026-06-16",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇮🇶 Irak - Noorwegen 🇳🇴",
+        "date": "2026-06-17",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇦🇹 Oostenrijk - Jordanië 🇯🇴",
+        "date": "2026-06-16",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 06:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇦🇷 Argentinië - Algerije 🇩🇿",
+        "date": "2026-06-17",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇵🇹 Portugal - DR Congo 🇨🇩",
+        "date": "2026-06-17",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 19:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇺🇿 Oezbekistan - Colombia 🇨🇴",
+        "date": "2026-06-18",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Engeland - Kroatië 🇭🇷",
+        "date": "2026-06-17",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Speelronde 1",
+        "name": "🇬🇭 Ghana - Panama 🇵🇦",
+        "date": "2026-06-18",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 01:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇨🇿 Tsjechië - Zuid-Afrika 🇿🇦",
+        "date": "2026-06-18",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 18:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇲🇽 Mexico - Zuid-Korea 🇰🇷",
+        "date": "2026-06-19",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇨🇭 Zwitserland - Bosnië-Herzegovina 🇧🇦",
+        "date": "2026-06-18",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇨🇦 Canada - Qatar 🇶🇦",
+        "date": "2026-06-19",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Schotland - Marokko 🇲🇦",
+        "date": "2026-06-20",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇧🇷 Brazilië - Haïti 🇭🇹",
+        "date": "2026-06-20",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇹🇷 Turkije - Paraguay 🇵🇾",
+        "date": "2026-06-19",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 06:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇺🇸 Verenigde Staten - Australië 🇦🇺",
+        "date": "2026-06-19",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇩🇪 Duitsland - Ivoorkust 🇨🇮",
+        "date": "2026-06-20",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇪🇨 Ecuador - Curaçao 🇨🇼",
+        "date": "2026-06-21",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 02:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇹🇳 Tunesië - Japan 🇯🇵",
+        "date": "2026-06-20",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 06:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇧🇪 België - Iran 🇮🇷",
+        "date": "2026-06-21",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇳🇿 Nieuw-Zeeland - Egypte 🇪🇬",
+        "date": "2026-06-22",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇪🇸 Spanje - Saoedi-Arabië 🇸🇦",
+        "date": "2026-06-21",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 18:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇺🇾 Uruguay - Kaapverdië 🇨🇻",
+        "date": "2026-06-22",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇫🇷 Frankrijk - Irak 🇮🇶",
+        "date": "2026-06-22",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 23:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇳🇴 Noorwegen - Senegal 🇸🇳",
+        "date": "2026-06-23",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 02:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇦🇷 Argentinië - Oostenrijk 🇦🇹",
+        "date": "2026-06-22",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 19:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇯🇴 Jordanië - Algerije 🇩🇿",
+        "date": "2026-06-23",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 05:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇵🇹 Portugal - Oezbekistan 🇺🇿",
+        "date": "2026-06-23",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 19:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇨🇴 Colombia - DR Congo 🇨🇩",
+        "date": "2026-06-24",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Engeland - Ghana 🇬🇭",
+        "date": "2026-06-23",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Speelronde 2",
+        "name": "🇵🇦 Panama - Kroatië 🇭🇷",
+        "date": "2026-06-24",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 01:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇨🇿 Tsjechië - Mexico 🇲🇽",
+        "date": "2026-06-25",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇿🇦 Zuid-Afrika - Zuid-Korea 🇰🇷",
+        "date": "2026-06-25",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇨🇭 Zwitserland - Canada 🇨🇦",
+        "date": "2026-06-24",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇧🇦 Bosnië-Herzegovina - Qatar 🇶🇦",
+        "date": "2026-06-24",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Schotland - Brazilië 🇧🇷",
+        "date": "2026-06-25",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇲🇦 Marokko - Haïti 🇭🇹",
+        "date": "2026-06-25",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇹🇷 Turkije - Verenigde Staten 🇺🇸",
+        "date": "2026-06-26",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇵🇾 Paraguay - Australië 🇦🇺",
+        "date": "2026-06-26",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇪🇨 Ecuador - Duitsland 🇩🇪",
+        "date": "2026-06-25",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇨🇼 Curaçao - Ivoorkust 🇨🇮",
+        "date": "2026-06-25",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇯🇵 Japan - Zweden 🇸🇪",
+        "date": "2026-06-26",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 01:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇪🇬 Egypte - Iran 🇮🇷",
+        "date": "2026-06-27",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 05:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇳🇿 Nieuw-Zeeland - België 🇧🇪",
+        "date": "2026-06-27",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 05:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇨🇻 Kaapverdië - Saoedi-Arabië 🇸🇦",
+        "date": "2026-06-27",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 02:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇺🇾 Uruguay - Spanje 🇪🇸",
+        "date": "2026-06-27",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 02:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇳🇴 Noorwegen - Frankrijk 🇫🇷",
+        "date": "2026-06-26",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇸🇳 Senegal - Irak 🇮🇶",
+        "date": "2026-06-26",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇩🇿 Algerije - Oostenrijk 🇦🇹",
+        "date": "2026-06-28",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇯🇴 Jordanië - Argentinië 🇦🇷",
+        "date": "2026-06-28",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 04:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇨🇴 Colombia - Portugal 🇵🇹",
+        "date": "2026-06-28",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 01:30"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇨🇩 DR Congo - Oezbekistan 🇺🇿",
+        "date": "2026-06-28",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 01:30"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇵🇦 Panama - Engeland 🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+        "date": "2026-06-27",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 23:00"
+    },
+    {
+        "ronde": "Speelronde 3",
+        "name": "🇭🇷 Kroatië - Ghana 🇬🇭",
+        "date": "2026-06-27",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 23:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Nummer 2 Poule A - Nummer 2 Poule B 🏳️",
+        "date": "2026-06-28",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule C - Nummer 2 Poule F 🏳️",
+        "date": "2026-06-29",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 19:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule E - Nummer 3 Poule AB/C/D/F 🏳️",
+        "date": "2026-06-29",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:30"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule F - Nummer 2 Poule C 🏳️",
+        "date": "2026-06-30",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Nummer 2 Poule E - Nummer 2 Poule I 🏳️",
+        "date": "2026-06-30",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 19:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule I - Nummer 3 Poule C/D/F/G/H 🏳️",
+        "date": "2026-06-30",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 23:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule A - Nummer 3 Poule C/E/F/H/I 🏳️",
+        "date": "2026-07-01",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule L - Nummer 3 Poule E/H/I/J/K 🏳️",
+        "date": "2026-07-01",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 18:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule G - Nummer 3 Poule A/E/H/I/J 🏳️",
+        "date": "2026-07-01",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule D - Nummer 3 Poule B/E/F/I/J 🏳️",
+        "date": "2026-07-02",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 02:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule H - Nummer 2 Poule J 🏳️",
+        "date": "2026-07-02",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Nummer 2 Poule K - Nummer 2 Poule L 🏳️",
+        "date": "2026-07-03",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 01:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule B - Nummer 3 Poule E/F/G/I/J 🏳️",
+        "date": "2026-07-03",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 05:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Nummer 2 Poule D - Nummer 2 Poule G 🏳️",
+        "date": "2026-07-03",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 20:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule J - Nummer 2 Poule H 🏳️",
+        "date": "2026-07-04",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 00:00"
+    },
+    {
+        "ronde": "Zestiende finales",
+        "name": "🏳️ Winnaar Poule K - Nummer 3 Poule D/E/I/J/L 🏳️",
+        "date": "2026-07-04",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:30"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 73 - Winnaar duel 75 🏳️",
+        "date": "2026-07-04",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 19:00"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 74 - Winnaar duel 77 🏳️",
+        "date": "2026-07-04",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 23:00"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 76 - Winnaar duel 78 🏳️",
+        "date": "2026-07-05",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 79 - Winnaar duel 80 🏳️",
+        "date": "2026-07-06",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 02:00"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 83 - Winnaar duel 84 🏳️",
+        "date": "2026-07-06",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 81 - Winnaar duel 82 🏳️",
+        "date": "2026-07-07",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 02:00"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 86 - Winnaar duel 88 🏳️",
+        "date": "2026-07-07",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 18:00"
+    },
+    {
+        "ronde": "Achtste finales",
+        "name": "🏳️ Winnaar duel 85 - Winnaar duel 87 🏳️",
+        "date": "2026-07-07",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Kwartfinales",
+        "name": "🏳️ Winnaar duel 89 - Winnaar duel 90 🏳️",
+        "date": "2026-07-09",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 22:00"
+    },
+    {
+        "ronde": "Kwartfinales",
+        "name": "🏳️ Winnaar duel 93 - Winnaar duel 94 🏳️",
+        "date": "2026-07-10",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Kwartfinales",
+        "name": "🏳️ Winnaar duel 91 - Winnaar duel 92 🏳️",
+        "date": "2026-07-11",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 23:00"
+    },
+    {
+        "ronde": "Kwartfinales",
+        "name": "🏳️ Winnaar duel 95 - Winnaar duel 96 🏳️",
+        "date": "2026-07-12",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 03:00"
+    },
+    {
+        "ronde": "Halve finales",
+        "name": "🏳️ Winnaar duel 97 - Winnaar duel 98 🏳️",
+        "date": "2026-07-14",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "Halve finales",
+        "name": "🏳️ Winnaar duel 99 - Winnaar duel 100 🏳️",
+        "date": "2026-07-15",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    },
+    {
+        "ronde": "finale",
+        "name": "🏳️ Verliezer duel 101 - Verliezer duel 102 🏳️",
+        "date": "2026-07-18",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 23:00"
+    },
+    {
+        "ronde": "Finale",
+        "name": "🏳️ Winnaar duel 101 - Winnaar duel 102 🏳️",
+        "date": "2026-07-19",
+        "stadion": "🏟️ ()",
+        "starttime": "⏱️ Aftrap 21:00"
+    }
+]
