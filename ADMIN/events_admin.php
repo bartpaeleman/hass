@@ -26,7 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Read current events
     $events = [];
     if (file_exists($eventsFile)) {
-        $eventsData = json_decode(file_get_contents($eventsFile), true);
+        $content = file_get_contents($eventsFile);
+        if (substr($content, 0, 3) === "\xef\xbb\xbf") {
+            $content = substr($content, 3);
+        }
+        $eventsData = json_decode($content, true);
         if (is_array($eventsData)) {
             $events = $eventsData;
         }
@@ -93,7 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Read events for display
 $events = [];
 if (file_exists($eventsFile)) {
-    $eventsData = json_decode(file_get_contents($eventsFile), true);
+    $content = file_get_contents($eventsFile);
+    if (substr($content, 0, 3) === "\xef\xbb\xbf") {
+        $content = substr($content, 3);
+    }
+    $eventsData = json_decode($content, true);
     if (is_array($eventsData)) {
         $events = $eventsData;
     }
