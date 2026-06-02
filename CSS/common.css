@@ -109,7 +109,7 @@ header {
 }
 
 .logo h1 {
-  font-size: 22px;
+  font-size: 32px;
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
@@ -118,8 +118,8 @@ header {
 
 .logo span {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  color: var(--dim);
+  font-size: 13px;
+  color: var(--accent);
   letter-spacing: 2px;
 }
 
