@@ -297,7 +297,7 @@ $currentMonth = (int)$today->format('n');
         </summary>
         <div class="month-content">
           <?php if (count($monthEvents) > 0): ?>
-            <div class="weeks-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="weeks-grid" style="display: flex; flex-direction: column; gap: 16px;">
             <?php foreach ($weeks as $weekNum => $weekData): ?>
               <details class="week-details" style="margin-bottom: 15px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg);">
                 <summary style="padding: 10px; cursor: pointer; font-family: 'Share Tech Mono', monospace; color: var(--text-bright); background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border);"><?php echo $weekData['label']; ?></summary>
