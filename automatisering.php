@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="CSS/energie.css">
 <link rel="stylesheet" href="CSS/common.css">
 <script>
+  const PAGE_MIN_ACTION_LEVEL = 50;    
   (function() {
     var theme = localStorage.getItem('theme');
     if (theme) {
