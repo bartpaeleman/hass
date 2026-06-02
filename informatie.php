@@ -9,41 +9,7 @@
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/energie.css">
 <link rel="stylesheet" href="CSS/weersvoorspelling.css">
-<style>
-  @media (min-width: 901px) {
-    .energy-card {
-      padding: 24px;
-    }
-    .energy-icon {
-      font-size: 32px;
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
-    }
-    .energy-title {
-      font-size: 18px;
-    }
-    .energy-value {
-      font-size: 20px !important;
-    }
-    .energy-card-params > div:last-child {
-      font-size: 15px !important;
-    }
-    .waste-card-flex {
-      padding: 24px;
-    }
-    .waste-when {
-      font-size: 14px;
-    }
-    .waste-name {
-      font-size: 20px !important;
-    }
-    #wasteTodayVal img, #wasteTomorrowVal img {
-      width: 100px !important;
-      height: 100px !important;
-    }
-  }
-</style>
+<link rel="stylesheet" href="CSS/informatie.css">
 <script>
   (function() {
     var theme = localStorage.getItem('theme');
