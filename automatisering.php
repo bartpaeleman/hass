@@ -41,7 +41,7 @@
   <div class="left">
 
     <div class="top-sections-wrapper">
-    <details class="auto-section" open style="margin-bottom:0;">
+    <details id="details-scripts" class="auto-section" style="margin-bottom:0;">
       <summary class="energy-subtitle">
         <span>🤖</span> SCRIPTS
       </summary>
@@ -76,7 +76,7 @@
       </div>
     </details>
 
-    <details class="auto-section" open style="margin-bottom:0;">
+    <details id="details-wekker" class="auto-section" style="margin-bottom:0;">
       <summary class="energy-subtitle">
         <span>⏰</span> WEKKER
       </summary>
@@ -85,6 +85,7 @@
         <div id="wekkerMainContainer" class="wekker-main-toggle wekker-off">
             <div class="wekker-title">
                 <span class="wekker-icon">💡</span> WEKKER
+                <span id="wekkerTimeDisplay" style="margin-left: 8px; font-family: 'Share Tech Mono', monospace; font-size: 16px; color: var(--warn); background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px;">--:--</span>
             </div>
             <label class="switch">
               <input type="checkbox" id="wekkertoggle" onchange="toggleWekker('input_boolean.wekker')">
@@ -94,30 +95,30 @@
 
         <!-- WEKKER ALARM NOTIFICATIONS -->
         <div class="wekker-row">
-            <div class="wekker-label">Geluid</div>
+            <div class="wekker-label">Lampen</div>
             <select id="wekkerKeuzeSelect" class="wekker-select" onchange="setWekkerSelect('input_select.wekkerkeuze', this.value)">
-                <option value="Geen geluid">Geen geluid</option>
-                <option value="Zachte klankschalen">Zachte klankschalen</option>
-                <option value="Middelmatig">Middelmatig</option>
-                <option value="Luid en irritant">Luid en irritant</option>
-                <option value="Radio">Radio</option>
+                <option value="Bart">Bart</option>
+                <option value="Linda">Linda</option>
+                <option value="Beiden">Beiden</option>
             </select>
         </div>
 
-        <div class="wekker-row">
-            <div class="wekker-label">Aankondiging Voice</div>
-            <label class="switch">
-              <input type="checkbox" id="wekkerAankondigingToggle" onchange="toggleWekker('input_boolean.wekker_aankondiging')">
-              <span class="slider"></span>
-            </label>
-        </div>
+        <div class="wekker-switches-grid">
+            <div class="wekker-row">
+                <div class="wekker-label">Aankondiging Voice</div>
+                <label class="switch">
+                  <input type="checkbox" id="wekkerAankondigingToggle" onchange="toggleWekker('input_boolean.wekker_aankondiging')">
+                  <span class="slider"></span>
+                </label>
+            </div>
 
-        <div class="wekker-row">
-            <div class="wekker-label">Licht Auto-Aan</div>
-            <label class="switch">
-              <input type="checkbox" id="wekkerLichtToggle" onchange="toggleWekker('input_boolean.wekker_licht')">
-              <span class="slider"></span>
-            </label>
+            <div class="wekker-row">
+                <div class="wekker-label">Licht Auto-Aan</div>
+                <label class="switch">
+                  <input type="checkbox" id="wekkerLichtToggle" onchange="toggleWekker('input_boolean.wekker_licht')">
+                  <span class="slider"></span>
+                </label>
+            </div>
         </div>
 
         <!-- WEKKER DATETIME -->
@@ -129,7 +130,7 @@
     </details>
     </div> <!-- end .top-sections-wrapper -->
 
-    <details class="auto-section" open>
+    <details id="details-energie" class="auto-section">
       <summary class="energy-subtitle">
         <span>📊</span> Energie Intelligentie
       </summary>
@@ -182,7 +183,7 @@
       </div>
     </details>
 
-    <details class="auto-section" open>
+    <details id="details-lichten" class="auto-section">
       <summary class="energy-subtitle">
         <span>💡</span> AUTOLICHTEN
       </summary>
@@ -524,9 +525,12 @@
       const wekkerTijdObj = stateMap[ENTITIES.wekkerTijd];
       if (wekkerTijdObj && wekkerTijdObj.state !== 'unavailable') {
           const tm = document.getElementById('wekkerTijdInput');
+          const td = document.getElementById('wekkerTimeDisplay');
           // HA returns HH:MM:SS, time input expects HH:MM (though it tolerates HH:MM:SS usually)
-          if (tm && wekkerTijdObj.state.length >= 5) {
-              tm.value = wekkerTijdObj.state.substring(0,5);
+          if (wekkerTijdObj.state.length >= 5) {
+              const val = wekkerTijdObj.state.substring(0,5);
+              if (tm) tm.value = val;
+              if (td) td.textContent = val;
           }
       }
 
@@ -592,6 +596,27 @@
               } catch(e) { console.error(e); }
           });
       }
+
+      // LocalStorage for auto-section details elements
+      document.querySelectorAll('.auto-section').forEach(details => {
+          const id = details.id;
+          if (!id) return;
+          const lsKey = 'auto_section_' + id;
+          const state = localStorage.getItem(lsKey);
+
+          if (state === 'open') {
+              details.open = true;
+          } else if (state === 'closed') {
+              details.open = false;
+          } else {
+              // Default if no storage found: default is closed in HTML, so do nothing.
+              details.open = false;
+          }
+
+          details.addEventListener('toggle', (e) => {
+              localStorage.setItem(lsKey, details.open ? 'open' : 'closed');
+          });
+      });
   });
 </script>
 
