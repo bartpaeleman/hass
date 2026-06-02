@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 // Data processing logic
-$eventsFile = 'JSON/wk2026.json';
+$eventsFile = __DIR__ . '/JSON/wk2026.json';
 $events = [];
 if (file_exists($eventsFile)) {
     $eventsData = json_decode(file_get_contents($eventsFile), true);
@@ -49,49 +49,6 @@ function getThanksgivingDate($year) {
     return getSpecificWeekday($year, 4, 4, 11);
 }
 
-function calculateNextDate($event, $baseYear) {
-    if (!isset($event['type'])) return null;
-
-    if ($event['type'] === 'vast' && isset($event['date'])) {
-        $parts = explode('-', $event['date']);
-        if (count($parts) === 3) {
-            $month = $parts[1];
-            $day = $parts[2];
-        } elseif (count($parts) === 2) {
-            $month = $parts[0];
-            $day = $parts[1];
-        } else {
-            return null;
-        }
-        return new DateTime("$baseYear-$month-$day");
-    }
-
-    if ($event['type'] === 'flexibel' && isset($event['formula'])) {
-        $tokens = explode(' ', $event['formula']);
-        $cmd = $tokens[0] ?? '';
-
-        if ($cmd === 'easter') {
-            $offset = (int)($tokens[1] ?? 0);
-            $date = getEasterDate($baseYear);
-            $date->modify("$offset days");
-            return $date;
-        }
-        if ($cmd === 'weekday') {
-            $occ = $tokens[1];
-            $dayOfWeek = (int)($tokens[2] ?? 0);
-            $month = (int)($tokens[3] ?? 1);
-            return getSpecificWeekday($baseYear, $occ, $dayOfWeek, $month);
-        }
-        if ($cmd === 'thanksgiving') {
-            $offset = (int)($tokens[1] ?? 0);
-            $date = getThanksgivingDate($baseYear);
-            $date->modify("$offset days");
-            return $date;
-        }
-    }
-    return null;
-}
-
 $months = [
     1 => 'jan', 2 => 'feb', 3 => 'mrt', 4 => 'apr',
     5 => 'mei', 6 => 'jun', 7 => 'jul', 8 => 'aug',
@@ -99,110 +56,60 @@ $months = [
 ];
 
 foreach ($events as $event) {
-    if (!isset($event['name'])) continue;
+    if (!isset($event['name']) || !isset($event['date'])) continue;
 
-    $currentYear = (int)$today->format('Y');
-
-    // First, try to calculate for this year
-    $nextDate = calculateNextDate($event, $currentYear);
-    if (!$nextDate) continue; // Skip invalid formats
-
+    $nextDate = new DateTime($event['date']);
     $nextDate->setTime(0,0,0);
 
-    // Check if the event has already passed this year
     $hasPassedThisYear = false;
-    if ($nextDate < $today) {
+    if ($nextDate < clone($today)->setTime(0,0,0)) {
         $hasPassedThisYear = true;
-        // Compute for next year to get the correct next occurrence date and days remaining
-        $nextDate = calculateNextDate($event, $currentYear + 1);
-        $nextDate->setTime(0,0,0);
     }
 
     $interval = $today->diff($nextDate);
-    $daysRemaining = (int)$interval->format('%a');
-
-    // Calculate years if applicable (for birthdays and weddings)
-    $currentYears = null;
-    $nextYears = null;
-    $category = strtolower($event['category'] ?? '');
-    $isBirthdayOrWedding = in_array($category, ['verjaardag', 'huwelijk']);
-
-    // Only calculate years if the event is 'vast' and has a YYYY-MM-DD format (3 parts)
-    $originalYear = null;
-    if ($event['type'] === 'vast' && isset($event['date'])) {
-        $parts = explode('-', $event['date']);
-        if (count($parts) === 3) {
-            $originalYear = (int)$parts[0];
-        }
-    }
-
-    if ($originalYear !== null && $isBirthdayOrWedding) {
-        $currentYears = $currentYear - $originalYear;
-        // If the date hasn't happened yet this year, they haven't reached the "current" age for this year yet
-        $thisYearDate = calculateNextDate($event, $currentYear);
-        $thisYearDate->setTime(0,0,0);
-        if ($thisYearDate > $today) {
-            $currentYears--;
-        }
-        $nextYears = ((int)$nextDate->format('Y')) - $originalYear;
-    }
-
-    $info = isset($event['info']) ? $event['info'] : '';
-
-    $highlightMessage = '';
-    if ($category === 'verjaardag' && $nextYears !== null) {
-        $highlightMessage = "wordt $nextYears jaar";
-    } elseif ($category === 'huwelijk' && $nextYears !== null) {
-        $highlightMessage = "$nextYears jaar getrouwd";
-    } elseif ($category === 'feestdag') {
-        $highlightMessage = "Feestdag";
-    }
-
-    $filterClass = 'filter-andere';
-    if (($category === 'verjaardag' || $category === 'huwelijk') && stripos($info, 'gezin') !== false) {
-        $filterClass = 'filter-gezin';
-    } elseif (($category === 'verjaardag' || $category === 'huwelijk') && stripos($info, 'familie') !== false) {
-        $filterClass = 'filter-familie';
-    } elseif ($category === 'feestdag') {
-        $filterClass = 'filter-feestdagen';
-    } elseif ($category === 'sport') {
-        $filterClass = 'filter-sport';
-    }
+    $daysRemaining = $interval->invert ? -$interval->days : $interval->days;
 
     $formattedDate = $nextDate->format('j') . ' ' . $months[(int)$nextDate->format('n')];
-    if ($originalYear !== null && $isBirthdayOrWedding) {
-        $formattedDate .= ' ' . $originalYear;
-    }
+
+    // New format: ronde, starttime, stadion
+    $ronde = $event['ronde'] ?? '';
+    $starttime = $event['starttime'] ?? '';
+    $stadion = $event['stadion'] ?? '';
+
+    // Calculate filterClass based on something if needed, but we don't have filters anymore
+    $filterClass = 'filter-sport';
+
+    // Highlight message
+    $highlightMessage = '';
 
     $processedEvents[] = [
         'original' => $event,
-        'category' => $category,
         'nextDate' => $nextDate,
         'daysRemaining' => $daysRemaining,
         'formattedDate' => $formattedDate,
-        'currentYears' => $currentYears,
-        'nextYears' => $nextYears,
         'highlightMessage' => $highlightMessage,
         'hasPassedThisYear' => $hasPassedThisYear,
         'filterClass' => $filterClass,
-        'info' => $info
+        'ronde' => $ronde,
+        'starttime' => $starttime,
+        'stadion' => $stadion
     ];
 }
 
-// Sort by days remaining (global)
+// Sort by days remaining (global) - for upcoming events
 usort($processedEvents, function($a, $b) {
     return $a['daysRemaining'] <=> $b['daysRemaining'];
 });
 
 $upcomingEventsRaw = array_filter($processedEvents, function($e) {
-    return $e['daysRemaining'] <= 5;
+    return $e['daysRemaining'] >= 0 && $e['daysRemaining'] <= 5;
 });
 
-// Group upcoming events by daysRemaining -> category
+// Group upcoming events by daysRemaining -> ronde
 $upcomingGrouped = [];
 foreach ($upcomingEventsRaw as $e) {
     $d = $e['daysRemaining'];
-    $cat = $e['category'];
+    $cat = $e['ronde']; // Using ronde instead of category for upcoming
     if (!isset($upcomingGrouped[$d])) {
         $upcomingGrouped[$d] = [];
     }
@@ -235,6 +142,19 @@ $currentMonth = (int)$today->format('n');
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/speciale_dagen.css">
+<style>
+  /* WK2026 specific responsive styles */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 900px) {
+    .match-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 <script>
   const PAGE_MIN_ACTION_LEVEL = 0;
   (function() {
@@ -291,11 +211,7 @@ $currentMonth = (int)$today->format('n');
           }
 
           foreach ($categories as $cat => $eventsInCat):
-              $icon = '📅';
-              if ($cat === 'verjaardag') $icon = '🎂';
-              elseif ($cat === 'huwelijk') $icon = '💍';
-              elseif ($cat === 'feestdag') $icon = '🎉';
-              elseif ($cat === 'sport') $icon = '⚽';
+              $icon = '⚽';
 
               // Date is the same for all events in this group
               $formattedDate = $eventsInCat[0]['formattedDate'];
@@ -308,15 +224,12 @@ $currentMonth = (int)$today->format('n');
             <?php foreach ($eventsInCat as $e): ?>
               <div class="uc-item" data-filter="<?php echo $e['filterClass']; ?>">
                 <div class="uc-name-wrap">
-                  <span class="cat-label cat-<?php echo htmlspecialchars($e['category']); ?>"><?php echo strtoupper(htmlspecialchars($e['category'])); ?>:</span>
+                  <span class="cat-label cat-sport"><?php echo strtoupper(htmlspecialchars($e['ronde'])); ?>:</span>
                   <span class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
-                  <?php if (!empty($e['info'])): ?>
-                    <span style="color:var(--text-muted); font-size: 0.9em; margin-left: 5px;">- <?php echo htmlspecialchars($e['info']); ?></span>
+                  <?php if (!empty($e['starttime'])): ?>
+                    <span style="color:var(--text-muted); font-size: 0.9em; margin-left: 5px;">- <?php echo htmlspecialchars($e['starttime']); ?></span>
                   <?php endif; ?>
                 </div>
-                <?php if ($e['highlightMessage']): ?>
-                  <span class="msg-highlight"><?php echo $e['highlightMessage']; ?></span>
-                <?php endif; ?>
               </div>
             <?php endforeach; ?>
           </div>
@@ -334,7 +247,7 @@ $currentMonth = (int)$today->format('n');
 
     <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
       <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
-      <a href="ADMIN/events_admin.php?json-events=wk2026.json" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
+      <a href="ADMIN/wk_admin.php?json-events=wk2026.json" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
       <?php endif; ?>
     </div>
 
@@ -352,13 +265,13 @@ $currentMonth = (int)$today->format('n');
             $dateCmp = (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
             if ($dateCmp !== 0) return $dateCmp;
 
-            // Try to extract time from info (e.g. "⏱️ Aftrap 22u00")
-            $timeA = "00u00";
-            if (preg_match('/Aftrap\s+(\d{2}u\d{2})/', $a['info'], $matches)) {
+            // Try to extract time from starttime (e.g. "⏱️ Aftrap 21:00")
+            $timeA = "00:00";
+            if (preg_match('/Aftrap\s+(\d{2}:\d{2})/', $a['starttime'], $matches)) {
                 $timeA = $matches[1];
             }
-            $timeB = "00u00";
-            if (preg_match('/Aftrap\s+(\d{2}u\d{2})/', $b['info'], $matches)) {
+            $timeB = "00:00";
+            if (preg_match('/Aftrap\s+(\d{2}:\d{2})/', $b['starttime'], $matches)) {
                 $timeB = $matches[1];
             }
             return strcmp($timeA, $timeB);
@@ -369,13 +282,25 @@ $currentMonth = (int)$today->format('n');
         foreach ($monthEvents as $e) {
             $weekNum = $e['nextDate']->format('W');
             $dayStr = $e['formattedDate']; // Use formatted date as the day key
+
             if (!isset($weeks[$weekNum])) {
-                $weeks[$weekNum] = [];
+                // Calculate Monday and Sunday dates for this week
+                $year = $e['nextDate']->format('Y');
+                $dto = new DateTime();
+                $dto->setISODate($year, $weekNum);
+                $monday = $dto->format('j') . ' ' . $months[(int)$dto->format('n')];
+                $dto->modify('+6 days');
+                $sunday = $dto->format('j') . ' ' . $months[(int)$dto->format('n')];
+
+                $weeks[$weekNum] = [
+                    'label' => "WEEK $weekNum: $monday - $sunday",
+                    'days' => []
+                ];
             }
-            if (!isset($weeks[$weekNum][$dayStr])) {
-                $weeks[$weekNum][$dayStr] = [];
+            if (!isset($weeks[$weekNum]['days'][$dayStr])) {
+                $weeks[$weekNum]['days'][$dayStr] = [];
             }
-            $weeks[$weekNum][$dayStr][] = $e;
+            $weeks[$weekNum]['days'][$dayStr][] = $e;
         }
       ?>
       <details class="month-details active-month" data-month="<?php echo $m; ?>" open style="margin-bottom: 20px;">
@@ -385,27 +310,40 @@ $currentMonth = (int)$today->format('n');
         </summary>
         <div class="month-content">
           <?php if (count($monthEvents) > 0): ?>
-            <div class="weeks-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <?php foreach ($weeks as $weekNum => $daysInWeek): ?>
+            <div class="weeks-grid" style="display: flex; flex-direction: column; gap: 16px;">
+            <?php foreach ($weeks as $weekNum => $weekData): ?>
               <details class="week-details" style="margin-bottom: 15px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg);">
-                <summary style="padding: 10px; cursor: pointer; font-family: 'Share Tech Mono', monospace; color: var(--text-bright); background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border);">Week <?php echo $weekNum; ?></summary>
+                <summary style="padding: 10px; cursor: pointer; font-family: 'Share Tech Mono', monospace; color: var(--text-bright); background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border);"><?php echo $weekData['label']; ?></summary>
                 <div class="week-content" style="padding: 10px;">
-                  <?php foreach ($daysInWeek as $dayStr => $dayEvents): ?>
+                  <?php
+                  $currentRonde = '';
+                  foreach ($weekData['days'] as $dayStr => $dayEvents): ?>
                     <div style="margin-bottom: 15px;">
                       <h3 style="font-family: 'Share Tech Mono', monospace; color: var(--warn); margin: 0 0 8px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;"><?php echo $dayStr; ?></h3>
-                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                      <div class="match-grid">
                         <?php foreach ($dayEvents as $e):
                             $icon = '⚽';
                         ?>
+                        <?php if ($e['ronde'] !== $currentRonde):
+                            $currentRonde = $e['ronde'];
+                        ?>
+                            <div style="grid-column: 1 / -1; background: var(--warn); color: var(--bg); padding: 6px 10px; font-weight: bold; border-radius: 4px; text-transform: uppercase; margin-top: 10px; margin-bottom: 5px; text-align: center;">
+                                <?php echo htmlspecialchars($currentRonde); ?>
+                            </div>
+                        <?php endif; ?>
+
                         <div class="event-row" style="margin:0; background: var(--surface); border: 1px solid var(--border); padding: 10px; border-radius: 6px; display: flex; align-items: center; gap: 10px;">
                           <div class="er-icon"><?php echo $icon; ?></div>
                           <div class="er-main" style="flex:1;">
                             <div class="er-name-wrap">
                               <span class="er-name" style="font-size: 16px; font-weight: 600; color: var(--text-bright);"><?php echo htmlspecialchars($e['original']['name']); ?></span>
                             </div>
-                            <div class="er-meta" style="margin-top: 5px; line-height: 1.4;">
-                              <?php if (!empty($e['info'])): ?>
-                                <span class="msg-highlight" style="color:var(--text-muted); display: block; font-size: 12px;"><?php echo htmlspecialchars($e['info']); ?></span>
+                            <div class="er-meta" style="margin-top: 5px; line-height: 1.4; display: flex; flex-direction: column; gap: 3px; align-items: flex-start; text-align: left;">
+                              <?php if (!empty($e['starttime'])): ?>
+                                <span class="msg-highlight" style="color:var(--text-muted); font-size: 12px;"><?php echo htmlspecialchars($e['starttime']); ?></span>
+                              <?php endif; ?>
+                              <?php if (!empty($e['stadion'])): ?>
+                                <span class="msg-highlight" style="color:var(--text-muted); font-size: 12px;"><?php echo htmlspecialchars($e['stadion']); ?></span>
                               <?php endif; ?>
                             </div>
                           </div>
