@@ -142,6 +142,19 @@ $currentMonth = (int)$today->format('n');
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/speciale_dagen.css">
+<style>
+  /* WK2026 specific responsive styles */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 900px) {
+    .match-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 <script>
   const PAGE_MIN_ACTION_LEVEL = 0;
   (function() {
@@ -307,7 +320,7 @@ $currentMonth = (int)$today->format('n');
                   foreach ($weekData['days'] as $dayStr => $dayEvents): ?>
                     <div style="margin-bottom: 15px;">
                       <h3 style="font-family: 'Share Tech Mono', monospace; color: var(--warn); margin: 0 0 8px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;"><?php echo $dayStr; ?></h3>
-                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                      <div class="match-grid">
                         <?php foreach ($dayEvents as $e):
                             $icon = '⚽';
                         ?>
@@ -325,7 +338,7 @@ $currentMonth = (int)$today->format('n');
                             <div class="er-name-wrap">
                               <span class="er-name" style="font-size: 16px; font-weight: 600; color: var(--text-bright);"><?php echo htmlspecialchars($e['original']['name']); ?></span>
                             </div>
-                            <div class="er-meta" style="margin-top: 5px; line-height: 1.4; display: flex; flex-direction: column; gap: 3px;">
+                            <div class="er-meta" style="margin-top: 5px; line-height: 1.4; display: flex; flex-direction: column; gap: 3px; align-items: flex-start; text-align: left;">
                               <?php if (!empty($e['starttime'])): ?>
                                 <span class="msg-highlight" style="color:var(--text-muted); font-size: 12px;"><?php echo htmlspecialchars($e['starttime']); ?></span>
                               <?php endif; ?>
