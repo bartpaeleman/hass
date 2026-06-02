@@ -194,50 +194,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
     <title>Event-admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/common.css">
-    <style>
-        body { margin: 0; padding: 20px; font-family: 'Share Tech Mono', monospace; background: var(--bg); color: var(--text-bright); }
-        .admin-container { max-width: 95%; margin: 0 auto; background: var(--surface); padding: 20px; border-radius: 8px; }
-        h1, h2 { font-family: 'Barlow Condensed', sans-serif; color: var(--text-bright); }
-        .message { padding: 10px; margin-bottom: 20px; border-radius: 4px; background: rgba(0, 230, 118, 0.1); border: 1px solid var(--ok); color: var(--ok); }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-        th, td { text-align: left; padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        th { background: rgba(0, 0, 0, 0.2); white-space: nowrap; }
-        th a { color: var(--text-bright); text-decoration: none; display: block; }
-        th a:hover { color: var(--accent); }
-        .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; flex-wrap: wrap; }
-        .filter-bar select { width: auto; min-width: 150px; }
-        .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 14px; }
-        .btn-edit { background: var(--accent); color: var(--bg); }
-        .btn-delete { background: var(--alert); color: var(--text-bright); }
-        .btn-add { background: var(--ok); color: var(--bg); padding: 10px 20px; font-size: 16px; margin-bottom: 20px; }
-
-        /* Form styling */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: var(--text-muted); }
-        input[type="text"], select { width: 100%; padding: 8px; box-sizing: border-box; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: var(--text-bright); border-radius: 4px; font-family: inherit; }
-        .form-container { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.1); display: none; }
-        .form-container.active { display: block; }
-        .help-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; }
-        .event-name { font-weight: bold; color: var(--accent); font-size: 1.1em; }
-        .actions-cell { display: flex; gap: 10px; align-items: center; }
-
-        /* Responsive styling for small screens */
-        @media (max-width: 600px) {
-            .hide-mobile { display: none !important; }
-            .filter-cat-btn { padding: 10px !important; }
-            .filter-text { display: none; }
-            .top-buttons-container { flex-wrap: nowrap !important; overflow-x: auto; gap: 5px !important; }
-            .top-buttons-container .btn { padding: 8px 12px !important; white-space: nowrap; font-size: 14px !important; }
-            .btn-add-text-desktop { display: none; }
-            .btn-add-text-mobile { display: inline; }
-            .actions-cell { flex-wrap: nowrap; gap: 5px; }
-            .actions-cell .btn { padding: 6px 10px; font-size: 12px; }
-        }
-        @media (min-width: 601px) {
-            .btn-add-text-mobile { display: none; }
-            .btn-add-text-desktop { display: inline; }
-        }
-    </style>
+    <link rel="stylesheet" href="../CSS/events_admin.css">
 </head>
 <body>
 

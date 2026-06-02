@@ -1,0 +1,72 @@
+/* CSS/auth.css */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+.login-card {
+  background: var(--surface);
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.login-card h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  color: var(--text-bright);
+  margin-bottom: 24px;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+.login-input {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-bright);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.login-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.1s;
+}
+.login-btn:hover {
+  opacity: 0.9;
+}
+.login-btn:active {
+  transform: scale(0.98);
+}
+.error-msg {
+  color: var(--alert);
+  margin-bottom: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  background: rgba(255, 61, 61, 0.1);
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 61, 61, 0.3);
+}

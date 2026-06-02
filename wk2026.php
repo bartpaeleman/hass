@@ -142,19 +142,7 @@ $currentMonth = (int)$today->format('n');
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/speciale_dagen.css">
-<style>
-  /* WK2026 specific responsive styles */
-  .match-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  @media (max-width: 900px) {
-    .match-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+    <link rel="stylesheet" href="CSS/wk2026.css">
 <script>
   const PAGE_MIN_ACTION_LEVEL = 0;
   (function() {
