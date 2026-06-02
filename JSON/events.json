@@ -1,1 +1,328 @@
-[]
+[
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Allerheiligen",
+        "date": "11-01",
+        "info": "Herdenking overledenen"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Aur\u00e9lie",
+        "date": "2019-03-21",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Bart",
+        "date": "1963-08-05",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "huwelijk",
+        "name": "Bart & Linda",
+        "date": "1986-02-25",
+        "info": "Gezin"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Black Friday",
+        "formula": "thanksgiving +1",
+        "info": "\ud83c\uddfa\ud83c\uddf8 koopjesdag"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Carnaval",
+        "formula": "easter -49"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Dag van de Arbeid",
+        "date": "05-01"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Ellen",
+        "date": "1986-03-11",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Halloween",
+        "date": "10-31",
+        "info": "\ud83c\uddfa\ud83c\uddf8 Trick or treat!"
+    },
+    {
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Hemelvaartsdag",
+        "formula": "easter +39"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Katrien",
+        "date": "1995-03-28",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Kerstavond",
+        "date": "12-24"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Kerstmis",
+        "date": "12-25"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Lenne",
+        "date": "2019-03-04",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Linda",
+        "date": "1969-10-05",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Margaux",
+        "date": "2020-03-05",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "O.L.V. Maria Hemelvaart",
+        "date": "08-15",
+        "info": "Moederdag regio Antwerpen"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Matthijs",
+        "date": "1988-06-28",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "huwelijk",
+        "name": "Matthijs & Steffie",
+        "date": "2018-08-09",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Mille",
+        "date": "2021-03-19",
+        "info": "Gezin"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Moederdag",
+        "formula": "weekday 2 0 5",
+        "info": "Vergeet mama niet!"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Nationale Feestdag",
+        "date": "07-21"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Niel",
+        "date": "2016-10-14",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Nieuwjaar",
+        "date": "01-01"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Oudjaarsavond",
+        "date": "12-31",
+        "info": "Op naar een nieuw jaar!"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Noah",
+        "date": "2010-04-06",
+        "info": "Gezin"
+    },
+    {
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Paasmaandag",
+        "formula": "easter +1"
+    },
+    {
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Pasen",
+        "formula": "easter 0"
+    },
+    {
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Pinkstermaandag",
+        "formula": "easter +50"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Roos",
+        "date": "2022-05-20",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Sinterklaas",
+        "date": "12-06"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Steffie",
+        "date": "1988-11-22",
+        "info": "Gezin"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Thanksgiving",
+        "formula": "thanksgiving 0",
+        "info": "\ud83c\uddfa\ud83c\uddf8 Feestdag"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Cyber Monday",
+        "formula": "thanksgiving +4",
+        "info": "\ud83c\uddfa\ud83c\uddf8 koopjesdag"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Tweede Kerstdag",
+        "date": "12-26"
+    },
+    {
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Vaderdag",
+        "formula": "weekday 2 0 6"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Valentijnsdag",
+        "date": "02-14"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Wapenstilstand",
+        "date": "11-11"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Winteruur",
+        "formula": "weekday last 0 10",
+        "info": "Klok 1 uur achteruit (langer slapen)!"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Yannick",
+        "date": "1987-08-11",
+        "info": "Gezin"
+    },
+    {
+        "type": "vast",
+        "category": "verjaardag",
+        "name": "Yorick",
+        "date": "1994-08-25",
+        "info": "Gezin"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Zomeruur",
+        "formula": "weekday last 0 3",
+        "info": "Klok 1 uur vooruit (vroeger op)!"
+    },
+    {
+        "type": "flexibel",
+        "category": "feestdag",
+        "name": "Pinksteren",
+        "formula": "easter +49",
+        "info": "Nationale Feestdag"
+    },
+    {
+        "type": "flexibel",
+        "category": "interessant",
+        "name": "Aswoensdag",
+        "formula": "easter -46",
+        "info": "Begin van de vastentijd"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Driekoningen",
+        "date": "01-06"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Vlaamse Feestdag",
+        "date": "07-11"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Allerzielen",
+        "date": "11-02",
+        "info": "Vrij voor ambtenaren"
+    },
+    {
+        "type": "vast",
+        "category": "interessant",
+        "name": "Koningsdag",
+        "date": "11-15",
+        "info": "Vrij voor ambtenaren"
+    },
+    {
+        "type": "vast",
+        "category": "feestdag",
+        "name": "Naamdag St. Jozef",
+        "date": "03-19",
+        "info": "Vaderdag regio Antwerpen"
+    }
+]
