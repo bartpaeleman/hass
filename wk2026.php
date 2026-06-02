@@ -329,7 +329,7 @@ $currentMonth = (int)$today->format('n');
                           <div class="er-icon"><?php echo $icon; ?></div>
                           <div class="er-main" style="flex:1;">
                             <div class="er-name-wrap">
-                              <span class="er-name" style="font-size: 16px; font-weight: 600; color: var(--text-bright);"><?php echo htmlspecialchars($e['original']['name']); ?></span>
+                              <span class="er-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
                             </div>
                             <div class="er-meta" style="margin-top: 5px; line-height: 1.4; display: flex; flex-direction: column; gap: 3px; align-items: flex-start; text-align: left;">
                               <?php if (!empty($e['starttime'])): ?>
