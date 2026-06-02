@@ -17,3 +17,196 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Wekker & Layout Extensions */
+.top-sections-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.auto-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.auto-section[open] .energy-subtitle {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+
+.auto-section .energy-subtitle {
+    margin-top: 0 !important;
+    padding: 16px;
+    cursor: pointer;
+    border-bottom: none;
+    margin-bottom: 0;
+    list-style: none; /* Hide default arrow */
+    outline: none;
+    background: rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auto-section summary::-webkit-details-marker {
+    display: none;
+}
+
+.auto-section summary::after {
+    content: '▼';
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s;
+}
+
+.auto-section[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.auto-section-content {
+    padding: 16px;
+}
+
+/* Wekker Specific UI */
+.wekker-main-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.wekker-on {
+    background-color: darkgreen;
+    color: white;
+}
+.wekker-on .wekker-title {
+    color: white;
+}
+
+.wekker-off {
+    border: 1px solid white;
+    background: transparent;
+}
+
+.wekker-title {
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.wekker-icon {
+    font-size: 20px;
+}
+
+/* Base switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--ok);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--ok);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+.wekker-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.wekker-row:last-child {
+    border-bottom: none;
+}
+.wekker-label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.wekker-switches-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+}
+
+.wekker-switches-grid .wekker-row {
+    border-bottom: none;
+    padding: 0;
+}
+
+.wekker-select, .wekker-time {
+    background: var(--surface);
+    color: var(--text-bright);
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+}
+
+@media (max-width: 900px) {
+    .top-sections-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .wekker-switches-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
