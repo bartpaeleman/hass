@@ -12,7 +12,7 @@
 }
 
 .er-name {
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 600;
   color: var(--text-bright);
 }
@@ -134,7 +134,7 @@
 
 .er-meta .er-msg {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 16px;
 }
 
 /* Komende 5 dagen componenten */
