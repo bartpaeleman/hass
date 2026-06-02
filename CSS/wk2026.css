@@ -4,13 +4,142 @@
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
+
 @media (max-width: 900px) {
   .match-grid {
     grid-template-columns: 1fr;
   }
 }
-.er-name{
-    font-size: 19px;
-    font-weight: 600;
-    color: var(--text-bright);
+
+.er-name {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+/* --- Nieuwe stijlen overgezet uit de PHP componenten --- */
+
+/* Sectie-labels & Algemene overkoepelende componenten */
+.left .section-label-upcoming {
+  margin-bottom: 12px;
+}
+
+.left .section-label-events {
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.left .filters-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.left .admin-btn {
+  text-decoration: none;
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.left .months-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.left .month-details {
+  margin-bottom: 20px;
+}
+
+.left .weeks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Weken details containers */
+.week-details {
+  margin-bottom: 15px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+
+.week-summary {
+  padding: 10px;
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--text-bright);
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
+}
+
+.week-content {
+  padding: 10px;
+}
+
+/* Dagen & Rondes */
+.day-container {
+  margin-bottom: 15px;
+}
+
+.day-title {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--warn);
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+}
+
+.ronde-divider {
+  grid-column: 1 / -1;
+  background: var(--warn);
+  color: var(--bg);
+  padding: 6px 10px;
+  font-weight: bold;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+/* Event layouts */
+.event-row {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.er-main {
+  flex: 1;
+}
+
+.er-meta {
+  margin-top: 5px;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.er-meta .er-msg {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* Komende 5 dagen componenten */
+.uc-name-wrap .starttime-label {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  margin-left: 5px;
 }
