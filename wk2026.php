@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 // Data processing logic
-$eventsFile = 'JSON/events.json';
+$eventsFile = 'JSON/wk2026.json';
 $events = [];
 if (file_exists($eventsFile)) {
     $eventsData = json_decode(file_get_contents($eventsFile), true);
@@ -231,7 +231,7 @@ $currentMonth = (int)$today->format('n');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Speciale Dagen</title>
+<title>WK VOETBAL 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/speciale_dagen.css">
@@ -251,7 +251,7 @@ $currentMonth = (int)$today->format('n');
   <div class="logo">
     <div class="logo-icon"></div>
     <div>
-      <h1>Speciale Dagen</h1>
+      <h1>WK VOETBAL 2026</h1>
       <span>DASHBOARD</span>
     </div>
   </div>
@@ -334,82 +334,92 @@ $currentMonth = (int)$today->format('n');
 
     <div class="filters-container" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
       <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
-      <a href="ADMIN/events_admin.php?json-events=events.json" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
+      <a href="ADMIN/events_admin.php?json-events=wk2026.json" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
       <?php endif; ?>
-      <button class="filter-btn active" id="toggle-all-filters">🔄 <span class="filter-text">ALLE</span></button>
-      <button class="filter-btn active" data-filter="filter-gezin">🎂 <span class="filter-text">GEZIN</span></button>
-      <button class="filter-btn active" data-filter="filter-familie">🎂 <span class="filter-text">FAMILIE</span></button>
-      <button class="filter-btn active" data-filter="filter-feestdagen">🎉 <span class="filter-text">FEESTDAGEN</span></button>
-      <button class="filter-btn active" data-filter="filter-sport">⚽ <span class="filter-text">SPORT</span></button>
-      <button class="filter-btn active" data-filter="filter-andere">📅 <span class="filter-text">ANDERE</span></button>
     </div>
 
-    <div class="months-grid">
+    <div class="months-wrapper" style="display: flex; flex-direction: column; gap: 16px;">
       <?php
       $fullMonthNames = [
-          1 => 'Januari', 2 => 'Februari', 3 => 'Maart', 4 => 'April',
-          5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Augustus',
-          9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'December'
+          6 => 'Juni', 7 => 'Juli'
       ];
 
-      for ($m = 1; $m <= 12; $m++):
-        $isActive = ($m === $currentMonth) ? 'active-month' : '';
-        $monthEvents = $eventsByMonth[$m];
+      for ($m = 6; $m <= 7; $m++):
+        $monthEvents = $eventsByMonth[$m] ?? [];
 
-        // Sort events within the month by day (since they are currently sorted globally by daysRemaining,
-        // which can mix next year vs this year if we just look at the list).
-        // Best to sort strictly by date of month for display inside the month box.
+        // Sort events within the month by day and time
         usort($monthEvents, function($a, $b) {
-            return (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
+            $dateCmp = (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
+            if ($dateCmp !== 0) return $dateCmp;
+
+            // Try to extract time from info (e.g. "⏱️ Aftrap 22u00")
+            $timeA = "00u00";
+            if (preg_match('/Aftrap\s+(\d{2}u\d{2})/', $a['info'], $matches)) {
+                $timeA = $matches[1];
+            }
+            $timeB = "00u00";
+            if (preg_match('/Aftrap\s+(\d{2}u\d{2})/', $b['info'], $matches)) {
+                $timeB = $matches[1];
+            }
+            return strcmp($timeA, $timeB);
         });
+
+        // Group by week, then by day
+        $weeks = [];
+        foreach ($monthEvents as $e) {
+            $weekNum = $e['nextDate']->format('W');
+            $dayStr = $e['formattedDate']; // Use formatted date as the day key
+            if (!isset($weeks[$weekNum])) {
+                $weeks[$weekNum] = [];
+            }
+            if (!isset($weeks[$weekNum][$dayStr])) {
+                $weeks[$weekNum][$dayStr] = [];
+            }
+            $weeks[$weekNum][$dayStr][] = $e;
+        }
       ?>
-      <details class="month-details <?php echo $isActive; ?>" data-month="<?php echo $m; ?>">
+      <details class="month-details active-month" data-month="<?php echo $m; ?>" open style="margin-bottom: 20px;">
         <summary class="month-summary">
           <div class="month-title"><?php echo $fullMonthNames[$m]; ?></div>
           <div class="month-count"><?php echo count($monthEvents); ?></div>
         </summary>
         <div class="month-content">
           <?php if (count($monthEvents) > 0): ?>
-            <div class="events-list">
-              <?php foreach ($monthEvents as $e):
-                  $cat = strtolower($e['original']['category'] ?? '');
-                  $icon = '📅';
-                  if ($cat === 'verjaardag') $icon = '🎂';
-                  elseif ($cat === 'huwelijk') $icon = '💍';
-                  elseif ($cat === 'feestdag') $icon = '🎉';
-                  elseif ($cat === 'sport') $icon = '⚽';
-              ?>
-              <div class="event-row" data-filter="<?php echo $e['filterClass']; ?>">
-                <div class="er-icon"><?php echo $icon; ?></div>
-                <div class="er-main">
-                  <div class="er-name-wrap">
-                    <span class="cat-label cat-<?php echo htmlspecialchars($e['category']); ?>"><?php echo strtoupper(htmlspecialchars($e['category'])); ?>:</span>
-                    <span class="er-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
-                  </div>
-                  <div class="er-meta">
-                    <span class="er-date"><?php echo $e['formattedDate']; ?></span>
-                    <?php if (!empty($e['info'])): ?>
-                      <span class="msg-highlight" style="color:var(--text-muted);">&bull; <?php echo htmlspecialchars($e['info']); ?></span>
-                    <?php endif; ?>
-                    <?php if ($e['highlightMessage']): ?>
-                      <span class="msg-highlight">&bull; <?php echo $e['highlightMessage']; ?></span>
-                    <?php endif; ?>
-                  </div>
+            <div class="weeks-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <?php foreach ($weeks as $weekNum => $daysInWeek): ?>
+              <details class="week-details" style="margin-bottom: 15px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg);">
+                <summary style="padding: 10px; cursor: pointer; font-family: 'Share Tech Mono', monospace; color: var(--text-bright); background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border);">Week <?php echo $weekNum; ?></summary>
+                <div class="week-content" style="padding: 10px;">
+                  <?php foreach ($daysInWeek as $dayStr => $dayEvents): ?>
+                    <div style="margin-bottom: 15px;">
+                      <h3 style="font-family: 'Share Tech Mono', monospace; color: var(--warn); margin: 0 0 8px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px;"><?php echo $dayStr; ?></h3>
+                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <?php foreach ($dayEvents as $e):
+                            $icon = '⚽';
+                        ?>
+                        <div class="event-row" style="margin:0; background: var(--surface); border: 1px solid var(--border); padding: 10px; border-radius: 6px; display: flex; align-items: center; gap: 10px;">
+                          <div class="er-icon"><?php echo $icon; ?></div>
+                          <div class="er-main" style="flex:1;">
+                            <div class="er-name-wrap">
+                              <span class="er-name" style="font-size: 16px; font-weight: 600; color: var(--text-bright);"><?php echo htmlspecialchars($e['original']['name']); ?></span>
+                            </div>
+                            <div class="er-meta" style="margin-top: 5px; line-height: 1.4;">
+                              <?php if (!empty($e['info'])): ?>
+                                <span class="msg-highlight" style="color:var(--text-muted); display: block; font-size: 12px;"><?php echo htmlspecialchars($e['info']); ?></span>
+                              <?php endif; ?>
+                            </div>
+                          </div>
+                        </div>
+                        <?php endforeach; ?>
+                      </div>
+                    </div>
+                  <?php endforeach; ?>
                 </div>
-                <div class="er-days">
-                  <?php
-                    if (!$e['hasPassedThisYear']) {
-                        if ($e['daysRemaining'] == 0) echo '<span style="color:var(--ok); font-weight:bold;">Vandaag</span>';
-                        elseif ($e['daysRemaining'] == 1) echo 'Morgen';
-                        else echo 'Binnen ' . $e['daysRemaining'] . ' dagen';
-                    }
-                  ?>
-                </div>
-              </div>
-              <?php endforeach; ?>
+              </details>
+            <?php endforeach; ?>
             </div>
           <?php else: ?>
-            <div class="no-events">Geen gelegenheden</div>
+            <div class="no-events">Geen wedstrijden in deze maand</div>
           <?php endif; ?>
         </div>
       </details>
@@ -437,23 +447,6 @@ $currentMonth = (int)$today->format('n');
   setInterval(tick, 1000);
 
   document.addEventListener('DOMContentLoaded', () => {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-
-    // Load saved filters
-    const savedFilters = localStorage.getItem('speciale_dagen_filters');
-    if (savedFilters) {
-      try {
-        const filtersArray = JSON.parse(savedFilters);
-        // Reset all filter buttons (except toggle-all)
-        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
-          if (filtersArray.includes(btn.dataset.filter)) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-      } catch(e) {}
-    }
 
     // Load saved open months
     const savedMonths = localStorage.getItem('speciale_dagen_months_open');
@@ -468,82 +461,8 @@ $currentMonth = (int)$today->format('n');
       } catch(e) {}
     }
 
-    function applyFilters() {
-      // Get all active filters
-      const activeFilters = Array.from(document.querySelectorAll('.filter-btn.active'))
-                                 .map(btn => btn.dataset.filter)
-                                 .filter(f => f); // filter out undefined from toggle-all
 
-      // Save to localStorage
-      localStorage.setItem('speciale_dagen_filters', JSON.stringify(activeFilters));
 
-      // Filter upcoming cards items
-      document.querySelectorAll('.upcoming-card').forEach(card => {
-        let hasVisibleItem = false;
-        card.querySelectorAll('.uc-item').forEach(item => {
-          const itemFilter = item.dataset.filter;
-          if (activeFilters.includes(itemFilter)) {
-            item.style.display = 'flex';
-            hasVisibleItem = true;
-          } else {
-            item.style.display = 'none';
-          }
-        });
-        card.style.display = hasVisibleItem ? 'flex' : 'none';
-      });
-
-      // Filter month grids items
-      document.querySelectorAll('.month-details').forEach(month => {
-        let visibleCount = 0;
-        month.querySelectorAll('.event-row').forEach(row => {
-          const itemFilter = row.dataset.filter;
-          if (activeFilters.includes(itemFilter)) {
-            row.style.display = 'flex';
-            visibleCount++;
-          } else {
-            row.style.display = 'none';
-          }
-        });
-
-        const countBadge = month.querySelector('.month-count');
-        if (countBadge) {
-            countBadge.textContent = visibleCount;
-        }
-      });
-
-      // Update the toggle-all button state
-      const toggleAllBtn = document.getElementById('toggle-all-filters');
-      if (toggleAllBtn) {
-        const catBtns = Array.from(document.querySelectorAll('.filter-btn[data-filter]'));
-        const allActive = catBtns.every(b => b.classList.contains('active'));
-        if (allActive) {
-          toggleAllBtn.classList.add('active');
-        } else {
-          toggleAllBtn.classList.remove('active');
-        }
-      }
-    }
-
-    filterBtns.forEach(btn => {
-      if (btn.id === 'toggle-all-filters') {
-        btn.addEventListener('click', () => {
-          const isTurningOn = !btn.classList.contains('active');
-          document.querySelectorAll('.filter-btn[data-filter]').forEach(catBtn => {
-            if (isTurningOn) {
-              catBtn.classList.add('active');
-            } else {
-              catBtn.classList.remove('active');
-            }
-          });
-          applyFilters();
-        });
-      } else {
-        btn.addEventListener('click', () => {
-          btn.classList.toggle('active');
-          applyFilters();
-        });
-      }
-    });
 
     // Save open months on toggle
     document.querySelectorAll('.month-details').forEach(month => {
@@ -556,7 +475,6 @@ $currentMonth = (int)$today->format('n');
     });
 
     // Initial apply
-    applyFilters();
   });
 </script>
 </body>

@@ -8,7 +8,14 @@ if (!isset($_SESSION['role_level']) || $_SESSION['role_level'] < 50) {
     exit("Toegang geweigerd. Onvoldoende rechten.");
 }
 
-$eventsFile = __DIR__ . '/../events.json';
+$requestedFile = isset($_GET['json-events']) ? $_GET['json-events'] : 'events.json';
+$allowedFiles = ['events.json', 'wk2026.json'];
+if (!in_array($requestedFile, $allowedFiles)) {
+    $requestedFile = 'events.json';
+}
+$eventsFile = __DIR__ . '/../JSON/' . $requestedFile;
+$eventsFileWeb = htmlspecialchars($requestedFile, ENT_QUOTES, 'UTF-8');
+
 
 // Process form submission
 $message = '';
@@ -165,10 +172,12 @@ $pagedEvents = array_slice($mappedEvents, $startIndex, $itemsPerPage);
 
 // Query builders for links
 function getSortLink($col, $currentSort, $currentDir) {
+    global $requestedFile;
     $newDir = ($currentSort === $col && $currentDir === 'asc') ? 'desc' : 'asc';
     $params = $_GET;
     $params['sort'] = $col;
     $params['dir'] = $newDir;
+    $params['json-events'] = $requestedFile;
     return '?' . http_build_query($params);
 }
 
@@ -246,7 +255,11 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
         <div class="top-buttons-container" style="display: flex; gap: 10px;">
+            <?php if ($requestedFile === 'wk2026.json'): ?>
+            <a href="../wk2026.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
+        <?php else: ?>
             <a href="../speciale_dagen.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
+        <?php endif; ?>
             <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()"><span class="btn-add-text-desktop">+ Nieuw Event Toevoegen</span><span class="btn-add-text-mobile">+ Nieuw</span></button>
         </div>
 
@@ -322,7 +335,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
                     </td>
                     <td class="actions-cell">
                         <button class="btn btn-edit" onclick="editForm(<?php echo $index; ?>, <?php echo htmlspecialchars(json_encode($event), ENT_QUOTES, 'UTF-8'); ?>)">Bewerk</button>
-                        <form method="POST" style="display:inline;" onsubmit="return confirm('Zeker dat je dit event wil wissen?');">
+                        <form method="POST" action="?json-events=<?php echo $eventsFileWeb; ?>" style="display:inline;" onsubmit="return confirm('Zeker dat je dit event wil wissen?');">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="index" value="<?php echo $index; ?>">
                             <button type="submit" class="btn btn-delete">Wis</button>
@@ -339,7 +352,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
 
     <div id="eventFormContainer" class="form-container">
         <h2 id="formTitle">Nieuw Event</h2>
-        <form method="POST">
+        <form method="POST" action="?json-events=<?php echo $eventsFileWeb; ?>">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="index" id="formIndex" value="">
 
