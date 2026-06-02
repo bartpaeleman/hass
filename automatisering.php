@@ -77,32 +77,40 @@
     </details>
 
     <details id="details-wekker" class="auto-section" style="margin-bottom:0;">
-      <summary class="energy-subtitle">
-        <span>⏰</span> WEKKER
-      </summary>
-      <div class="auto-section-content">
-        <!-- WEKKER AAN / UIT -->
-        <div id="wekkerMainContainer" class="wekker-main-toggle wekker-off">
-            <div class="wekker-title">
-                <span class="wekker-icon">💡</span> WEKKER
-                <span id="wekkerTimeDisplay" style="margin-left: 8px; font-family: 'Share Tech Mono', monospace; font-size: 16px; color: var(--warn); background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px;">--:--</span>
-            </div>
+      <summary class="energy-subtitle" style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center;">
+          <span>⏰</span>
+          <span style="margin-left:8px;">WEKKER</span>
+          <span id="wekkerSummaryTime" style="margin-left: 12px; font-family: 'Share Tech Mono', monospace; font-size: 16px; color: var(--warn); background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px; display: none;">--:--</span>
+        </div>
+
+        <div onclick="event.stopPropagation();" style="display:flex; align-items:center;">
             <label class="switch">
-              <input type="checkbox" id="wekkertoggle" onchange="toggleWekker('input_boolean.wekker')">
+              <input type="checkbox" id="wekkertoggleHeader" onchange="toggleWekker('input_boolean.wekker')">
               <span class="slider"></span>
             </label>
         </div>
+      </summary>
+      <div class="auto-section-content">
 
-        <!-- WEKKER ALARM NOTIFICATIONS -->
-        <div class="wekker-row">
-            <div class="wekker-label">Lampen</div>
-            <select id="wekkerKeuzeSelect" class="wekker-select" onchange="setWekkerSelect('input_select.wekkerkeuze', this.value)">
-                <option value="Bart">Bart</option>
-                <option value="Linda">Linda</option>
-                <option value="Beiden">Beiden</option>
-            </select>
+        <!-- ROW 1: Lampen & Tijd -->
+        <div class="wekker-switches-grid">
+            <div class="wekker-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                <div class="wekker-label">Lampen</div>
+                <select id="wekkerKeuzeSelect" class="wekker-select" style="width:100%;" onchange="setWekkerSelect('input_select.wekkerkeuze', this.value)">
+                    <option value="Bart">Bart</option>
+                    <option value="Linda">Linda</option>
+                    <option value="Beiden">Beiden</option>
+                </select>
+            </div>
+
+            <div class="wekker-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                <div class="wekker-label">Tijdstip Alarm</div>
+                <input type="time" id="wekkerTijdInput" class="wekker-time" style="width:100%;" onchange="setWekkerTime('input_datetime.tijd_alarm', this.value)">
+            </div>
         </div>
 
+        <!-- ROW 2: Toggles -->
         <div class="wekker-switches-grid">
             <div class="wekker-row">
                 <div class="wekker-label">Aankondiging Voice</div>
@@ -121,11 +129,6 @@
             </div>
         </div>
 
-        <!-- WEKKER DATETIME -->
-        <div class="wekker-row">
-            <div class="wekker-label">Tijdstip Alarm</div>
-            <input type="time" id="wekkerTijdInput" class="wekker-time" onchange="setWekkerTime('input_datetime.tijd_alarm', this.value)">
-        </div>
       </div>
     </details>
     </div> <!-- end .top-sections-wrapper -->
@@ -494,14 +497,15 @@
 
       // Wekker updates
       const wekkerObj = stateMap[ENTITIES.wekker];
+      const sumTime = document.getElementById('wekkerSummaryTime');
       if (wekkerObj) {
           const isOn = wekkerObj.state === 'on';
-          const container = document.getElementById('wekkerMainContainer');
-          const checkbox = document.getElementById('wekkertoggle');
-          if (container) {
-              container.className = 'wekker-main-toggle ' + (isOn ? 'wekker-on' : 'wekker-off');
-          }
+          const checkbox = document.getElementById('wekkertoggleHeader');
           if (checkbox) checkbox.checked = isOn;
+
+          if (sumTime) {
+              sumTime.style.display = isOn ? 'inline-block' : 'none';
+          }
       }
 
       const wekkerAankObj = stateMap[ENTITIES.wekkerAankondiging];
@@ -525,12 +529,16 @@
       const wekkerTijdObj = stateMap[ENTITIES.wekkerTijd];
       if (wekkerTijdObj && wekkerTijdObj.state !== 'unavailable') {
           const tm = document.getElementById('wekkerTijdInput');
-          const td = document.getElementById('wekkerTimeDisplay');
-          // HA returns HH:MM:SS, time input expects HH:MM (though it tolerates HH:MM:SS usually)
-          if (wekkerTijdObj.state.length >= 5) {
-              const val = wekkerTijdObj.state.substring(0,5);
+          // HA returns "HH:MM:SS" (or sometimes "YYYY-MM-DD HH:MM:SS" depending on entity config)
+          // We extract just the HH:MM portion.
+          let timeStr = wekkerTijdObj.state;
+          if (timeStr.includes(' ')) {
+              timeStr = timeStr.split(' ')[1];
+          }
+          if (timeStr && timeStr.length >= 5) {
+              const val = timeStr.substring(0,5);
               if (tm) tm.value = val;
-              if (td) td.textContent = val;
+              if (sumTime) sumTime.textContent = val;
           }
       }
 
