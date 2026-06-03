@@ -6,3 +6,4 @@ RBAC.md
 *.log
 events.json
 .DS_Store
+/docs
