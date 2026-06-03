@@ -102,12 +102,12 @@
     overflow: hidden;
 }
 
-.auto-section[open] .section-label {
+.auto-section[open] .energy-subtitle {
     border-bottom: 1px solid var(--border);
     margin-bottom: 16px;
 }
 
-.auto-section .section-label {
+.auto-section .energy-subtitle {
     margin-top: 0 !important;
     padding: 16px;
     cursor: pointer;
@@ -121,8 +121,16 @@
     gap: 8px;
 }
 
-.auto-section .section-label::after {
-    display: none; /* remove standard common.css after element */
+.alarm-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 900px) {
+    .alarm-grid-3 {
+        grid-template-columns: 1fr;
+    }
 }
 
 .auto-section summary::-webkit-details-marker {

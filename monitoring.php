@@ -8,6 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/monitoring.css">
+<link rel="stylesheet" href="CSS/verlichting.css">
+<link rel="stylesheet" href="CSS/automatisering.css">
 <script>
   const PAGE_MIN_ACTION_LEVEL = 50;  
   (function() {
@@ -74,8 +76,8 @@
     <!-- Persons -->
     <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
     <details id="details-aanwezigheid" class="auto-section" style="margin-top: 24px;">
-      <summary class="section-label">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      <summary class="energy-subtitle">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 8px;"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
         Aanwezigheid
       </summary>
       <div class="auto-section-content">
@@ -88,8 +90,8 @@
 
     <!-- Sensors -->
     <details id="details-sensoren" class="auto-section">
-      <summary class="section-label">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="currentColor"/></svg>
+      <summary class="energy-subtitle">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 8px;"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="currentColor"/></svg>
         Bewegingssensoren
       </summary>
       <div class="auto-section-content">
@@ -102,12 +104,13 @@
 
     <!-- Alarm Notificaties -->
     <details id="details-alarm-notificaties" class="auto-section">
-      <summary class="section-label">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1C3 1 1 3 1 6v3l-1 1v1h12v-1l-1-1V6c0-3-2-5-5-5zm0 11c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/></svg>
+      <summary class="energy-subtitle">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right: 8px;"><path d="M6 1C3 1 1 3 1 6v3l-1 1v1h12v-1l-1-1V6c0-3-2-5-5-5zm0 11c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/></svg>
         ALARM NOTIFICATIES
       </summary>
       <div class="auto-section-content">
-        <div class="wekker-switches-grid">
+        <!-- ROW 1: Toggles -->
+        <div class="alarm-grid-3">
             <div class="wekker-row">
                 <div class="wekker-label">ALARMEN AAN / UIT</div>
                 <label class="switch">
@@ -129,63 +132,67 @@
                   <span class="slider"></span>
                 </label>
             </div>
-            <div class="wekker-row">
-                <div class="wekker-label">Zone Beneden</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleBewegingBeneden" onchange="toggleBoolean('input_boolean.beweging_detectie_beneden')">
-                  <span class="slider"></span>
-                </label>
+        </div>
+
+        <!-- ROW 2: Zones -->
+        <div class="energy-subtitle" style="margin-top: 24px; border-bottom: none; font-size: 11px;">BEWEGINGSDETECTIE ZONES</div>
+        <div class="alarm-grid-3">
+            <div class="light-card light-off" id="card-zone-beneden" onclick="toggleBoolean('input_boolean.beweging_detectie_beneden')">
+                <div class="light-card-info">
+                    <div class="light-icon">📍</div>
+                    <div class="light-title">Beneden</div>
+                </div>
             </div>
-            <div class="wekker-row">
-                <div class="wekker-label">Zone Boven</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleBewegingBoven" onchange="toggleBoolean('input_boolean.beweging_detectie_boven')">
-                  <span class="slider"></span>
-                </label>
+            <div class="light-card light-off" id="card-zone-boven" onclick="toggleBoolean('input_boolean.beweging_detectie_boven')">
+                <div class="light-card-info">
+                    <div class="light-icon">📍</div>
+                    <div class="light-title">Boven</div>
+                </div>
             </div>
-            <div class="wekker-row">
-                <div class="wekker-label">Zone Buiten</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleBewegingBuiten" onchange="toggleBoolean('input_boolean.beweging_detectie_buiten')">
-                  <span class="slider"></span>
-                </label>
-            </div>
-            <div class="wekker-row">
-                <div class="wekker-label">Aanwezigheid in het huis</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleAanwezig" onchange="toggleBoolean('input_boolean.aanwezig')">
-                  <span class="slider"></span>
-                </label>
-            </div>
-            <div class="wekker-row">
-                <div class="wekker-label">Bart aanwezig</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleBartThuis" onchange="toggleBoolean('input_boolean.bart_thuis')">
-                  <span class="slider"></span>
-                </label>
-            </div>
-            <div class="wekker-row">
-                <div class="wekker-label">Linda aanwezig</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleLindaThuis" onchange="toggleBoolean('input_boolean.linda_thuis')">
-                  <span class="slider"></span>
-                </label>
-            </div>
-            <div class="wekker-row">
-                <div class="wekker-label">Gasten aanwezig</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleGastenThuis" onchange="toggleBoolean('input_boolean.gasten_thuis')">
-                  <span class="slider"></span>
-                </label>
+            <div class="light-card light-off" id="card-zone-buiten" onclick="toggleBoolean('input_boolean.beweging_detectie_buiten')">
+                <div class="light-card-info">
+                    <div class="light-icon">📍</div>
+                    <div class="light-title">Buiten</div>
+                </div>
             </div>
         </div>
+
+        <!-- ROW 3: Presence -->
+        <div class="energy-subtitle" style="margin-top: 24px; border-bottom: none; font-size: 11px;">AANWEZIGHEID IN HUIS</div>
+        <div class="auto-grid">
+            <div class="light-card light-off" id="card-pres-all" onclick="toggleBoolean('input_boolean.aanwezig')">
+                <div class="light-card-info">
+                    <div class="light-icon">🏠</div>
+                    <div class="light-title">Aanwezig</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-pres-bart" onclick="toggleBoolean('input_boolean.bart_thuis')">
+                <div class="light-card-info">
+                    <div class="light-icon">👤</div>
+                    <div class="light-title">Bart</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-pres-linda" onclick="toggleBoolean('input_boolean.linda_thuis')">
+                <div class="light-card-info">
+                    <div class="light-icon">👤</div>
+                    <div class="light-title">Linda</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-pres-gasten" onclick="toggleBoolean('input_boolean.gasten_thuis')">
+                <div class="light-card-info">
+                    <div class="light-icon">👥</div>
+                    <div class="light-title">Gasten</div>
+                </div>
+            </div>
+        </div>
+
       </div>
     </details>
 
     <!-- Anniversaries -->
-    <details id="details-verjaardagen" class="auto-section" style="display:none; margin-bottom:20px;">
-      <summary class="section-label">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v2M3 2l1 1.5M9 2l-1 1.5M1 5h10M2 5l1 6h6l1-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <details id="anniversaryBlock" class="auto-section" style="display:none; margin-bottom:20px;">
+      <summary class="energy-subtitle">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 8px;"><path d="M6 1v2M3 2l1 1.5M9 2l-1 1.5M1 5h10M2 5l1 6h6l1-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Verjaardagen
       </summary>
       <div class="auto-section-content">
@@ -482,25 +489,35 @@
 
     updatePersons(stateMap);
 
-    // Update new Alarm notification toggles
+    // Update new Alarm notification toggles (checkboxes)
     const togglesToSync = [
         { id: 'toggleAlarm', entity: ENTITIES.alarm },
         { id: 'toggleFakePresence', entity: ENTITIES.fakepresence },
-        { id: 'toggleNotifyBart', entity: ENTITIES.notifyBart },
-        { id: 'toggleBewegingBeneden', entity: ENTITIES.bewegingDetectieBeneden },
-        { id: 'toggleBewegingBoven', entity: ENTITIES.bewegingDetectieBoven },
-        { id: 'toggleBewegingBuiten', entity: ENTITIES.bewegingDetectieBuiten },
-        { id: 'toggleAanwezig', entity: ENTITIES.aanwezig },
-        { id: 'toggleBartThuis', entity: ENTITIES.bartThuis },
-        { id: 'toggleLindaThuis', entity: ENTITIES.lindaThuis },
-        { id: 'toggleGastenThuis', entity: ENTITIES.gastenThuis }
+        { id: 'toggleNotifyBart', entity: ENTITIES.notifyBart }
     ];
-
     togglesToSync.forEach(t => {
         const el = document.getElementById(t.id);
         const stateObj = stateMap[t.entity];
         if (el && stateObj) {
             el.checked = (stateObj.state === 'on');
+        }
+    });
+
+    // Update Light Cards
+    const lightCardsToSync = [
+        { id: 'card-zone-beneden', entity: ENTITIES.bewegingDetectieBeneden },
+        { id: 'card-zone-boven', entity: ENTITIES.bewegingDetectieBoven },
+        { id: 'card-zone-buiten', entity: ENTITIES.bewegingDetectieBuiten },
+        { id: 'card-pres-all', entity: ENTITIES.aanwezig },
+        { id: 'card-pres-bart', entity: ENTITIES.bartThuis },
+        { id: 'card-pres-linda', entity: ENTITIES.lindaThuis },
+        { id: 'card-pres-gasten', entity: ENTITIES.gastenThuis }
+    ];
+    lightCardsToSync.forEach(c => {
+        const el = document.getElementById(c.id);
+        const stateObj = stateMap[c.entity];
+        if (el && stateObj) {
+            el.className = "light-card " + (stateObj.state === 'on' ? "light-on light-ok" : "light-off");
         }
     });
 
@@ -517,7 +534,8 @@
       // LocalStorage for auto-section details elements
       document.querySelectorAll('.auto-section').forEach(details => {
           const id = details.id;
-          if (!id) return;
+          // Skip anniversary block for default storage, it is handled by the script's display block/none
+          if (!id || id === 'anniversaryBlock') return;
           const lsKey = 'auto_section_mon_' + id;
           const state = localStorage.getItem(lsKey);
 
