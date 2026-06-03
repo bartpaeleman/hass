@@ -1,4 +1,22 @@
-<?php require_once 'config.php'; ?>
+<?php
+require_once 'config.php';
+require_once __DIR__ . '/CLASSES/EnergyClass.php';
+
+// Check if this is an AJAX request for processed energy data
+if (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
+    header('Content-Type: application/json');
+
+    // In a real scenario, you might fetch raw data from HA here if needed on the backend,
+    // but typically `energy.php` already loads it via JS. If you want the backend to fetch it,
+    // you'd use a cURL call to HA API here.
+    // For this example, we assume raw JSON data could be POSTed or fetched.
+    $rawSensorData = json_decode(file_get_contents('php://input'), true) ?: [];
+
+    $manager = new EnergyManager();
+    echo json_encode($manager->processData($rawSensorData));
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
