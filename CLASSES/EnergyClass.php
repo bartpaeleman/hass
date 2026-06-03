@@ -11,9 +11,9 @@ class EnergyManager {
         // Booleans for state-machine flows
         $flows = [
             'gas' => true, // Gas always active based on specs
-            'solarToHome' => ($solarProd > 0 && $gridImport == 0 && strtolower($battStatus) !== 'laden'),
-            'solarToBattery' => ($solarProd > 0 && strtolower($battStatus) === 'laden'),
-            'exportGrid' => ($gridExport > 0),
+            'solarToHome' => ($solarProd > 10 && $gridImport == 0 && strtolower($battStatus) !== 'laden'),
+            'solarToBattery' => ($solarProd > 10 && strtolower($battStatus) === 'laden'),
+            'exportGrid' => ($gridExport > 10),
             'importGrid' => ($gridImport > 0),
             'batteryUsed' => (strtolower($battStatus) === 'ontladen' || strtolower($battStatus) === 'ontlagen')
         ];

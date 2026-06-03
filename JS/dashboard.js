@@ -26,6 +26,10 @@ const flowLogic = {
     }
 };
 
+// Hysteresis tracking variables to prevent impulse toggling
+let previousEvaluatedFlows = {};
+let appliedFlows = {};
+
 /**
  * Updates the UI SVG elements and metric-cards using processed JSON from the backend.
  * Expects { metrics: {...}, flows: {...} }
@@ -36,10 +40,32 @@ function updateDashboard(data) {
     // Evaluate state machine rules via the object's isActive method
     for (const flow in flowLogic) {
         const logic = flowLogic[flow];
-        const active = logic.isActive(data);
+        const currentlyActive = logic.isActive(data);
 
-        console.log(`UI Updated with flow state: ${flow} is ${active ? 'ACTIVE' : 'INACTIVE'}`);
+        // Ensure appliedFlows has an initial state on first run
+        if (appliedFlows[flow] === undefined) {
+            appliedFlows[flow] = currentlyActive;
+            previousEvaluatedFlows[flow] = currentlyActive;
+        }
 
+        // Hysteresis logic: only apply state change if the evaluated state
+        // is the same for TWO consecutive updates, AND it's different from the applied state.
+        if (currentlyActive !== appliedFlows[flow]) {
+            if (previousEvaluatedFlows[flow] === currentlyActive) {
+                // State has persisted for 2 consecutive cycles, apply it.
+                appliedFlows[flow] = currentlyActive;
+                console.log(`UI Updated with flow state: ${flow} is ${currentlyActive ? 'ACTIVE' : 'INACTIVE'}`);
+            } else {
+                // First cycle of change, don't apply yet but log it
+                console.log(`Hysteresis: Pending flow state change for ${flow} to ${currentlyActive ? 'ACTIVE' : 'INACTIVE'}`);
+            }
+        }
+
+        // Update history
+        previousEvaluatedFlows[flow] = currentlyActive;
+
+        // Apply the resolved state to DOM
+        const active = appliedFlows[flow];
         logic.paths.forEach(pathId => {
             const pathEl = document.getElementById(pathId);
             if (pathEl) {
