@@ -61,28 +61,48 @@ function updateDashboard(data) {
     }
 }
 
+const SENSORS_TO_FETCH = [
+    'sensor.zonneenergie_productie_nu',
+    'sensor.electriciteit_netverbruik_nu',
+    'sensor.electriciteit_injectie_nu',
+    'sensor.batterij_status'
+];
+
 /**
- * Fetches data via the PHP backend to process and return the JSON payload.
+ * Fetches data from Home Assistant, passes it to the PHP backend to process,
+ * and returns the JSON payload containing the flows and metrics.
  * Runs in a 5-second polling loop.
  */
 async function fetchEnergyData() {
-    try {
-        // We will fetch from energy.php via GET to let it handle data processing.
-        // Wait, the PHP backend expects POST rawSensorData if it doesn't fetch itself.
-        // But the previous instructions mentioned: "een fetch naar energy.php te doen (of het relevante endpoint dat de JSON output genereert)."
-        // If energy.php expects POST data to process, we either fetch from HA directly here or assume energy.php handles it.
-        // The prompt says: "een fetch naar energy.php te doen... Zorg dat de data correct wordt verwerkt".
+    // Respect the global pause logic from ha_core_js.php if it exists
+    if (window.isRefreshPaused) return;
 
-        // Let's assume energy.php handles the HA API call on the backend, or we just do a GET.
-        // The current energy.php reads php://input. Let's send an empty object so it doesn't crash,
-        // or actually in a real implementation we would send raw sensor data or energy.php would fetch it.
-        // For the sake of the live loop instructions:
+    try {
+        let rawSensorData = {};
+
+        // Fetch real data from HA API if haGetAll is available
+        if (typeof haGetAll === 'function') {
+            const results = await haGetAll(SENSORS_TO_FETCH);
+            SENSORS_TO_FETCH.forEach((id, i) => {
+                rawSensorData[id] = results[i]?.state || '0';
+            });
+        } else {
+            console.warn("haGetAll function not found. Are you missing ha_core_js.php?");
+            // Fallback mock data for testing visually without HA
+            rawSensorData = {
+                'sensor.zonneenergie_productie_nu': '0',
+                'sensor.electriciteit_netverbruik_nu': '0',
+                'sensor.electriciteit_injectie_nu': '0',
+                'sensor.batterij_status': 'Idle'
+            };
+        }
+
         const response = await fetch('energy.php?ajax=1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({}) // Dummy payload to ensure valid JSON is sent to backend
+            body: JSON.stringify(rawSensorData)
         });
 
         if (!response.ok) {
