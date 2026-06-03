@@ -43,20 +43,32 @@
 
         /* Animation specific styles */
         .house-wrap path {
-            stroke-width: 8px; /* Adjust as needed */
-            stroke-dasharray: 20 20; /* 20px dash, 20px gap */
+            stroke-width: 6.4px; /* 20% thinner */
             stroke-linecap: round;
             stroke-linejoin: round;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Inactive flow styling */
+        .house-wrap path:not(.active) {
+            opacity: 0.3;
+            stroke-dasharray: none !important;
+        }
+
+        /* Active flow styling */
+        .house-wrap path.active {
+            opacity: 1;
+            stroke-dasharray: 20 10 !important; /* Smaller gaps */
         }
 
         /* Forward Animation */
         @keyframes flow-fwd {
-            to { stroke-dashoffset: -40; }
+            to { stroke-dashoffset: -30; } /* Matches dash+gap total length 20+10 */
         }
 
         /* Reverse Animation */
         @keyframes flow-rev {
-            to { stroke-dashoffset: 40; }
+            to { stroke-dashoffset: 30; }
         }
 
         /* Apply animations to specific flows */
@@ -69,11 +81,11 @@
         }
 
         #BatteryUsed.active {
-            animation: flow-fwd 1s linear infinite; /* Adjust based on flow direction */
+            animation: flow-fwd 1s linear infinite;
         }
 
         #ExportGrid.active, #ExportGrid-2.active {
-            animation: flow-rev 1s linear infinite;
+            animation: flow-fwd 1s linear infinite; /* Fixed direction for export */
         }
 
         #SolarToBattery.active, #SolarUsed.active {

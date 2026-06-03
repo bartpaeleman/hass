@@ -2,11 +2,11 @@
 <svg id="Utilities" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1797.28 1003.13">
   <defs>
     <style>
-      .cls-1 { fill: none; stroke: #00aeef; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
-      .cls-2 { fill: none; stroke: #f7941d; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
-      .cls-3 { fill: none; stroke: #ed1c24; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
-      .cls-4 { fill: none; stroke: #fee756; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
-      .cls-5 { fill: none; stroke: #39b54a; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
+      .cls-1 { fill: none; stroke: #00aeef; }
+      .cls-2 { fill: none; stroke: #f7941d; }
+      .cls-3 { fill: none; stroke: #ed1c24; }
+      .cls-4 { fill: none; stroke: #fee756; }
+      .cls-5 { fill: none; stroke: #39b54a; }
     </style>
   </defs>
 
