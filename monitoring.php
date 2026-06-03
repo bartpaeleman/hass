@@ -73,34 +73,125 @@
 
     <!-- Persons -->
     <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
-    <div class="section-label" style="margin-top:4px;">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      Aanwezigheid
-    </div>
-    <div class="persons-grid" id="personsGrid">
-      <!-- injected by JS -->
-    </div>
+    <details id="details-aanwezigheid" class="auto-section" style="margin-top: 24px;">
+      <summary class="section-label">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Aanwezigheid
+      </summary>
+      <div class="auto-section-content">
+        <div class="persons-grid" id="personsGrid">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </details>
     <?php endif; ?>
 
     <!-- Sensors -->
-    <div class="section-label">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="currentColor"/></svg>
-      Bewegingssensoren
-    </div>
+    <details id="details-sensoren" class="auto-section">
+      <summary class="section-label">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="currentColor"/></svg>
+        Bewegingssensoren
+      </summary>
+      <div class="auto-section-content">
+        <!-- Gecombineerde Sensor Grid -->
+        <div class="sensor-grid" id="sensorGrid">
+          <!-- cards injected by JS -->
+        </div>
+      </div>
+    </details>
 
-    <!-- Gecombineerde Sensor Grid -->
-    <div class="sensor-grid" id="sensorGrid">
-      <!-- cards injected by JS -->
-    </div>
+    <!-- Alarm Notificaties -->
+    <details id="details-alarm-notificaties" class="auto-section">
+      <summary class="section-label">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 1C3 1 1 3 1 6v3l-1 1v1h12v-1l-1-1V6c0-3-2-5-5-5zm0 11c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/></svg>
+        ALARM NOTIFICATIES
+      </summary>
+      <div class="auto-section-content">
+        <div class="wekker-switches-grid">
+            <div class="wekker-row">
+                <div class="wekker-label">ALARMEN AAN / UIT</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleAlarm" onchange="toggleBoolean('input_boolean.alarm')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">ACTIVATIE PRESENCE FAKER</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleFakePresence" onchange="toggleBoolean('input_boolean.fakepresence')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Alarmen naar Bart</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleNotifyBart" onchange="toggleBoolean('input_boolean.notify_bart')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Zone Beneden</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleBewegingBeneden" onchange="toggleBoolean('input_boolean.beweging_detectie_beneden')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Zone Boven</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleBewegingBoven" onchange="toggleBoolean('input_boolean.beweging_detectie_boven')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Zone Buiten</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleBewegingBuiten" onchange="toggleBoolean('input_boolean.beweging_detectie_buiten')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Aanwezigheid in het huis</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleAanwezig" onchange="toggleBoolean('input_boolean.aanwezig')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Bart aanwezig</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleBartThuis" onchange="toggleBoolean('input_boolean.bart_thuis')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Linda aanwezig</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleLindaThuis" onchange="toggleBoolean('input_boolean.linda_thuis')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Gasten aanwezig</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleGastenThuis" onchange="toggleBoolean('input_boolean.gasten_thuis')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+      </div>
+    </details>
 
     <!-- Anniversaries -->
-    <div id="anniversaryBlock" style="display:none; margin-bottom:20px;">
-      <div class="section-label">
+    <details id="details-verjaardagen" class="auto-section" style="display:none; margin-bottom:20px;">
+      <summary class="section-label">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v2M3 2l1 1.5M9 2l-1 1.5M1 5h10M2 5l1 6h6l1-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Verjaardagen
+      </summary>
+      <div class="auto-section-content">
+        <div id="anniversaryList"></div>
       </div>
-      <div id="anniversaryList"></div>
-    </div>
+    </details>
 
 
 
@@ -157,12 +248,23 @@
     tempSlaap:    'sensor.slaapkamer_temp',
     tempBureau:   'sensor.bureau_temp',
     tempBuiten:   'sensor.thuis_outdoor_temperature',
+    // Alarm notificaties switches
+    alarm:                    'input_boolean.alarm',
+    fakepresence:             'input_boolean.fakepresence',
+    notifyBart:               'input_boolean.notify_bart',
+    bewegingDetectieBeneden:  'input_boolean.beweging_detectie_beneden',
+    bewegingDetectieBoven:    'input_boolean.beweging_detectie_boven',
+    bewegingDetectieBuiten:   'input_boolean.beweging_detectie_buiten',
+    aanwezig:                 'input_boolean.aanwezig',
+    bartThuis:                'input_boolean.bart_thuis',
+    lindaThuis:               'input_boolean.linda_thuis',
+    gastenThuis:              'input_boolean.gasten_thuis'
   };
 
   // Personen
   const PERSON_CONFIG = [
-    { name: 'Bart',  person: 'person.bartp',  tracker: 'device_tracker.bart_iphone' },
-    { name: 'Linda', person: 'person.linda',  tracker: 'device_tracker.linda' },
+    { name: 'Bart',  person: 'person.bartp',  tracker: 'device_tracker.bart_iphone', location: 'sensor.b63p15_geocoded_location' },
+    { name: 'Linda', person: 'person.linda',  tracker: 'device_tracker.linda', location: 'sensor.iphone_linda_geocoded_location' },
   ];
 
 
@@ -278,10 +380,11 @@
         card.id = `person-${i}`;
         card.className = 'person-card';
         card.innerHTML = `
-          <div class="person-avatar" id="person-av-${i}">👤</div>
+          <div class="person-avatar" id="person-av-${i}" style="background-image: url('IMGS/${p.name.toLowerCase()}.png'); color: transparent;">${p.name.charAt(0)}</div>
           <div class="person-info">
             <div class="person-name">${p.name}</div>
             <div class="person-status" id="person-st-${i}">—</div>
+            <div class="person-location" id="person-loc-${i}" style="display:none;"></div>
           </div>`;
         grid.appendChild(card);
       });
@@ -289,11 +392,27 @@
     PERSON_CONFIG.forEach((p, i) => {
       const home = stateVal(stateMap[p.person]) === 'home';
       const tracker = stateMap[p.tracker];
-      const location = tracker?.attributes?.friendly_name ?? (home ? 'Thuis' : 'Weg');
-      document.getElementById(`person-${i}`).className = `person-card ${home ? 'home' : 'away'}`;
+
+      const card = document.getElementById(`person-${i}`);
       const av = document.getElementById(`person-av-${i}`);
+      const locEl = document.getElementById(`person-loc-${i}`);
+
+      if (!card || !av) return;
+      card.className = `person-card ${home ? 'home' : 'away'}`;
       av.className = `person-avatar ${home ? 'home' : 'away'}`;
       document.getElementById(`person-st-${i}`).textContent = home ? '● THUIS' : '● WEG';
+
+      if (p.location && stateMap[p.location]) {
+          const locState = stateMap[p.location].state;
+          if (locState && locState !== 'unavailable' && locState !== 'unknown') {
+              locEl.textContent = locState;
+              locEl.style.display = 'block';
+          } else {
+              locEl.style.display = 'none';
+          }
+      } else if (locEl) {
+          locEl.style.display = 'none';
+      }
     });
   }
 
@@ -331,14 +450,22 @@
     });
   }
 
+  async function toggleBoolean(entityId) {
+      try {
+          await haPost('input_boolean', 'toggle', entityId);
+          setTimeout(refresh, 500);
+      } catch (err) {
+          console.error('Failed to toggle boolean', err);
+      }
+  }
+
   // ── Main refresh ──
   async function refresh() {
     const allIds = [
       ...SENSOR_CONFIG.flatMap(s => [s.motion, s.motionSwitch, s.lightSwitch, s.battery].filter(Boolean)),
       ...Object.values(ENTITIES),
       ...PERSON_CONFIG.flatMap(p => [p.person, p.tracker]),
-
-
+      ...PERSON_CONFIG.map(p => p.location).filter(Boolean),
       ...ANNIVERSARY_ENTITIES,
     ];
 
@@ -355,6 +482,28 @@
 
     updatePersons(stateMap);
 
+    // Update new Alarm notification toggles
+    const togglesToSync = [
+        { id: 'toggleAlarm', entity: ENTITIES.alarm },
+        { id: 'toggleFakePresence', entity: ENTITIES.fakepresence },
+        { id: 'toggleNotifyBart', entity: ENTITIES.notifyBart },
+        { id: 'toggleBewegingBeneden', entity: ENTITIES.bewegingDetectieBeneden },
+        { id: 'toggleBewegingBoven', entity: ENTITIES.bewegingDetectieBoven },
+        { id: 'toggleBewegingBuiten', entity: ENTITIES.bewegingDetectieBuiten },
+        { id: 'toggleAanwezig', entity: ENTITIES.aanwezig },
+        { id: 'toggleBartThuis', entity: ENTITIES.bartThuis },
+        { id: 'toggleLindaThuis', entity: ENTITIES.lindaThuis },
+        { id: 'toggleGastenThuis', entity: ENTITIES.gastenThuis }
+    ];
+
+    togglesToSync.forEach(t => {
+        const el = document.getElementById(t.id);
+        const stateObj = stateMap[t.entity];
+        if (el && stateObj) {
+            el.checked = (stateObj.state === 'on');
+        }
+    });
+
     await updateAnniversaries(stateMap);
 
     document.getElementById('lastRefresh').textContent =
@@ -363,6 +512,29 @@
 
   refresh();
   setInterval(() => { if (!window.isRefreshPaused) refresh(); }, REFRESH);
+
+  document.addEventListener('DOMContentLoaded', () => {
+      // LocalStorage for auto-section details elements
+      document.querySelectorAll('.auto-section').forEach(details => {
+          const id = details.id;
+          if (!id) return;
+          const lsKey = 'auto_section_mon_' + id;
+          const state = localStorage.getItem(lsKey);
+
+          if (state === 'open') {
+              details.open = true;
+          } else if (state === 'closed') {
+              details.open = false;
+          } else {
+              // Default if no storage found: default is closed in HTML, so do nothing.
+              details.open = false;
+          }
+
+          details.addEventListener('toggle', (e) => {
+              localStorage.setItem(lsKey, details.open ? 'open' : 'closed');
+          });
+      });
+  });
 </script>
 </body>
 </html>

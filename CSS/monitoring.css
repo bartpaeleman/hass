@@ -93,6 +93,161 @@
   letter-spacing: 1px;
 }
 
+/* Collapsible auto-section standard from automatisering */
+.auto-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.auto-section[open] .section-label {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+
+.auto-section .section-label {
+    margin-top: 0 !important;
+    padding: 16px;
+    cursor: pointer;
+    border-bottom: none;
+    margin-bottom: 0;
+    list-style: none; /* Hide default arrow */
+    outline: none;
+    background: rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auto-section .section-label::after {
+    display: none; /* remove standard common.css after element */
+}
+
+.auto-section summary::-webkit-details-marker {
+    display: none;
+}
+
+.auto-section summary::after {
+    content: '▼';
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s;
+    flex: none; /* overrides common.css flex: 1 */
+    height: auto;
+    background: none;
+}
+
+.auto-section[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.auto-section-content {
+    padding: 16px;
+}
+
+/* Switches Grid (borrowed from automatisering) */
+.wekker-switches-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+}
+
+.wekker-switches-grid:last-child {
+    border-bottom: none;
+}
+
+.wekker-switches-grid .wekker-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none;
+    padding: 0;
+}
+
+.wekker-label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Base switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--ok);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--ok);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Override common.css person styles for larger display in monitoring */
+.persons-grid .person-avatar {
+  width: 76px;
+  height: 76px;
+  background-size: cover;
+  background-position: center;
+}
+
+.persons-grid .person-name {
+  font-size: 16px;
+}
+
+.persons-grid .person-status {
+  font-size: 13px;
+}
+
+.persons-grid .person-location {
+  font-size: 11px;
+  color: var(--dim);
+  font-family: 'Share Tech Mono', monospace;
+  margin-top: 4px;
+}
+
 /* ── Sensor grid (12-column system) ── */
 .sensor-grid {
   display: grid;
@@ -146,16 +301,16 @@
 }
 
 .sensor-name {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--dim);
+  color: var(--text);
   margin-bottom: 6px;
 }
 
 .sensor-status {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
