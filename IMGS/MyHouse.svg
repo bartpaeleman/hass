@@ -2,34 +2,41 @@
 <svg id="Utilities" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1797.28 1003.13">
   <defs>
     <style>
-      .cls-1 {
-        fill: #00aeef;
-      }
-
-      .cls-2 {
-        fill: #f7941d;
-      }
-
-      .cls-3 {
-        fill: #ed1c24;
-      }
-
-      .cls-4 {
-        fill: #fee756;
-      }
-
-      .cls-5 {
-        fill: #39b54a;
-      }
+      .cls-1 { fill: none; stroke: #00aeef; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
+      .cls-2 { fill: none; stroke: #f7941d; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
+      .cls-3 { fill: none; stroke: #ed1c24; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
+      .cls-4 { fill: none; stroke: #fee756; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
+      .cls-5 { fill: none; stroke: #39b54a; stroke-width: 4px; stroke-dasharray: 20 20; stroke-linecap: round; stroke-linejoin: round; }
     </style>
   </defs>
-  <polygon id="Gas" class="cls-1" points="921.51 740.56 743.09 740.56 743.09 681.21 747.17 681.21 747.17 736.48 921.51 736.48 921.51 740.56"/>
-  <rect id="Gas-2" data-name="Gas" class="cls-1" x="926.38" y="745.59" width="4.07" height="147.4"/>
-  <rect id="ImportGrid" class="cls-4" x="933.17" y="745.59" width="4.07" height="158.45"/>
-  <polygon id="ImportGrid-2" data-name="ImportGrid" class="cls-4" points="908.91 726.69 908.91 718.54 904.83 718.54 904.83 726.69 859.24 726.69 859.24 718.54 855.17 718.54 855.17 730.77 921.51 730.77 921.51 726.69 908.91 726.69"/>
-  <polygon id="BatteryUsed" class="cls-2" points="920.76 603.3 916.69 603.3 916.69 357.92 1054.1 357.92 1054.1 339.53 1058.17 339.53 1058.17 361.87 920.76 361.87 920.76 603.3"/>
-  <polygon id="ExportGrid" class="cls-3" points="941.26 712.41 937.19 712.41 937.19 368.88 1084.92 368.88 1084.92 265.81 1013.09 265.81 1013.09 261.84 1088.99 261.84 1088.99 372.84 941.26 372.84 941.26 712.41"/>
-  <rect id="ExportGrid-2" data-name="ExportGrid" class="cls-3" x="940.17" y="745.59" width="4.07" height="158.45"/>
-  <polygon id="SolarToBattery" class="cls-5" points="1033.83 331.32 992.35 332.76 992.35 286.75 996.34 286.75 996.34 326.69 1033.83 326.69 1033.83 331.32"/>
-  <polygon id="SolarUsed" class="cls-5" points="910.28 603.6 906.2 603.6 906.2 350.61 983.36 350.61 983.36 286.75 987.43 286.75 987.43 354.56 910.28 354.56 910.28 603.6"/>
+
+  <!-- Gas Flows (Blue) -->
+  <!-- Gas-2 (leverancier naar meter): bottom to top -->
+  <path id="Gas-2" class="cls-1" d="M 928.41 892.99 L 928.41 745.59" />
+  <!-- Gas (meter naar ketel): right to left, then up -->
+  <path id="Gas" class="cls-1" d="M 921.51 738.52 L 745.13 738.52 L 745.13 681.21" />
+
+  <!-- Import Net (Yellow) -->
+  <!-- ImportGrid (leverancier naar meter): bottom to top -->
+  <path id="ImportGrid" class="cls-4" d="M 935.21 904.04 L 935.21 745.59" />
+  <!-- ImportGrid-2 (meter naar huis): right to left, splits up into two terminals -->
+  <!-- Splitting path into two so it can flow simultaneously -->
+  <path id="ImportGrid-2" class="cls-4" d="M 921.51 728.73 L 857.21 728.73 L 857.21 718.54 M 906.87 728.73 L 906.87 718.54" />
+
+  <!-- Batterij (Orange) -->
+  <!-- BatteryUsed (batterij naar huis): top to down, left, down -->
+  <path id="BatteryUsed" class="cls-2" d="M 1056.14 339.53 L 1056.14 359.90 L 918.73 359.90 L 918.73 603.30" />
+
+  <!-- Export Net (Red) -->
+  <!-- ExportGrid (omvormer naar meter): right to down, left, down -->
+  <path id="ExportGrid" class="cls-3" d="M 1013.09 263.83 L 1086.96 263.83 L 1086.96 370.86 L 939.23 370.86 L 939.23 712.41" />
+  <!-- ExportGrid-2 (meter naar leverancier): top to bottom -->
+  <path id="ExportGrid-2" class="cls-3" d="M 942.21 745.59 L 942.21 904.04" />
+
+  <!-- Solar (Green) -->
+  <!-- SolarToBattery (zon naar batterij): top to down, right -->
+  <path id="SolarToBattery" class="cls-5" d="M 994.35 286.75 L 994.35 329.01 L 1033.83 329.01" />
+  <!-- SolarUsed (zon naar huis): top to down, left, down -->
+  <path id="SolarUsed" class="cls-5" d="M 985.40 286.75 L 985.40 352.59 L 908.24 352.59 L 908.24 603.60" />
+
 </svg>
