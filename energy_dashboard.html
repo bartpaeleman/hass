@@ -67,23 +67,23 @@
         }
 
         /* Apply animations to specific flows */
-        #Gas, #Gas-2 {
+        #Gas.active, #Gas-2.active {
             animation: flow-fwd 1s linear infinite;
         }
 
-        #ImportGrid, #ImportGrid-2 {
+        #ImportGrid.active, #ImportGrid-2.active {
             animation: flow-fwd 1s linear infinite;
         }
 
-        #BatteryUsed {
+        #BatteryUsed.active {
             animation: flow-fwd 1s linear infinite; /* Adjust based on flow direction */
         }
 
-        #ExportGrid, #ExportGrid-2 {
+        #ExportGrid.active, #ExportGrid-2.active {
             animation: flow-rev 1s linear infinite;
         }
 
-        #SolarToBattery, #SolarUsed {
+        #SolarToBattery.active, #SolarUsed.active {
             animation: flow-fwd 1s linear infinite;
         }
 
@@ -104,5 +104,106 @@
             <path id="SolarUsed" class="cls-5" d="M 910.28 603.6 L 906.2 603.6 L 906.2 350.61 L 983.36 350.61 L 983.36 286.75 L 987.43 286.75 L 987.43 354.56 L 910.28 354.56 L 910.28 603.6 Z"/>
         </svg>
     </div>
+
+    <script>
+        // State Machine Logic
+        const flowLogic = {
+            gas: {
+                // Gas always animates
+                isActive: (data) => true,
+                paths: ['Gas', 'Gas-2']
+            },
+            solarToHome: {
+                // zonneenergie_productie_nu > 0 AND electriciteit_netverbruik_nu == 0 AND batterij_status != "Laden"
+                isActive: (data) => {
+                    const solar = parseFloat(data['sensor.zonneenergie_productie_nu']) || 0;
+                    const gridImport = parseFloat(data['sensor.electriciteit_netverbruik_nu']) || 0;
+                    const battStatus = data['sensor.batterij_status'];
+                    return solar > 0 && gridImport === 0 && battStatus !== 'Laden';
+                },
+                paths: ['SolarUsed']
+            },
+            solarToBattery: {
+                // zonneenergie_productie_nu > 0 AND batterij_status == "Laden"
+                isActive: (data) => {
+                    const solar = parseFloat(data['sensor.zonneenergie_productie_nu']) || 0;
+                    const battStatus = data['sensor.batterij_status'];
+                    return solar > 0 && battStatus === 'Laden';
+                },
+                paths: ['SolarToBattery']
+            },
+            exportGrid: {
+                // electriciteit_injectie_nu > 0
+                isActive: (data) => {
+                    const exportGrid = parseFloat(data['sensor.electriciteit_injectie_nu']) || 0;
+                    return exportGrid > 0;
+                },
+                paths: ['ExportGrid', 'ExportGrid-2']
+            },
+            importGrid: {
+                // electriciteit_netverbruik_nu > 0
+                isActive: (data) => {
+                    const importGrid = parseFloat(data['sensor.electriciteit_netverbruik_nu']) || 0;
+                    return importGrid > 0;
+                },
+                paths: ['ImportGrid', 'ImportGrid-2']
+            },
+            batteryUsed: {
+                // If you want to animate battery used. The spec mentioned Battery line but no exact condition.
+                // Assuming batterij_status == 'Ontladen'
+                isActive: (data) => {
+                    const battStatus = data['sensor.batterij_status'];
+                    return battStatus === 'Ontladen' || battStatus === 'Ontlagen';
+                },
+                paths: ['BatteryUsed']
+            }
+        };
+
+        // Update Dashboard Data and Animations
+        function updateDashboard(sensorData) {
+            // Process the sensorData which is assumed to be a dictionary { 'sensor_id': 'state_value', ... }
+
+            // Evaluate state machine rules and toggle CSS classes
+            for (const flow in flowLogic) {
+                const logic = flowLogic[flow];
+                const active = logic.isActive(sensorData);
+
+                logic.paths.forEach(pathId => {
+                    const pathEl = document.getElementById(pathId);
+                    if (pathEl) {
+                        if (active) {
+                            pathEl.classList.add('active');
+                        } else {
+                            pathEl.classList.remove('active');
+                        }
+                    }
+                });
+            }
+
+            // Update metric-cards if they exist in the DOM
+            // This expects elements with ID matching the sensor ID (with dots replaced by dashes, e.g. sensor-zonneenergie_productie_nu)
+            for (const [sensorId, value] of Object.entries(sensorData)) {
+                const safeId = sensorId.replace(/\./g, '-');
+                const metricEl = document.getElementById(safeId);
+                if (metricEl) {
+                    metricEl.textContent = value;
+                }
+            }
+        }
+
+        // --- Example Usage / Mock Data ---
+        // To integrate properly, you would call `updateDashboard(realData)` whenever HA returns new data.
+
+        // Uncomment to test with mock data:
+        /*
+        const mockData = {
+            'sensor.zonneenergie_productie_nu': '1500',
+            'sensor.electriciteit_netverbruik_nu': '0',
+            'sensor.batterij_status': 'Ontladen',
+            'sensor.electriciteit_injectie_nu': '500'
+        };
+        updateDashboard(mockData);
+        */
+    </script>
 </body>
 </html>
