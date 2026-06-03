@@ -8,6 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/monitoring.css">
+<link rel="stylesheet" href="CSS/verlichting.css">
+<link rel="stylesheet" href="CSS/automatisering.css">
 <script>
   const PAGE_MIN_ACTION_LEVEL = 50;  
   (function() {
@@ -73,34 +75,132 @@
 
     <!-- Persons -->
     <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
-    <div class="section-label" style="margin-top:4px;">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      Aanwezigheid
-    </div>
-    <div class="persons-grid" id="personsGrid">
-      <!-- injected by JS -->
-    </div>
+    <details id="details-aanwezigheid" class="auto-section" style="margin-top: 24px;">
+      <summary class="energy-subtitle">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 8px;"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Aanwezigheid
+      </summary>
+      <div class="auto-section-content">
+        <div class="persons-grid" id="personsGrid">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </details>
     <?php endif; ?>
 
     <!-- Sensors -->
-    <div class="section-label">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="currentColor"/></svg>
-      Bewegingssensoren
-    </div>
+    <details id="details-sensoren" class="auto-section">
+      <summary class="energy-subtitle" id="sensorenSummary" style="transition: all 0.3s ease;">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 8px;"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="currentColor"/></svg>
+        Bewegingssensoren
+      </summary>
+      <div class="auto-section-content">
+        <!-- Gecombineerde Sensor Grid -->
+        <div class="sensor-grid" id="sensorGrid">
+          <!-- cards injected by JS -->
+        </div>
+      </div>
+    </details>
 
-    <!-- Gecombineerde Sensor Grid -->
-    <div class="sensor-grid" id="sensorGrid">
-      <!-- cards injected by JS -->
-    </div>
+    <!-- Alarm Notificaties -->
+    <details id="details-alarm-notificaties" class="auto-section">
+      <summary class="energy-subtitle" id="alarmNotificatiesSummary" style="display:flex; justify-content:space-between; align-items:center; transition: all 0.3s ease;">
+        <div style="display:flex; align-items:center;">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right: 8px;"><path d="M6 1C3 1 1 3 1 6v3l-1 1v1h12v-1l-1-1V6c0-3-2-5-5-5zm0 11c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/></svg>
+            <span id="alarmNotificatiesTitle">Activeer Alarm Notificaties</span>
+        </div>
+        <div onclick="event.stopPropagation();" style="display:flex; align-items:center;">
+            <div id="alarmActiveEntities" style="font-size: 11px; margin-right: 12px; color: var(--alert); display: none; text-align: right; font-family: 'Share Tech Mono', monospace; font-weight: normal; letter-spacing: normal;"></div>
+            <label class="switch">
+              <input type="checkbox" id="toggleAlarmHeader" onchange="toggleBoolean('input_boolean.alarm')">
+              <span class="slider"></span>
+            </label>
+        </div>
+      </summary>
+      <div class="auto-section-content">
+        <!-- ROW 1: Toggles -->
+        <div class="alarm-grid-3">
+            <div class="wekker-row">
+                <div class="wekker-label">ACTIVATIE PRESENCE FAKER</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleFakePresence" onchange="toggleBoolean('input_boolean.fakepresence')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+            <div class="wekker-row">
+                <div class="wekker-label">Alarmen naar Bart</div>
+                <label class="switch">
+                  <input type="checkbox" id="toggleNotifyBart" onchange="toggleBoolean('input_boolean.notify_bart')">
+                  <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- ROW 2: Zones -->
+        <div class="energy-subtitle" style="margin-top: 24px; border-bottom: none; font-size: 11px;">BEWEGINGSDETECTIE ZONES</div>
+        <div class="alarm-grid-3">
+            <div class="light-card light-off" id="card-zone-beneden" onclick="toggleBoolean('input_boolean.beweging_detectie_beneden')">
+                <div class="light-card-info">
+                    <div class="light-icon">📍</div>
+                    <div class="light-title">Beneden</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-zone-boven" onclick="toggleBoolean('input_boolean.beweging_detectie_boven')">
+                <div class="light-card-info">
+                    <div class="light-icon">📍</div>
+                    <div class="light-title">Boven</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-zone-buiten" onclick="toggleBoolean('input_boolean.beweging_detectie_buiten')">
+                <div class="light-card-info">
+                    <div class="light-icon">📍</div>
+                    <div class="light-title">Buiten</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 3: Presence -->
+        <div class="energy-subtitle" style="margin-top: 24px; border-bottom: none; font-size: 11px;">AANWEZIGHEID IN HUIS</div>
+        <div class="auto-grid">
+            <div class="light-card light-off" id="card-pres-all" onclick="toggleBoolean('input_boolean.aanwezig')">
+                <div class="light-card-info">
+                    <div class="light-icon">🏠</div>
+                    <div class="light-title">Aanwezig</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-pres-bart" onclick="toggleBoolean('input_boolean.bart_thuis')">
+                <div class="light-card-info">
+                    <div class="light-icon">👤</div>
+                    <div class="light-title">Bart</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-pres-linda" onclick="toggleBoolean('input_boolean.linda_thuis')">
+                <div class="light-card-info">
+                    <div class="light-icon">👤</div>
+                    <div class="light-title">Linda</div>
+                </div>
+            </div>
+            <div class="light-card light-off" id="card-pres-gasten" onclick="toggleBoolean('input_boolean.gasten_thuis')">
+                <div class="light-card-info">
+                    <div class="light-icon">👥</div>
+                    <div class="light-title">Gasten</div>
+                </div>
+            </div>
+        </div>
+
+      </div>
+    </details>
 
     <!-- Anniversaries -->
-    <div id="anniversaryBlock" style="display:none; margin-bottom:20px;">
-      <div class="section-label">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v2M3 2l1 1.5M9 2l-1 1.5M1 5h10M2 5l1 6h6l1-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <details id="anniversaryBlock" class="auto-section" style="display:none; margin-bottom:20px;">
+      <summary class="energy-subtitle">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 8px;"><path d="M6 1v2M3 2l1 1.5M9 2l-1 1.5M1 5h10M2 5l1 6h6l1-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Verjaardagen
+      </summary>
+      <div class="auto-section-content">
+        <div id="anniversaryList"></div>
       </div>
-      <div id="anniversaryList"></div>
-    </div>
+    </details>
 
 
 
@@ -157,12 +257,23 @@
     tempSlaap:    'sensor.slaapkamer_temp',
     tempBureau:   'sensor.bureau_temp',
     tempBuiten:   'sensor.thuis_outdoor_temperature',
+    // Alarm notificaties switches
+    alarmToggle:              'input_boolean.alarm',
+    fakepresence:             'input_boolean.fakepresence',
+    notifyBart:               'input_boolean.notify_bart',
+    bewegingDetectieBeneden:  'input_boolean.beweging_detectie_beneden',
+    bewegingDetectieBoven:    'input_boolean.beweging_detectie_boven',
+    bewegingDetectieBuiten:   'input_boolean.beweging_detectie_buiten',
+    aanwezig:                 'input_boolean.aanwezig',
+    bartThuis:                'input_boolean.bart_thuis',
+    lindaThuis:               'input_boolean.linda_thuis',
+    gastenThuis:              'input_boolean.gasten_thuis'
   };
 
   // Personen
   const PERSON_CONFIG = [
-    { name: 'Bart',  person: 'person.bartp',  tracker: 'device_tracker.bart_iphone' },
-    { name: 'Linda', person: 'person.linda',  tracker: 'device_tracker.linda' },
+    { name: 'Bart',  person: 'person.bartp',  tracker: 'device_tracker.bart_iphone', location: 'sensor.b63p15_geocoded_location' },
+    { name: 'Linda', person: 'person.linda',  tracker: 'device_tracker.linda', location: 'sensor.iphone_linda_geocoded_location' },
   ];
 
 
@@ -207,9 +318,11 @@
 
   // ── Update Sensors & Individual Batteries ──
   async function updateSensors(stateMap) {
+    let anyMotion = false;
     SENSOR_CONFIG.forEach((s, i) => {
       const card   = document.getElementById(`sensor-${i}`);
       const motion = stateVal(stateMap[s.motion]) === 'on';
+      if (motion) anyMotion = true;
       const pirOn  = stateVal(stateMap[s.motionSwitch]) === 'on';
       const luxOn  = stateVal(stateMap[s.lightSwitch])  === 'on';
 
@@ -235,18 +348,49 @@
         battEl.style.display = 'none';
       }
     });
+
+    // Update the sensors header active class based on motion
+    const sensorenSummary = document.getElementById('sensorenSummary');
+    if (sensorenSummary) {
+        if (anyMotion) {
+            sensorenSummary.classList.add('alarm-header-active');
+        } else {
+            sensorenSummary.classList.remove('alarm-header-active');
+        }
+    }
   }
 
   // ── Update alarm banner ──
-  function updateAlarm(alarmState, zoneState) {
+  function updateAlarm(stateMap) {
+    const on = stateVal(stateMap[ENTITIES.alarm]) === 'on';
+    const zone = stateVal(stateMap[ENTITIES.alarmZone]);
+
     const banner   = document.getElementById('alarmBanner');
     const alarmSub = document.getElementById('alarmSub');
-    const on = stateVal(alarmState) === 'on';
     banner.className = `alarm-banner ${on ? 'active' : 'ok'}`;
     banner.querySelector('.alarm-icon').textContent  = on ? '⚠' : '✔';
     banner.querySelector('.alarm-title').textContent = on ? 'Alarm Melding' : 'Alles OK';
-    const zone = stateVal(zoneState);
     alarmSub.textContent = on && zone !== 'Geen melding' ? zone : 'Geen actieve meldingen';
+
+    // Update the alarm header active entities
+    const activeEntitiesEl = document.getElementById('alarmActiveEntities');
+    if (stateVal(stateMap[ENTITIES.alarmToggle]) === 'on') {
+        const activeNames = [];
+        if (stateVal(stateMap[ENTITIES.fakepresence]) === 'on') activeNames.push('PRESENCE FAKER');
+        if (stateVal(stateMap[ENTITIES.notifyBart]) === 'on') activeNames.push('NAAR BART');
+        if (stateVal(stateMap[ENTITIES.bewegingDetectieBeneden]) === 'on') activeNames.push('BENEDEN');
+        if (stateVal(stateMap[ENTITIES.bewegingDetectieBoven]) === 'on') activeNames.push('BOVEN');
+        if (stateVal(stateMap[ENTITIES.bewegingDetectieBuiten]) === 'on') activeNames.push('BUITEN');
+
+        if (activeNames.length > 0) {
+            activeEntitiesEl.textContent = activeNames.join(' - ');
+            activeEntitiesEl.style.display = 'block';
+        } else {
+            activeEntitiesEl.style.display = 'none';
+        }
+    } else {
+        activeEntitiesEl.style.display = 'none';
+    }
   }
 
 
@@ -278,10 +422,11 @@
         card.id = `person-${i}`;
         card.className = 'person-card';
         card.innerHTML = `
-          <div class="person-avatar" id="person-av-${i}">👤</div>
+          <div class="person-avatar" id="person-av-${i}" style="background-image: url('IMGS/${p.name.toLowerCase()}.png'); color: transparent;">${p.name.charAt(0)}</div>
           <div class="person-info">
             <div class="person-name">${p.name}</div>
             <div class="person-status" id="person-st-${i}">—</div>
+            <div class="person-location" id="person-loc-${i}" style="display:none;"></div>
           </div>`;
         grid.appendChild(card);
       });
@@ -289,11 +434,27 @@
     PERSON_CONFIG.forEach((p, i) => {
       const home = stateVal(stateMap[p.person]) === 'home';
       const tracker = stateMap[p.tracker];
-      const location = tracker?.attributes?.friendly_name ?? (home ? 'Thuis' : 'Weg');
-      document.getElementById(`person-${i}`).className = `person-card ${home ? 'home' : 'away'}`;
+
+      const card = document.getElementById(`person-${i}`);
       const av = document.getElementById(`person-av-${i}`);
+      const locEl = document.getElementById(`person-loc-${i}`);
+
+      if (!card || !av) return;
+      card.className = `person-card ${home ? 'home' : 'away'}`;
       av.className = `person-avatar ${home ? 'home' : 'away'}`;
       document.getElementById(`person-st-${i}`).textContent = home ? '● THUIS' : '● WEG';
+
+      if (p.location && stateMap[p.location]) {
+          const locState = stateMap[p.location].state;
+          if (locState && locState !== 'unavailable' && locState !== 'unknown') {
+              locEl.textContent = locState;
+              locEl.style.display = 'block';
+          } else {
+              locEl.style.display = 'none';
+          }
+      } else if (locEl) {
+          locEl.style.display = 'none';
+      }
     });
   }
 
@@ -331,14 +492,22 @@
     });
   }
 
+  async function toggleBoolean(entityId) {
+      try {
+          await haPost('input_boolean', 'toggle', entityId);
+          setTimeout(refresh, 500);
+      } catch (err) {
+          console.error('Failed to toggle boolean', err);
+      }
+  }
+
   // ── Main refresh ──
   async function refresh() {
     const allIds = [
       ...SENSOR_CONFIG.flatMap(s => [s.motion, s.motionSwitch, s.lightSwitch, s.battery].filter(Boolean)),
       ...Object.values(ENTITIES),
       ...PERSON_CONFIG.flatMap(p => [p.person, p.tracker]),
-
-
+      ...PERSON_CONFIG.map(p => p.location).filter(Boolean),
       ...ANNIVERSARY_ENTITIES,
     ];
 
@@ -347,13 +516,56 @@
     [...new Set(allIds)].forEach((id, i) => stateMap[id] = results[i]);
 
     updateSensors(stateMap);
-    updateAlarm(stateMap[ENTITIES.alarm], stateMap[ENTITIES.alarmZone]);
+    updateAlarm(stateMap);
 
     updateVersions(stateMap);
 
 
 
     updatePersons(stateMap);
+
+    // Update new Alarm notification toggles (checkboxes)
+    const togglesToSync = [
+        { id: 'toggleAlarmHeader', entity: ENTITIES.alarmToggle },
+        { id: 'toggleFakePresence', entity: ENTITIES.fakepresence },
+        { id: 'toggleNotifyBart', entity: ENTITIES.notifyBart }
+    ];
+    togglesToSync.forEach(t => {
+        const el = document.getElementById(t.id);
+        const stateObj = stateMap[t.entity];
+        if (el && stateObj) {
+            el.checked = (stateObj.state === 'on');
+        }
+    });
+
+    // Update the Alarm Notificaties Header styling based on the toggle state
+    const alarmToggleState = stateMap[ENTITIES.alarmToggle];
+    const alarmSummary = document.getElementById('alarmNotificatiesSummary');
+    if (alarmToggleState && alarmSummary) {
+        if (alarmToggleState.state === 'on') {
+            alarmSummary.classList.add('alarm-header-active');
+        } else {
+            alarmSummary.classList.remove('alarm-header-active');
+        }
+    }
+
+    // Update Light Cards
+    const lightCardsToSync = [
+        { id: 'card-zone-beneden', entity: ENTITIES.bewegingDetectieBeneden },
+        { id: 'card-zone-boven', entity: ENTITIES.bewegingDetectieBoven },
+        { id: 'card-zone-buiten', entity: ENTITIES.bewegingDetectieBuiten },
+        { id: 'card-pres-all', entity: ENTITIES.aanwezig },
+        { id: 'card-pres-bart', entity: ENTITIES.bartThuis },
+        { id: 'card-pres-linda', entity: ENTITIES.lindaThuis },
+        { id: 'card-pres-gasten', entity: ENTITIES.gastenThuis }
+    ];
+    lightCardsToSync.forEach(c => {
+        const el = document.getElementById(c.id);
+        const stateObj = stateMap[c.entity];
+        if (el && stateObj) {
+            el.className = "light-card " + (stateObj.state === 'on' ? "light-on light-ok" : "light-off");
+        }
+    });
 
     await updateAnniversaries(stateMap);
 
@@ -363,6 +575,30 @@
 
   refresh();
   setInterval(() => { if (!window.isRefreshPaused) refresh(); }, REFRESH);
+
+  document.addEventListener('DOMContentLoaded', () => {
+      // LocalStorage for auto-section details elements
+      document.querySelectorAll('.auto-section').forEach(details => {
+          const id = details.id;
+          // Skip anniversary block for default storage, it is handled by the script's display block/none
+          if (!id || id === 'anniversaryBlock') return;
+          const lsKey = 'auto_section_mon_' + id;
+          const state = localStorage.getItem(lsKey);
+
+          if (state === 'open') {
+              details.open = true;
+          } else if (state === 'closed') {
+              details.open = false;
+          } else {
+              // Default if no storage found: default is closed in HTML, so do nothing.
+              details.open = false;
+          }
+
+          details.addEventListener('toggle', (e) => {
+              localStorage.setItem(lsKey, details.open ? 'open' : 'closed');
+          });
+      });
+  });
 </script>
 </body>
 </html>
