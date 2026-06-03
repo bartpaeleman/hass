@@ -1,0 +1,81 @@
+:root {
+            --bg: #0a0c0f;
+        }
+
+        body {
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .house-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 1797.28px; /* Match SVG viewBox width */
+            aspect-ratio: 1797.28 / 1003.13;
+        }
+
+        .house-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .house-wrap svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Make SVG purely visual */
+        }
+
+        /* SVG Colors */
+        .cls-1 { fill: none; stroke: #00aeef; } /* Gas */
+        .cls-2 { fill: none; stroke: #f7941d; } /* Battery */
+        .cls-3 { fill: none; stroke: #ed1c24; } /* Export Grid */
+        .cls-4 { fill: none; stroke: #fee756; } /* Import Grid */
+        .cls-5 { fill: none; stroke: #39b54a; } /* Solar */
+
+        /* Animation specific styles */
+        .house-wrap path {
+            stroke-width: 8px; /* Adjust as needed */
+            stroke-dasharray: 20 20; /* 20px dash, 20px gap */
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Forward Animation */
+        @keyframes flow-fwd {
+            to { stroke-dashoffset: -40; }
+        }
+
+        /* Reverse Animation */
+        @keyframes flow-rev {
+            to { stroke-dashoffset: 40; }
+        }
+
+        /* Apply animations to specific flows */
+        #Gas.active, #Gas-2.active {
+            animation: flow-fwd 1s linear infinite;
+        }
+
+        #ImportGrid.active, #ImportGrid-2.active {
+            animation: flow-fwd 1s linear infinite;
+        }
+
+        #BatteryUsed.active {
+            animation: flow-fwd 1s linear infinite; /* Adjust based on flow direction */
+        }
+
+        #ExportGrid.active, #ExportGrid-2.active {
+            animation: flow-rev 1s linear infinite;
+        }
+
+        #SolarToBattery.active, #SolarUsed.active {
+            animation: flow-fwd 1s linear infinite;
+        }
