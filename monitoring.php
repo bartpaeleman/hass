@@ -90,7 +90,7 @@
 
     <!-- Sensors -->
     <details id="details-sensoren" class="auto-section">
-      <summary class="energy-subtitle">
+      <summary class="energy-subtitle" id="sensorenSummary" style="transition: all 0.3s ease;">
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 8px;"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6" r="2" fill="currentColor"/></svg>
         Bewegingssensoren
       </summary>
@@ -107,9 +107,10 @@
       <summary class="energy-subtitle" id="alarmNotificatiesSummary" style="display:flex; justify-content:space-between; align-items:center; transition: all 0.3s ease;">
         <div style="display:flex; align-items:center;">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right: 8px;"><path d="M6 1C3 1 1 3 1 6v3l-1 1v1h12v-1l-1-1V6c0-3-2-5-5-5zm0 11c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/></svg>
-            ALARM NOTIFICATIES
+            <span id="alarmNotificatiesTitle">Activeer Alarm Notificaties</span>
         </div>
         <div onclick="event.stopPropagation();" style="display:flex; align-items:center;">
+            <div id="alarmActiveEntities" style="font-size: 11px; margin-right: 12px; color: var(--alert); display: none; text-align: right; font-family: 'Share Tech Mono', monospace; font-weight: normal; letter-spacing: normal;"></div>
             <label class="switch">
               <input type="checkbox" id="toggleAlarmHeader" onchange="toggleBoolean('input_boolean.alarm')">
               <span class="slider"></span>
@@ -317,9 +318,11 @@
 
   // ── Update Sensors & Individual Batteries ──
   async function updateSensors(stateMap) {
+    let anyMotion = false;
     SENSOR_CONFIG.forEach((s, i) => {
       const card   = document.getElementById(`sensor-${i}`);
       const motion = stateVal(stateMap[s.motion]) === 'on';
+      if (motion) anyMotion = true;
       const pirOn  = stateVal(stateMap[s.motionSwitch]) === 'on';
       const luxOn  = stateVal(stateMap[s.lightSwitch])  === 'on';
 
@@ -345,18 +348,49 @@
         battEl.style.display = 'none';
       }
     });
+
+    // Update the sensors header active class based on motion
+    const sensorenSummary = document.getElementById('sensorenSummary');
+    if (sensorenSummary) {
+        if (anyMotion) {
+            sensorenSummary.classList.add('alarm-header-active');
+        } else {
+            sensorenSummary.classList.remove('alarm-header-active');
+        }
+    }
   }
 
   // ── Update alarm banner ──
-  function updateAlarm(alarmState, zoneState) {
+  function updateAlarm(stateMap) {
+    const on = stateVal(stateMap[ENTITIES.alarm]) === 'on';
+    const zone = stateVal(stateMap[ENTITIES.alarmZone]);
+
     const banner   = document.getElementById('alarmBanner');
     const alarmSub = document.getElementById('alarmSub');
-    const on = stateVal(alarmState) === 'on';
     banner.className = `alarm-banner ${on ? 'active' : 'ok'}`;
     banner.querySelector('.alarm-icon').textContent  = on ? '⚠' : '✔';
     banner.querySelector('.alarm-title').textContent = on ? 'Alarm Melding' : 'Alles OK';
-    const zone = stateVal(zoneState);
     alarmSub.textContent = on && zone !== 'Geen melding' ? zone : 'Geen actieve meldingen';
+
+    // Update the alarm header active entities
+    const activeEntitiesEl = document.getElementById('alarmActiveEntities');
+    if (stateVal(stateMap[ENTITIES.alarmToggle]) === 'on') {
+        const activeNames = [];
+        if (stateVal(stateMap[ENTITIES.fakepresence]) === 'on') activeNames.push('PRESENCE FAKER');
+        if (stateVal(stateMap[ENTITIES.notifyBart]) === 'on') activeNames.push('NAAR BART');
+        if (stateVal(stateMap[ENTITIES.bewegingDetectieBeneden]) === 'on') activeNames.push('BENEDEN');
+        if (stateVal(stateMap[ENTITIES.bewegingDetectieBoven]) === 'on') activeNames.push('BOVEN');
+        if (stateVal(stateMap[ENTITIES.bewegingDetectieBuiten]) === 'on') activeNames.push('BUITEN');
+
+        if (activeNames.length > 0) {
+            activeEntitiesEl.textContent = activeNames.join(' - ');
+            activeEntitiesEl.style.display = 'block';
+        } else {
+            activeEntitiesEl.style.display = 'none';
+        }
+    } else {
+        activeEntitiesEl.style.display = 'none';
+    }
   }
 
 
@@ -482,7 +516,7 @@
     [...new Set(allIds)].forEach((id, i) => stateMap[id] = results[i]);
 
     updateSensors(stateMap);
-    updateAlarm(stateMap[ENTITIES.alarm], stateMap[ENTITIES.alarmZone]);
+    updateAlarm(stateMap);
 
     updateVersions(stateMap);
 
