@@ -365,3 +365,13 @@ input:checked + .slider:before {
     grid-column: span 12; /* Rek sensoren uit over de volledige breedte */
   }
 }
+/* Alarm active header styling */
+.alarm-header-active {
+    background-color: rgba(255, 61, 61, 0.15) !important;
+    color: var(--alert) !important;
+    border-bottom-color: var(--alert) !important;
+}
+
+.alarm-header-active svg {
+    color: var(--alert) !important;
+}

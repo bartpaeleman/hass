@@ -104,20 +104,21 @@
 
     <!-- Alarm Notificaties -->
     <details id="details-alarm-notificaties" class="auto-section">
-      <summary class="energy-subtitle">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right: 8px;"><path d="M6 1C3 1 1 3 1 6v3l-1 1v1h12v-1l-1-1V6c0-3-2-5-5-5zm0 11c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/></svg>
-        ALARM NOTIFICATIES
+      <summary class="energy-subtitle" id="alarmNotificatiesSummary" style="display:flex; justify-content:space-between; align-items:center; transition: all 0.3s ease;">
+        <div style="display:flex; align-items:center;">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right: 8px;"><path d="M6 1C3 1 1 3 1 6v3l-1 1v1h12v-1l-1-1V6c0-3-2-5-5-5zm0 11c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/></svg>
+            ALARM NOTIFICATIES
+        </div>
+        <div onclick="event.stopPropagation();" style="display:flex; align-items:center;">
+            <label class="switch">
+              <input type="checkbox" id="toggleAlarmHeader" onchange="toggleBoolean('input_boolean.alarm')">
+              <span class="slider"></span>
+            </label>
+        </div>
       </summary>
       <div class="auto-section-content">
         <!-- ROW 1: Toggles -->
         <div class="alarm-grid-3">
-            <div class="wekker-row">
-                <div class="wekker-label">ALARMEN AAN / UIT</div>
-                <label class="switch">
-                  <input type="checkbox" id="toggleAlarm" onchange="toggleBoolean('input_boolean.alarm')">
-                  <span class="slider"></span>
-                </label>
-            </div>
             <div class="wekker-row">
                 <div class="wekker-label">ACTIVATIE PRESENCE FAKER</div>
                 <label class="switch">
@@ -256,7 +257,7 @@
     tempBureau:   'sensor.bureau_temp',
     tempBuiten:   'sensor.thuis_outdoor_temperature',
     // Alarm notificaties switches
-    alarm:                    'input_boolean.alarm',
+    alarmToggle:              'input_boolean.alarm',
     fakepresence:             'input_boolean.fakepresence',
     notifyBart:               'input_boolean.notify_bart',
     bewegingDetectieBeneden:  'input_boolean.beweging_detectie_beneden',
@@ -491,7 +492,7 @@
 
     // Update new Alarm notification toggles (checkboxes)
     const togglesToSync = [
-        { id: 'toggleAlarm', entity: ENTITIES.alarm },
+        { id: 'toggleAlarmHeader', entity: ENTITIES.alarmToggle },
         { id: 'toggleFakePresence', entity: ENTITIES.fakepresence },
         { id: 'toggleNotifyBart', entity: ENTITIES.notifyBart }
     ];
@@ -502,6 +503,17 @@
             el.checked = (stateObj.state === 'on');
         }
     });
+
+    // Update the Alarm Notificaties Header styling based on the toggle state
+    const alarmToggleState = stateMap[ENTITIES.alarmToggle];
+    const alarmSummary = document.getElementById('alarmNotificatiesSummary');
+    if (alarmToggleState && alarmSummary) {
+        if (alarmToggleState.state === 'on') {
+            alarmSummary.classList.add('alarm-header-active');
+        } else {
+            alarmSummary.classList.remove('alarm-header-active');
+        }
+    }
 
     // Update Light Cards
     const lightCardsToSync = [
