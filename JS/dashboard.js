@@ -93,7 +93,8 @@ const SENSORS_TO_FETCH = [
     'sensor.electriciteit_injectie_nu',
     'sensor.batterij_status',
     'sensor.batterij_vermogen',
-    'sensor.adj0b1302u_state_of_charge'
+    'sensor.adj0b1302u_state_of_charge',
+    'sensor.actueel_bruto_elektriciteitsverbruik'
 ];
 
 /**
