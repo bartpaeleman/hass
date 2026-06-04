@@ -27,6 +27,10 @@ class EnergyManager {
             if ($brutoVerbruik >= $solarProd) {
                 $solarToHomeActive = true;
             }
+            // "Als de import nul is, de zonneproductie hoger is dan het vermogen dat naar de batterij gaat, en de batterij nog niet op 100% capaciteit zit, dan moet animatie van de linkse groene lijn ook actief zijn."
+            if ($gridImport == 0 && strtolower($battStatus) === 'laden' && $solarProd > $battPower && $battSOC < 100) {
+                $solarToHomeActive = true;
+            }
         }
 
         // Booleans for state-machine flows

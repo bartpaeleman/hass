@@ -1,0 +1,203 @@
+:root {
+            --bg: #0a0c0f;
+        }
+
+        body {
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .house-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 1797.28px; /* Match SVG viewBox width */
+            aspect-ratio: 1797.28 / 1003.13;
+            container-type: inline-size;
+        }
+
+        .house-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .house-wrap svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Make SVG purely visual */
+        }
+
+        /* SVG Colors */
+        .cls-1 { fill: none; stroke: #00aeef; } /* Gas */
+        .cls-2 { fill: none; stroke: #f7941d; } /* Battery */
+        .cls-3 { fill: none; stroke: #ed1c24; } /* Export Grid */
+        .cls-4 { fill: none; stroke: #fee756; } /* Import Grid */
+        .cls-5 { fill: none; stroke: #39b54a; } /* Solar */
+
+        /* Animation specific styles */
+        .house-wrap path {
+            stroke-width: 6.4px; /* 20% thinner */
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Inactive flow styling */
+        .house-wrap path:not(.active) {
+            opacity: 0.3;
+            stroke-dasharray: none !important;
+        }
+
+        /* Active flow styling */
+        .house-wrap path.active {
+            opacity: 1;
+            stroke-dasharray: 20 10 !important; /* Smaller gaps */
+        }
+
+        /* Forward Animation */
+        @keyframes flow-fwd {
+            to { stroke-dashoffset: -30; } /* Matches dash+gap total length 20+10 */
+        }
+
+        /* Reverse Animation */
+        @keyframes flow-rev {
+            to { stroke-dashoffset: 30; }
+        }
+
+        /* Apply animations to specific flows */
+        #Gas.active, #Gas-2.active {
+            animation: flow-fwd 1s linear infinite;
+        }
+
+        #ImportGrid.active, #ImportGrid-2.active {
+            animation: flow-fwd 1s linear infinite;
+        }
+
+        #BatteryUsed.active {
+            animation: flow-fwd 1s linear infinite;
+        }
+
+        #ExportGrid.active, #ExportGrid-2.active {
+            animation: flow-fwd 1s linear infinite; /* Fixed direction for export */
+        }
+
+        #SolarToBattery.active, #SolarUsed.active {
+            animation: flow-fwd 1s linear infinite;
+        }
+
+        /* Overlay Grid Styles */
+        .overlay-grid {
+            position: absolute;
+            top: 2%;
+            left: 2%;
+            right: 2%;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            z-index: 10;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            pointer-events: none;
+            flex-wrap: wrap;
+        }
+
+        .overlay-group {
+            background: rgba(17, 20, 24, 0.8);
+            border-radius: 8px;
+            padding: 10px 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+            margin: 5px;
+            flex: 1 1 auto;
+            max-width: 19%;
+        }
+
+        .overlay-group h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2cqi;
+            color: var(--text-muted, #aaa);
+            text-transform: uppercase;
+        }
+
+        .overlay-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 1.5cqi;
+            font-weight: bold;
+        }
+
+        .overlay-item .label {
+            font-size: 1cqi;
+            font-weight: normal;
+            margin-right: 10px;
+        }
+
+        .overlay-item.solar { color: #39b54a; }
+        .overlay-item.battery { color: #f7941d; }
+        .overlay-item.grid-import { color: #fee756; }
+        .overlay-item.grid-export { color: red; }
+
+        /* Bottom Overlays */
+        .gas-overlay, .electricity-overlay, .injection-overlay {
+            position: absolute;
+            background: rgba(17, 20, 24, 0.8);
+            border-radius: 8px;
+            padding: 10px 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            pointer-events: none;
+        }
+
+        .gas-overlay {
+            bottom: 16%;
+            left: 34%;
+        }
+
+        .electricity-overlay {
+            bottom: 16%;
+            right: 30%;
+        }
+
+        .injection-overlay {
+            bottom: 1%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .gas-overlay h3, .electricity-overlay h3, .injection-overlay h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2cqi;
+            color: var(--text-muted, #aaa);
+            text-transform: uppercase;
+        }
+
+        .gas-overlay .overlay-item, .electricity-overlay .overlay-item, .injection-overlay .overlay-item {
+            font-size: 1.5cqi;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+
+        .gas-overlay .overlay-item { color: #00aeef; }
+        .electricity-overlay .overlay-item { color: #fee756; } /* Yellowish like grid import */
+        .injection-overlay .overlay-item { color: red; }
+
+        @media (max-width: 900px) {
+            .overlay-group h3 { font-size: 2cqi; }
+            .overlay-item { font-size: 2.5cqi; }
+            .overlay-item .label { font-size: 1.8cqi; }
+            .gas-overlay h3, .electricity-overlay h3, .injection-overlay h3 { font-size: 1.8cqi; }
+            .gas-overlay .overlay-item, .electricity-overlay .overlay-item, .injection-overlay .overlay-item { font-size: 2.5cqi; }
+        }
