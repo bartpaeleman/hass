@@ -96,5 +96,11 @@
 
     <script src="ha_core_js.php"></script>
     <script src="JS/live-dashboard.js"></script>
+    <script>
+        // Voeg klik-navigatie toe zoals gevraagd
+        document.body.addEventListener('click', function() {
+            window.location.href = 'energy.php';
+        });
+    </script>
 </body>
 </html>
