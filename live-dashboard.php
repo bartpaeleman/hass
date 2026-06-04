@@ -15,6 +15,10 @@
                     <span class="label">Productie:</span>
                     <span id="live-solar-prod">— W</span>
                 </div>
+                <div class="overlay-item solar" id="live-eigen-verbruik-container">
+                    <span class="label">Eigen verbruik:</span>
+                    <span id="live-eigen-verbruik">— W</span>
+                </div>
             </div>
             <div class="overlay-group">
                 <h3>Batterij</h3>
