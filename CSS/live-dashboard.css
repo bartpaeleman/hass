@@ -17,6 +17,7 @@
             width: 100%;
             max-width: 1797.28px; /* Match SVG viewBox width */
             aspect-ratio: 1797.28 / 1003.13;
+            container-type: inline-size;
         }
 
         .house-wrap img {
@@ -109,7 +110,7 @@
         }
 
         .overlay-group {
-            background: rgba(17, 20, 24, 0.0);
+            background: rgba(17, 20, 24, 0.8);
             border-radius: 8px;
             padding: 10px 15px;
             text-align: center;
@@ -121,7 +122,7 @@
 
         .overlay-group h3 {
             margin: 0 0 10px 0;
-            font-size: 1.2vw;
+            font-size: 1.2cqi;
             color: var(--text-muted, #aaa);
             text-transform: uppercase;
         }
@@ -131,12 +132,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 5px;
-            font-size: 1.5vw;
+            font-size: 1.5cqi;
             font-weight: bold;
         }
 
         .overlay-item .label {
-            font-size: 1vw;
+            font-size: 1cqi;
             font-weight: normal;
             margin-right: 10px;
         }
@@ -149,7 +150,7 @@
         /* Bottom Overlays */
         .gas-overlay, .electricity-overlay, .injection-overlay {
             position: absolute;
-            background: rgba(17, 20, 24, 0.0);
+            background: rgba(17, 20, 24, 0.8);
             border-radius: 8px;
             padding: 10px 15px;
             text-align: center;
@@ -162,29 +163,29 @@
 
         .gas-overlay {
             bottom: 16%;
-            left: 36%;
+            left: 34%;
         }
 
         .electricity-overlay {
             bottom: 16%;
-            right: 36%;
+            right: 30%;
         }
 
         .injection-overlay {
-            bottom: 2%;
+            bottom: 1%;
             left: 50%;
             transform: translateX(-50%);
         }
 
         .gas-overlay h3, .electricity-overlay h3, .injection-overlay h3 {
             margin: 0 0 5px 0;
-            font-size: 1vw;
+            font-size: 1.2cqi;
             color: var(--text-muted, #aaa);
             text-transform: uppercase;
         }
 
         .gas-overlay .overlay-item, .electricity-overlay .overlay-item, .injection-overlay .overlay-item {
-            font-size: 1.5vw;
+            font-size: 1.5cqi;
             justify-content: center;
             margin-bottom: 0;
         }
@@ -194,9 +195,9 @@
         .injection-overlay .overlay-item { color: red; }
 
         @media (max-width: 900px) {
-            .overlay-group h3 { font-size: 2vw; }
-            .overlay-item { font-size: 2.5vw; }
-            .overlay-item .label { font-size: 1.8vw; }
-            .gas-overlay h3, .electricity-overlay h3, .injection-overlay h3 { font-size: 1.8vw; }
-            .gas-overlay .overlay-item, .electricity-overlay .overlay-item, .injection-overlay .overlay-item { font-size: 2.5vw; }
+            .overlay-group h3 { font-size: 2cqi; }
+            .overlay-item { font-size: 2.5cqi; }
+            .overlay-item .label { font-size: 1.8cqi; }
+            .gas-overlay h3, .electricity-overlay h3, .injection-overlay h3 { font-size: 1.8cqi; }
+            .gas-overlay .overlay-item, .electricity-overlay .overlay-item, .injection-overlay .overlay-item { font-size: 2.5cqi; }
         }
