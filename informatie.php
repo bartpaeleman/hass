@@ -135,7 +135,7 @@
     roombaBakje:  'binary_sensor.roomba_afvalbak_aanwezig',
     roombaVol:    'binary_sensor.roomba_afvalbak_vol',
     deurOpen:     'binary_sensor.nuki_front_door_door_open',
-    deurSlot:     'binary_sensor.nuki_front_door_locked',
+    deurSlot:     'lock.deurslot', //
     deurBat:      'sensor.nuki_front_door_battery',
   };
 
@@ -191,7 +191,7 @@
 
   function updateDeur(states) {
     const open   = stateVal(states[ENTITIES.deurOpen])  === 'on';
-    const locked = stateVal(states[ENTITIES.deurSlot])  === 'off';
+    const locked = stateVal(states[ENTITIES.deurSlot])  === 'locked';
     const bat    = parseFloat(stateVal(states[ENTITIES.deurBat])) || 0;
 
     const openEl = document.getElementById('deur-open');
