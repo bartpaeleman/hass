@@ -175,6 +175,33 @@ async function fetchEnergyData() {
             el('live-electricity-vandaag', `${val('sensor.electriciteit_vandaag')} kWh`);
             el('live-injection-vandaag', `${val('sensor.injectie_vandaag')} kWh`);
 
+            // Eigen verbruik van zonnepanelen (alleen berekend als er geen netstroom wordt verbruikt)
+            // Formule: zonProductie - injectie - batterijLaden
+            // Als gridImport > 0 tonen we een streepje: de berekening is dan niet zuiver.
+            const eigenVerbruikContainer = document.getElementById('live-eigen-verbruik-container');
+            const eigenVerbruikEl = document.getElementById('live-eigen-verbruik');
+            if (eigenVerbruikEl) {
+                const idx = (id) => SENSORS_TO_FETCH.indexOf(id);
+                const zonProd    = parseFloat(results[idx('sensor.zonneenergie_productie_nu')]?.state) || 0;
+                const gridImport = parseFloat(results[idx('sensor.electriciteit_netverbruik_nu')]?.state) || 0;
+                const gridExport = parseFloat(results[idx('sensor.electriciteit_injectie_nu')]?.state) || 0;
+                const battSt     = (results[idx('sensor.batterij_status')]?.state || '').toLowerCase().trim();
+                const battPwr    = parseFloat(results[idx('sensor.batterij_vermogen')]?.state) || 0;
+
+                const isCharging = (battSt === 'laden');
+                const battLaden  = isCharging ? Math.abs(battPwr) : 0;
+
+                if (gridImport <= 10 && zonProd > 10) {
+                    // Geen netstroom: eigen verbruik = productie - wat wegvloeit naar net/batterij
+                    const eigenVerbruik = Math.max(0, Math.round(zonProd - gridExport - battLaden));
+                    eigenVerbruikEl.textContent = `${eigenVerbruik} W`;
+                    if (eigenVerbruikContainer) eigenVerbruikContainer.style.display = '';
+                } else {
+                    // Netstroom aanwezig of geen productie: waarde niet betrouwbaar toonbaar
+                    eigenVerbruikEl.textContent = '—';
+                }
+            }
+
         } else {
             console.warn("haGetAll function not found. Are you missing ha_core_js.php?");
             // Fallback mock data for testing visually without HA
