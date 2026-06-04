@@ -87,6 +87,8 @@ function updateDashboard(data) {
     }
 }
 
+// Uitgebreide sensorlijst: huisverbruik_totaal en bruto verbruik zijn nodig
+// voor de correcte solarToHome logica in de PHP backend.
 const SENSORS_TO_FETCH = [
     'sensor.zonneenergie_productie_nu',
     'sensor.electriciteit_netverbruik_nu',
@@ -94,6 +96,8 @@ const SENSORS_TO_FETCH = [
     'sensor.batterij_status',
     'sensor.batterij_vermogen',
     'sensor.adj0b1302u_state_of_charge',
+    'sensor.actueel_bruto_elektriciteitsverbruik', // nodig voor solarToHome fallback
+    'sensor.huisverbruik_totaal',                  // primaire bron voor solarToHome
     'sensor.gasverbruik_vandaag',
     'sensor.electriciteit_vandaag',
     'sensor.injectie_vandaag'
@@ -114,13 +118,16 @@ async function fetchEnergyData() {
         // Fetch real data from HA API if haGetAll is available
         if (typeof haGetAll === 'function') {
             const results = await haGetAll(SENSORS_TO_FETCH);
+
+            // Bouw rawSensorData op met alle sensor states voor de PHP backend
             SENSORS_TO_FETCH.forEach((id, i) => {
                 rawSensorData[id] = results[i]?.state || '0';
             });
 
             // Update UI with real-time sensor values directly
             const val = (id, decimal = 0, noFormat = false) => {
-                const stateObj = results[SENSORS_TO_FETCH.indexOf(id)];
+                const idx = SENSORS_TO_FETCH.indexOf(id);
+                const stateObj = results[idx];
                 if (!stateObj || stateObj.state === 'unavailable') return '—';
                 if (noFormat) return stateObj.state;
 
@@ -147,16 +154,16 @@ async function fetchEnergyData() {
             const battVermogen = val('sensor.batterij_vermogen');
             el('live-batt-status-vermogen', `${battStatusRaw} (${battVermogen} W)`);
 
-            // Color mapping based on status and discharging condition
+            // Color mapping based on status
             const battContainer = document.getElementById('live-batt-status-container');
             if (battContainer) {
-                const isDischarging = battStatusRaw.toLowerCase().includes('ontladen');
-                if (battStatusRaw.toLowerCase() === 'laden') {
-                    battContainer.style.color = '#39b54a'; // Green
-                } else if (isDischarging) {
-                    battContainer.style.color = '#f7941d'; // Orange
+                const statusLower = battStatusRaw.toLowerCase();
+                if (statusLower === 'laden') {
+                    battContainer.style.color = '#39b54a'; // Groen
+                } else if (statusLower.includes('ontladen')) {
+                    battContainer.style.color = '#f7941d'; // Oranje
                 } else {
-                    battContainer.style.color = '#f7941d'; // Default orange
+                    battContainer.style.color = '#f7941d'; // Default oranje
                 }
             }
 
@@ -175,7 +182,9 @@ async function fetchEnergyData() {
                 'sensor.zonneenergie_productie_nu': '0',
                 'sensor.electriciteit_netverbruik_nu': '0',
                 'sensor.electriciteit_injectie_nu': '0',
-                'sensor.batterij_status': 'Idle'
+                'sensor.batterij_status': 'Idle',
+                'sensor.huisverbruik_totaal': '0',
+                'sensor.actueel_bruto_elektriciteitsverbruik': '0',
             };
         }
 
