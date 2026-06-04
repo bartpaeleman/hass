@@ -3,11 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Dashboard</title>
-    <link rel="stylesheet" href="CSS/styles.css">
+    <title>Live Dashboard</title>
+    <link rel="stylesheet" href="CSS/live-dashboard.css">
 </head>
 <body>
     <div class="house-wrap">
+        <div class="overlay-grid">
+            <div class="overlay-group">
+                <h3>Zonne-energie</h3>
+                <div class="overlay-item solar">
+                    <span class="label">Productie:</span>
+                    <span id="live-solar-prod">— W</span>
+                </div>
+            </div>
+            <div class="overlay-group">
+                <h3>Batterij</h3>
+                <div class="overlay-item battery">
+                    <span class="label">Status:</span>
+                    <span id="live-batt-status">—</span>
+                </div>
+                <div class="overlay-item battery">
+                    <span class="label">SoC:</span>
+                    <span id="live-batt-soc">— %</span>
+                </div>
+                <div class="overlay-item battery">
+                    <span class="label">Vermogen:</span>
+                    <span id="live-batt-vermogen">— W</span>
+                </div>
+            </div>
+            <div class="overlay-group">
+                <h3>Stroomnet</h3>
+                <div class="overlay-item grid-import">
+                    <span class="label">Import:</span>
+                    <span id="live-grid-import">— W</span>
+                </div>
+                <div class="overlay-item grid-export">
+                    <span class="label">Injectie:</span>
+                    <span id="live-grid-export">— W</span>
+                </div>
+                <div class="overlay-item" style="color: #fff;">
+                    <span class="label">Bruto Verbruik:</span>
+                    <span id="live-grid-bruto">— W</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="gas-overlay">
+            <h3>Gasverbruik Vandaag</h3>
+            <div class="overlay-item gas">
+                <span id="live-gas-vandaag">— m³</span>
+            </div>
+        </div>
+
         <img src="IMGS/MyHouse.png" alt="My House">
         <svg id="Utilities" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1797.28 1003.13">
 <!-- Gas Flows (Blue) -->
@@ -42,6 +89,6 @@
     </div>
 
     <script src="ha_core_js.php"></script>
-    <script src="JS/dashboard.js"></script>
+    <script src="JS/live-dashboard.js"></script>
 </body>
 </html>

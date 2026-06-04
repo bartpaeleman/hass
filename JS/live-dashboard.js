@@ -94,7 +94,8 @@ const SENSORS_TO_FETCH = [
     'sensor.batterij_status',
     'sensor.batterij_vermogen',
     'sensor.adj0b1302u_state_of_charge',
-    'sensor.actueel_bruto_elektriciteitsverbruik'
+    'sensor.actueel_bruto_elektriciteitsverbruik',
+    'sensor.gasverbruik_vandaag'
 ];
 
 /**
@@ -115,6 +116,29 @@ async function fetchEnergyData() {
             SENSORS_TO_FETCH.forEach((id, i) => {
                 rawSensorData[id] = results[i]?.state || '0';
             });
+
+            // Update UI with real-time sensor values directly
+            const val = (id, decimal = 0) => {
+                const stateObj = results[SENSORS_TO_FETCH.indexOf(id)];
+                if (!stateObj || stateObj.state === 'unavailable') return '—';
+                const v = parseFloat(stateObj.state);
+                return isNaN(v) ? stateObj.state : v.toFixed(decimal);
+            };
+
+            const el = (id, text) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = text;
+            };
+
+            el('live-solar-prod', `${val('sensor.zonneenergie_productie_nu')} W`);
+            el('live-batt-status', val('sensor.batterij_status'));
+            el('live-batt-soc', `${val('sensor.adj0b1302u_state_of_charge')} %`);
+            el('live-batt-vermogen', `${val('sensor.batterij_vermogen')} W`);
+            el('live-grid-import', `${val('sensor.electriciteit_netverbruik_nu')} W`);
+            el('live-grid-export', `${val('sensor.electriciteit_injectie_nu')} W`);
+            el('live-grid-bruto', `${val('sensor.actueel_bruto_elektriciteitsverbruik')} W`);
+            el('live-gas-vandaag', `${val('sensor.gasverbruik_vandaag', 2)} m³`);
+
         } else {
             console.warn("haGetAll function not found. Are you missing ha_core_js.php?");
             // Fallback mock data for testing visually without HA
