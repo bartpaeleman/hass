@@ -18,32 +18,24 @@
             </div>
             <div class="overlay-group">
                 <h3>Batterij</h3>
-                <div class="overlay-item battery">
+                <div class="overlay-item battery" id="live-batt-status-container">
                     <span class="label">Status:</span>
-                    <span id="live-batt-status">—</span>
+                    <span id="live-batt-status-vermogen">—</span>
                 </div>
                 <div class="overlay-item battery">
-                    <span class="label">SoC:</span>
+                    <span class="label">Beschikbaar:</span>
                     <span id="live-batt-soc">— %</span>
-                </div>
-                <div class="overlay-item battery">
-                    <span class="label">Vermogen:</span>
-                    <span id="live-batt-vermogen">— W</span>
                 </div>
             </div>
             <div class="overlay-group">
                 <h3>Stroomnet</h3>
                 <div class="overlay-item grid-import">
-                    <span class="label">Import:</span>
+                    <span class="label">Verbruik:</span>
                     <span id="live-grid-import">— W</span>
                 </div>
                 <div class="overlay-item grid-export">
                     <span class="label">Injectie:</span>
                     <span id="live-grid-export">— W</span>
-                </div>
-                <div class="overlay-item" style="color: #fff;">
-                    <span class="label">Bruto Verbruik:</span>
-                    <span id="live-grid-bruto">— W</span>
                 </div>
             </div>
         </div>
@@ -52,6 +44,20 @@
             <h3>Gasverbruik Vandaag</h3>
             <div class="overlay-item gas">
                 <span id="live-gas-vandaag">— m³</span>
+            </div>
+        </div>
+
+        <div class="electricity-overlay">
+            <h3>Electriciteit Vandaag</h3>
+            <div class="overlay-item electricity">
+                <span id="live-electricity-vandaag">— kWh</span>
+            </div>
+        </div>
+
+        <div class="injection-overlay">
+            <h3>Totaal Injectie Vandaag</h3>
+            <div class="overlay-item injection">
+                <span id="live-injection-vandaag">— kWh</span>
             </div>
         </div>
 

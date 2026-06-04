@@ -94,8 +94,9 @@ const SENSORS_TO_FETCH = [
     'sensor.batterij_status',
     'sensor.batterij_vermogen',
     'sensor.adj0b1302u_state_of_charge',
-    'sensor.actueel_bruto_elektriciteitsverbruik',
-    'sensor.gasverbruik_vandaag'
+    'sensor.gasverbruik_vandaag',
+    'sensor.electriciteit_vandaag',
+    'sensor.injectie_vandaag'
 ];
 
 /**
@@ -118,11 +119,20 @@ async function fetchEnergyData() {
             });
 
             // Update UI with real-time sensor values directly
-            const val = (id, decimal = 0) => {
+            const val = (id, decimal = 0, noFormat = false) => {
                 const stateObj = results[SENSORS_TO_FETCH.indexOf(id)];
                 if (!stateObj || stateObj.state === 'unavailable') return '—';
+                if (noFormat) return stateObj.state;
+
                 const v = parseFloat(stateObj.state);
-                return isNaN(v) ? stateObj.state : v.toFixed(decimal);
+                if (isNaN(v)) return stateObj.state;
+
+                // Format with thousand separator (dot) if decimals = 0
+                if (decimal === 0) {
+                    return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }
+
+                return v.toFixed(decimal).replace('.', ',');
             };
 
             const el = (id, text) => {
@@ -131,13 +141,32 @@ async function fetchEnergyData() {
             };
 
             el('live-solar-prod', `${val('sensor.zonneenergie_productie_nu')} W`);
-            el('live-batt-status', val('sensor.batterij_status'));
+
+            // Battery combination logic
+            const battStatusRaw = val('sensor.batterij_status', 0, true);
+            const battVermogen = val('sensor.batterij_vermogen');
+            el('live-batt-status-vermogen', `${battStatusRaw} (${battVermogen} W)`);
+
+            // Color mapping based on status and discharging condition
+            const battContainer = document.getElementById('live-batt-status-container');
+            if (battContainer) {
+                const isDischarging = battStatusRaw.toLowerCase().includes('ontladen');
+                if (battStatusRaw.toLowerCase() === 'laden') {
+                    battContainer.style.color = '#39b54a'; // Green
+                } else if (isDischarging) {
+                    battContainer.style.color = '#f7941d'; // Orange
+                } else {
+                    battContainer.style.color = '#f7941d'; // Default orange
+                }
+            }
+
             el('live-batt-soc', `${val('sensor.adj0b1302u_state_of_charge')} %`);
-            el('live-batt-vermogen', `${val('sensor.batterij_vermogen')} W`);
             el('live-grid-import', `${val('sensor.electriciteit_netverbruik_nu')} W`);
             el('live-grid-export', `${val('sensor.electriciteit_injectie_nu')} W`);
-            el('live-grid-bruto', `${val('sensor.actueel_bruto_elektriciteitsverbruik')} W`);
-            el('live-gas-vandaag', `${val('sensor.gasverbruik_vandaag', 2)} m³`);
+
+            el('live-gas-vandaag', `${val('sensor.gasverbruik_vandaag')} m³`);
+            el('live-electricity-vandaag', `${val('sensor.electriciteit_vandaag')} kWh`);
+            el('live-injection-vandaag', `${val('sensor.injectie_vandaag')} kWh`);
 
         } else {
             console.warn("haGetAll function not found. Are you missing ha_core_js.php?");
