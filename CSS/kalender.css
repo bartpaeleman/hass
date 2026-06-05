@@ -270,12 +270,44 @@
   .filters-container {
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
+    width: 100%;
   }
   .filter-btn span.filter-text {
     display: none;
   }
   .filter-btn {
     padding: 10px 10px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+  }
+  .stacked-filters-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    height: 60px;
+  }
+  .stacked-filters-mobile .filter-btn {
+    padding: 2px 10px;
+    font-size: 18px;
+    line-height: 1;
+    min-height: 0;
+    border-width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .stacked-filters-mobile .filter-btn span.filter-text {
+    display: inline-block;
+    font-size: 9px;
+    margin-left: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .hide-mobile-filter {
     display: none !important;
