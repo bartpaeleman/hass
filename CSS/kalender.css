@@ -262,6 +262,10 @@
   }
 }
 /* Filters */
+.stacked-filters-mobile {
+  display: contents;
+}
+
 @media (max-width: 600px) {
   .filters-container {
     flex-wrap: nowrap !important;
@@ -272,6 +276,24 @@
   }
   .filter-btn {
     padding: 10px 10px;
+  }
+  .hide-mobile-filter {
+    display: none !important;
+  }
+  .stacked-filters-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .stacked-filters-mobile .filter-btn {
+    padding: 2px 10px;
+    font-size: 14px;
+    line-height: 1;
+    min-height: 0;
+    border-width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
