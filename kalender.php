@@ -342,10 +342,12 @@ $currentMonth = (int)$today->format('n');
       <a href="ADMIN/events_admin.php?json-events=events.json" class="filter-btn" style="text-decoration: none; border-color: var(--warn); color: var(--warn);">⚙️ <span class="filter-text">BEHEER</span></a>
       <?php endif; ?>
       <button class="filter-btn active" id="toggle-all-filters">🔄 <span class="filter-text">ALLE</span></button>
-      <button class="filter-btn active" data-filter="filter-gezin">🎂 <span class="filter-text">GEZIN</span></button>
-      <button class="filter-btn active" data-filter="filter-familie">🎂 <span class="filter-text">FAMILIE</span></button>
+      <div class="stacked-filters-mobile">
+        <button class="filter-btn active" data-filter="filter-gezin">🏠 <span class="filter-text">GEZIN</span></button>
+        <button class="filter-btn active" data-filter="filter-familie">🌳 <span class="filter-text">FAMILIE</span></button>
+      </div>
       <button class="filter-btn active" data-filter="filter-feestdagen">🎉 <span class="filter-text">FEESTDAGEN</span></button>
-      <button class="filter-btn active" data-filter="filter-sport">⚽ <span class="filter-text">SPORT</span></button>
+      <button class="filter-btn active hide-mobile-filter" data-filter="filter-sport">⚽ <span class="filter-text">SPORT</span></button>
       <button class="filter-btn active" data-filter="filter-andere">📅 <span class="filter-text">ANDERE</span></button>
     </div>
 
