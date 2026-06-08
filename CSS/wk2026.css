@@ -143,3 +143,18 @@
   font-size: 0.9em;
   margin-left: 5px;
 }
+
+/* Upcoming events list */
+.wk-upcoming-card {
+  align-items: flex-start;
+}
+
+.wk-uc-date {
+  margin-bottom: 12px;
+}
+
+.wk-uc-divider {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 6px 0;
+}

@@ -99,21 +99,17 @@ usort($processedEvents, function($a, $b) {
 });
 
 $upcomingEventsRaw = array_filter($processedEvents, function($e) {
-    return $e['daysRemaining'] >= 0 && $e['daysRemaining'] <= 5;
+    return $e['daysRemaining'] >= 0 && $e['daysRemaining'] <= 1;
 });
 
-// Group upcoming events by daysRemaining -> ronde
+// Group upcoming events by daysRemaining
 $upcomingGrouped = [];
 foreach ($upcomingEventsRaw as $e) {
     $d = $e['daysRemaining'];
-    $cat = $e['ronde']; 
     if (!isset($upcomingGrouped[$d])) {
         $upcomingGrouped[$d] = [];
     }
-    if (!isset($upcomingGrouped[$d][$cat])) {
-        $upcomingGrouped[$d][$cat] = [];
-    }
-    $upcomingGrouped[$d][$cat][] = $e;
+    $upcomingGrouped[$d][] = $e;
 }
 
 // Group by next occurrence month (1-12)
@@ -172,12 +168,12 @@ $currentMonth = (int)$today->format('n');
     <?php if (count($upcomingGrouped) > 0): ?>
     <div class="section-label section-label-upcoming">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M6 1v6.5M6 10a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M8 3h1M8 5h1" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-      Komende 5 dagen
+      Vandaag & Morgen
     </div>
     <div class="upcoming-grid">
       <?php
       ksort($upcomingGrouped);
-      foreach ($upcomingGrouped as $daysRemaining => $categories):
+      foreach ($upcomingGrouped as $daysRemaining => $eventsInCat):
           $dayText = '';
           $borderColor = 'var(--accent)';
           if ($daysRemaining == 0) {
@@ -186,37 +182,41 @@ $currentMonth = (int)$today->format('n');
           } elseif ($daysRemaining == 1) {
               $dayText = 'Morgen';
               $borderColor = 'var(--warn)';
-          } elseif ($daysRemaining == 2) {
-              $dayText = 'Overmorgen';
-              $borderColor = 'var(--heat)';
-          } else {
-              $dayText = 'Binnen ' . $daysRemaining . ' dagen';
           }
 
-          foreach ($categories as $cat => $eventsInCat):
-              $icon = '⚽';
-              $formattedDate = $eventsInCat[0]['formattedDate'];
+          $icon = '⚽';
+          $formattedDate = $eventsInCat[0]['formattedDate'];
       ?>
-      <div class="upcoming-card" style="border-color: <?php echo $borderColor; ?>">
+      <div class="upcoming-card wk-upcoming-card" style="border-color: <?php echo $borderColor; ?>">
         <div class="uc-icon"><?php echo $icon; ?></div>
-        <div class="uc-details">
-          <div class="uc-date"><?php echo $dayText; ?> (<?php echo $formattedDate; ?>)</div>
-          <div class="uc-items-list">
-            <?php foreach ($eventsInCat as $e): ?>
-              <div class="uc-item" data-filter="<?php echo $e['filterClass']; ?>">
-                <div class="uc-name-wrap">
-                  <span class="cat-label cat-sport"><?php echo strtoupper(htmlspecialchars($e['ronde'])); ?>:</span>
-                  <span class="uc-name"><?php echo htmlspecialchars($e['original']['name']); ?></span>
-                  <?php if (!empty($e['starttime'])): ?>
-                    <span class="starttime-label">- <?php echo htmlspecialchars($e['starttime']); ?></span>
-                  <?php endif; ?>
+        <div class="uc-details wk-uc-details">
+          <div class="uc-date wk-uc-date"><?php echo $dayText; ?> (<?php echo $formattedDate; ?>)</div>
+          <div class="uc-items-list wk-uc-items-list">
+            <?php
+            $count = count($eventsInCat);
+            $i = 0;
+            foreach ($eventsInCat as $e):
+                $i++;
+                $time = '';
+                if (!empty($e['starttime']) && preg_match('/Aftrap\s+(\d{2}u\d{2})/', $e['starttime'], $matches)) {
+                    $time = $matches[1] . ': ';
+                } elseif (!empty($e['starttime'])) {
+                    $time = str_replace('⏱️ Aftrap ', '', $e['starttime']) . ': ';
+                }
+            ?>
+              <div class="uc-item wk-uc-item" data-filter="<?php echo $e['filterClass']; ?>">
+                <div class="uc-name-wrap wk-uc-name-wrap">
+                  <span class="uc-name wk-uc-name"><?php echo htmlspecialchars($time) . htmlspecialchars($e['original']['name']); ?></span>
                 </div>
               </div>
+              <?php if ($i < $count): ?>
+                <hr class="wk-uc-divider">
+              <?php endif; ?>
             <?php endforeach; ?>
           </div>
         </div>
       </div>
-      <?php endforeach; endforeach; ?>
+      <?php endforeach; ?>
     </div>
     <?php endif; ?>
 
