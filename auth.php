@@ -10,7 +10,7 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
     $parsed_users = [];
     if (isset($APP_USERS) && is_array($APP_USERS)) {
         foreach ($APP_USERS as $key => $val) {
-            if (is_int($key) && is_string($val) && strpos($val, ',') !== false) {
+            if (is_string($val) && strpos($val, ',') !== false) {
                 // Nieuwe syntax: 'name, pass, level'
                 $parts = array_map('trim', explode(',', $val));
                 if (count($parts) >= 2) {
