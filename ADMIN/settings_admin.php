@@ -69,24 +69,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($action === 'edit_user') {
-        $username = $_POST['username'] ?? '';
+        $oldUsername = $_POST['old_username'] ?? '';
+        $newUsername = trim($_POST['new_username'] ?? '');
         $newPassword = $_POST['new_password'] ?? '';
         $newLevel = (int)($_POST['new_level'] ?? 50);
 
-        if (strpos($newPassword, ',') !== false) {
-            $error = "Komma's zijn niet toegestaan in het wachtwoord.";
-        } elseif (isset($configData['APP_USERS'][$username])) {
-            if ($username === 'admin' && $newLevel < 99) {
-                $error = "Admin role_level moet altijd 99 zijn.";
-            } else {
-                $configData['APP_USERS'][$username] = "$username, $newPassword, $newLevel";
-                $phpCode = "<?php\nreturn " . var_export($configData, true) . ";\n";
-                if (file_put_contents($configFile, $phpCode) !== false) {
-                    $message = "Gebruiker $username bijgewerkt.";
-                } else {
-                    $error = "Fout bij opslaan.";
-                }
+        if (empty($newUsername) || empty($newPassword)) {
+            $error = "Naam en wachtwoord zijn verplicht.";
+        } elseif (strpos($newUsername, ',') !== false || strpos($newPassword, ',') !== false) {
+            $error = "Komma's zijn niet toegestaan in naam of wachtwoord.";
+        } elseif ($oldUsername === 'admin' && $newUsername !== 'admin') {
+            $error = "De admin loginnaam kan niet gewijzigd worden.";
+        } elseif ($oldUsername === 'admin' && $newLevel < 99) {
+            $error = "Admin role_level moet altijd 99 zijn.";
+        } elseif ($newUsername !== $oldUsername && isset($configData['APP_USERS'][$newUsername])) {
+            $error = "De nieuwe gebruikersnaam bestaat al.";
+        } elseif (isset($configData['APP_USERS'][$oldUsername])) {
+            if ($newUsername !== $oldUsername) {
+                unset($configData['APP_USERS'][$oldUsername]);
             }
+            $configData['APP_USERS'][$newUsername] = "$newUsername, $newPassword, $newLevel";
+            $phpCode = "<?php\nreturn " . var_export($configData, true) . ";\n";
+            if (file_put_contents($configFile, $phpCode) !== false) {
+                $message = "Gebruiker $newUsername bijgewerkt.";
+            } else {
+                $error = "Fout bij opslaan.";
+            }
+        } else {
+            $error = "Te bewerken gebruiker niet gevonden.";
         }
     } elseif ($action === 'delete_user') {
         $username = $_POST['username'] ?? '';
@@ -104,10 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Reload config
-if (file_exists($configFile)) {
-    $configData = include $configFile;
-}
+// No need to reload config file here since we already have the modified $configData in memory
+// and caching/opcache might prevent seeing the latest writes immediately.
 $users = $configData['APP_USERS'] ?? [];
 ?>
 <!DOCTYPE html>
@@ -213,8 +221,14 @@ $users = $configData['APP_USERS'] ?? [];
       ?>
       <tr>
         <form method="POST">
-          <input type="hidden" name="username" value="<?php echo htmlspecialchars($uName); ?>">
-          <td><?php echo htmlspecialchars($uName); ?></td>
+          <input type="hidden" name="old_username" value="<?php echo htmlspecialchars($uName); ?>">
+          <td>
+            <?php if ($uName === 'admin'): ?>
+              <input type="text" name="new_username" value="admin" readonly style="width: 100px; background:var(--bg); color:var(--text-muted); border:1px solid var(--border); padding:4px;">
+            <?php else: ?>
+              <input type="text" name="new_username" value="<?php echo htmlspecialchars($uName); ?>" style="width: 100px; background:var(--bg); color:var(--text); border:1px solid var(--border); padding:4px;" required>
+            <?php endif; ?>
+          </td>
           <td>
             <input type="text" name="new_password" value="<?php echo htmlspecialchars($uPass); ?>" style="width: 100px; background:var(--bg); color:var(--text); border:1px solid var(--border); padding:4px;" required>
           </td>
