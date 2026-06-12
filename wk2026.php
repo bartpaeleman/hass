@@ -1,5 +1,9 @@
 <?php
 require_once 'config.php';
+if (defined('WK_VOETBAL_VISIBLE') && !WK_VOETBAL_VISIBLE) {
+    header("HTTP/1.1 404 Not Found");
+    exit("<h1>404 Not Found</h1>");
+}
 
 // Data processing logic
 $eventsFile = __DIR__ . '/JSON/wk2026.json';
@@ -130,7 +134,7 @@ $currentMonth = (int)$today->format('n');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WK VOETBAL 2026</title>
+<title><?php echo defined('WK_VOETBAL_TITLE') ? htmlspecialchars(WK_VOETBAL_TITLE, ENT_QUOTES, 'UTF-8') : 'WK VOETBAL 2026'; ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/kalender.css">
@@ -151,7 +155,7 @@ $currentMonth = (int)$today->format('n');
   <div class="logo">
     <div class="logo-icon"></div>
     <div>
-      <h1>WK VOETBAL 2026</h1>
+      <h1><?php echo defined('WK_VOETBAL_TITLE') ? htmlspecialchars(WK_VOETBAL_TITLE, ENT_QUOTES, 'UTF-8') : 'WK VOETBAL 2026'; ?></h1>
       <span>DASHBOARD</span>
     </div>
   </div>

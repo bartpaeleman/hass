@@ -32,9 +32,12 @@
   <a href="kalender.php" style="display:flex; align-items:center; gap:8px; padding:12px; margin-bottom:10px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none; font-family:'Share Tech Mono', monospace; font-size:14px; transition:border-color 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
     <span style="font-size:18px;">🗓️</span> KALENDER
   </a>
+
+  <?php if (!defined('WK_VOETBAL_VISIBLE') || WK_VOETBAL_VISIBLE): ?>
   <a href="wk2026.php" style="display:flex; align-items:center; gap:8px; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none; font-family:'Share Tech Mono', monospace; font-size:14px; transition:border-color 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
-    <span style="font-size:18px;">⚽</span> WK VOETBAL
+    <span style="font-size:18px;">⚽</span> <?php echo defined('WK_VOETBAL_TITLE') ? htmlspecialchars(WK_VOETBAL_TITLE, ENT_QUOTES, 'UTF-8') : 'WK VOETBAL'; ?>
   </a>
+  <?php endif; ?>
 
   <?php if (defined('REQUIRE_AUTH') && REQUIRE_AUTH): ?>
   <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
@@ -44,6 +47,13 @@
     <div style="font-family:'Share Tech Mono', monospace; font-size:14px; color:var(--text); text-align:center; margin-bottom:10px; letter-spacing:1px; font-weight:bold;">
       <?php echo htmlspecialchars($displayUser, ENT_QUOTES, 'UTF-8'); ?>
     </div>
+
+    <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] == 99): ?>
+    <a href="ADMIN/settings_admin.php" style="display:flex; align-items:center; gap:8px; padding:12px; margin-bottom:10px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none; font-family:'Share Tech Mono', monospace; font-size:14px; transition:border-color 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+      <span style="font-size:18px;">⚙️</span> INSTELLINGEN
+    </a>
+    <?php endif; ?>
+
     <a href="?logout=1" style="display:flex; align-items:center; gap:8px; padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none; font-family:'Share Tech Mono', monospace; font-size:14px; transition:border-color 0.3s;" onmouseover="this.style.borderColor='var(--alert)'" onmouseout="this.style.borderColor='var(--border)'">
       <span style="font-size:18px;">🔓</span> UITLOGGEN
     </a>
