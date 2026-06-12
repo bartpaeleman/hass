@@ -200,9 +200,16 @@ $users = $configData['APP_USERS'] ?? [];
     <tbody>
       <?php foreach ($users as $userKey => $userStr):
           $parts = array_map('trim', explode(',', $userStr));
-          $uName = $parts[0] ?? $userKey;
-          $uPass = $parts[1] ?? '';
-          $uLvl = $parts[2] ?? 50;
+          // Check if string contains 3 parts (name, pass, level) or 2 parts (pass, level)
+          if (count($parts) >= 3) {
+              $uName = $parts[0];
+              $uPass = $parts[1];
+              $uLvl = $parts[2];
+          } else {
+              $uName = $userKey;
+              $uPass = $parts[0] ?? '';
+              $uLvl = $parts[1] ?? 50;
+          }
       ?>
       <tr>
         <form method="POST">

@@ -11,13 +11,22 @@ if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
     if (isset($APP_USERS) && is_array($APP_USERS)) {
         foreach ($APP_USERS as $key => $val) {
             if (is_string($val) && strpos($val, ',') !== false) {
-                // Nieuwe syntax: 'name, pass, level'
                 $parts = array_map('trim', explode(',', $val));
-                if (count($parts) >= 2) {
+                if (count($parts) >= 3) {
+                    // Syntax: 'name, pass, level'
                     $u = $parts[0];
                     $p = $parts[1];
-                    $lvl = isset($parts[2]) ? (int)$parts[2] : 10;
+                    $lvl = (int)$parts[2];
                     $parsed_users[$u] = ['password' => $p, 'level' => $lvl];
+                    // Save key as fallback as well
+                    if ($u !== $key) {
+                        $parsed_users[$key] = ['password' => $p, 'level' => $lvl];
+                    }
+                } else if (count($parts) == 2) {
+                    // Syntax: 'pass, level'
+                    $p = $parts[0];
+                    $lvl = (int)$parts[1];
+                    $parsed_users[$key] = ['password' => $p, 'level' => $lvl];
                 }
             } else {
                 // Oude syntax fallback (key = name, val = pass)
