@@ -3,12 +3,25 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (defined('REQUIRE_AUTH') && REQUIRE_AUTH) {
+$configFile = __DIR__ . '/JSON/config_data.json';
+$configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [];
+$requireAuth = isset($configData['settings']['REQUIRE_AUTH']) ? $configData['settings']['REQUIRE_AUTH'] : (defined('REQUIRE_AUTH') ? REQUIRE_AUTH : false);
+
+if ($requireAuth) {
     global $APP_USERS;
 
     // Converteer de nieuwe 1-lijn syntax ('name, pass, level') naar een makkelijker formaat
     $parsed_users = [];
-    if (isset($APP_USERS) && is_array($APP_USERS)) {
+    $configFile = __DIR__ . '/JSON/config_data.json';
+    if (file_exists($configFile)) {
+        $configData = json_decode(file_get_contents($configFile), true);
+        if (isset($configData['users']) && is_array($configData['users'])) {
+            $parsed_users = $configData['users'];
+        }
+    }
+
+    // Fallback naar config.php $APP_USERS als de nieuwe manier nog niet volledig gevuld is
+    if (empty($parsed_users) && isset($APP_USERS) && is_array($APP_USERS)) {
         foreach ($APP_USERS as $key => $val) {
             if (is_int($key) && is_string($val) && strpos($val, ',') !== false) {
                 // Nieuwe syntax: 'name, pass, level'
