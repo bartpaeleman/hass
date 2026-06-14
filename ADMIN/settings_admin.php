@@ -455,17 +455,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script>
+async function fallbackToIPLocation() {
+    try {
+        const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
+        const data = await response.json();
+        if (data && data.latitude && data.longitude) {
+            document.getElementById('weather_lat').value = parseFloat(data.latitude).toFixed(4);
+            document.getElementById('weather_lon').value = parseFloat(data.longitude).toFixed(4);
+            alert('Locatie succesvol opgehaald via IP (fallback).');
+        } else {
+            alert('Fout bij ophalen locatie via IP-fallback.');
+        }
+    } catch (e) {
+        alert('Fout bij ophalen locatie via IP-fallback.');
+        console.error(e);
+    }
+}
+
 function getCurrentLocation() {
-    if (navigator.geolocation) {
+    if (navigator.geolocation && window.isSecureContext) {
         navigator.geolocation.getCurrentPosition(function(position) {
             document.getElementById('weather_lat').value = position.coords.latitude.toFixed(4);
             document.getElementById('weather_lon').value = position.coords.longitude.toFixed(4);
             alert('Locatie succesvol opgehaald!');
         }, function(error) {
-            alert('Fout bij ophalen locatie: ' + error.message);
+            console.warn('Geolocation API faalde (' + error.message + '). Val terug op IP.');
+            fallbackToIPLocation();
         });
     } else {
-        alert('Geolocation wordt niet ondersteund door deze browser.');
+        console.warn('Geolocation niet ondersteund of onveilige context. Val terug op IP.');
+        fallbackToIPLocation();
     }
 }
 
