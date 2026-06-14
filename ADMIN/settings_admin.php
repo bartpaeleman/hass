@@ -12,6 +12,13 @@ $message = '';
 $error = '';
 
 $configFile = __DIR__ . '/../JSON/config_data.json';
+$exampleFile = __DIR__ . '/../JSON/config_data.example.json';
+
+if (!file_exists($configFile) && file_exists($exampleFile)) {
+    // Attempt to copy default settings
+    @copy($exampleFile, $configFile);
+}
+
 $configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [
     'users' => [
         'admin' => ['password' => 'admin', 'level' => 99, 'is_default' => true]
@@ -35,6 +42,18 @@ $configData = file_exists($configFile) ? json_decode(file_get_contents($configFi
     ]
 ];
 
+// Helper to save and handle errors
+function saveConfig($file, $data) {
+    global $message, $error;
+    if (@file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT)) !== false) {
+        $message = "Instellingen succesvol opgeslagen.";
+        return true;
+    } else {
+        $error = "Fout bij opslaan van instellingen. Zorg ervoor dat het bestand schrijfbaar is (bijv. 'chmod 666 JSON/config_data.json' of de map 'chmod 777 JSON').";
+        return false;
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -43,11 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $configData['settings']['HA_TOKEN'] = $_POST['ha_token'] ?? '';
         $configData['settings']['REQUIRE_AUTH'] = isset($_POST['require_auth']);
 
-        if (file_put_contents($configFile, json_encode($configData, JSON_PRETTY_PRINT)) !== false) {
-            $message = "Globale instellingen opgeslagen.";
-        } else {
-            $error = "Fout bij opslaan van instellingen (rechten probleem?).";
-        }
+        saveConfig($configFile, $configData);
     }
 
     if ($action === 'add_user' || $action === 'edit_user') {
@@ -72,11 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            if (!$error && file_put_contents($configFile, json_encode($configData, JSON_PRETTY_PRINT)) !== false) {
-                $message = "Gebruiker opgeslagen.";
-            } else if (!$error) {
-                $error = "Fout bij opslaan van instellingen (rechten probleem?).";
-            }
+            if (!$error) { saveConfig($configFile, $configData); }
         } else {
             $error = "Gebruikersnaam en wachtwoord zijn verplicht.";
         }
@@ -88,11 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Het standaard admin account kan niet worden gewist.";
         } else if (isset($configData['users'][$username])) {
             unset($configData['users'][$username]);
-            if (file_put_contents($configFile, json_encode($configData, JSON_PRETTY_PRINT)) !== false) {
-                $message = "Gebruiker gewist.";
-            } else {
-                $error = "Fout bij opslaan van instellingen.";
-            }
+            saveConfig($configFile, $configData);
         }
     }
 
@@ -116,11 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-        if (file_put_contents($configFile, json_encode($configData, JSON_PRETTY_PRINT)) !== false) {
-            $message = "Pagina instellingen opgeslagen.";
-        } else {
-            $error = "Fout bij opslaan van instellingen.";
-        }
+        saveConfig($configFile, $configData);
     }
 }
 ?>

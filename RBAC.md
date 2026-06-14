@@ -3,19 +3,53 @@
 Dit document beschrijft het vernieuwde authenticatie- en rollensysteem voor de dashboards. Naast het controleren op een geldige gebruiker (via wachtwoord of remember-me cookie), wordt er nu ook een specifieke rol en bijbehorend toegangsniveau (role level) aan de sessie toegewezen.
 
 ## Authenticatie & Configuratie
-Het authenticatiemechanisme controleert of er ingelogd is op basis van de array `$APP_USERS` in `config.php`. Elke gebruiker wordt op 1 lijn gedefinieerd met een naam, wachtwoord, en het numerieke toegangsniveau, gescheiden door een komma.
+Het authenticatiemechanisme en alle applicatie-instellingen worden primair beheerd via het bestand \`JSON/config_data.json\`. Dit bestand is toegevoegd aan \`.gitignore\` om te voorkomen dat inloggegevens per ongeluk op GitHub belanden. Via de web-interface (\`ADMIN/settings_admin.php\`, enkel toegankelijk voor level 99) kunnen deze instellingen veilig gewijzigd worden.
 
-**Voorbeeld in `config.php`:**
-```php
-$APP_USERS = [
-    'beheerder, geheim123, 99', // admin
-    'bewoner, geheim456, 50',   // user
-    'gast, geheim789, 10',      // viewer
-    'kind, geheim000, 0'        // restricted
-];
+*(Voor achterwaartse compatibiliteit kijkt het systeem nog naar \`$APP_USERS\` in \`config.php\` indien de JSON nog geen gebruikers bevat).*
+
+### Bestandssysteem & Rechten
+Omdat het web-dashboard (via PHP) gegevens wegschrijft naar dit bestand, moet de server schrijfrechten hebben op de map en/of het bestand. Bij het opslaan van instellingen kan je de foutmelding krijgen *"Fout bij opslaan van instellingen"*. Los dit als volgt op in de CLI van je server:
+```bash
+# Zorg dat de JSON map beschrijfbaar is voor de webgebruiker (bijv. www-data)
+sudo chown -R www-data:www-data JSON/
+# Of wijzig de permissies (minder veilig, maar werkt lokaal):
+chmod 777 JSON/
+chmod 666 JSON/config_data.json
 ```
 
-Wanneer er geen niveau wordt meegegeven, of bij gebruik van het verouderde `key => value` formaat, krijgt de gebruiker standaard niveau `10` (viewer).
+**Voorbeeldstructuur van \`JSON/config_data.json\`:**
+```json
+{
+    "users": {
+        "admin": {
+            "password": "geheim_paswoord",
+            "level": 99,
+            "is_default": true
+        },
+        "gast": {
+            "password": "welkom",
+            "level": 10
+        }
+    },
+    "pages": {
+        "index.php": {
+            "name": "START",
+            "emoji": "🏠",
+            "roles": [99, 50, 10, 0]
+        },
+        "energy.php": {
+            "name": "ENERGIE",
+            "emoji": "⚡",
+            "roles": [99, 50]
+        }
+    },
+    "settings": {
+        "REQUIRE_AUTH": true,
+        "HA_URL": "http://192.168.1.100:8123",
+        "HA_TOKEN": "eyJhbG..."
+    }
+}
+```
 
 ## Beschikbare Rollen en Niveaus
 
