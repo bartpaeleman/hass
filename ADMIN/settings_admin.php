@@ -71,6 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $level = (int)($_POST['level'] ?? 10);
         $original_username = trim($_POST['original_username'] ?? '');
 
+        // Disabled form elements are not submitted. If editing the default user, force level 99.
+        if ($action === 'edit_user' && $original_username && !empty($configData['users'][$original_username]['is_default'])) {
+            $level = 99;
+        }
+
         if ($username && $password) {
             if ($action === 'edit_user' && $original_username && $original_username !== $username) {
                 $is_default = !empty($configData['users'][$original_username]['is_default']);
@@ -283,7 +288,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="text" form="edit_form_<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" name="password" value="<?php echo htmlspecialchars($userData['password'], ENT_QUOTES, 'UTF-8'); ?>">
                         </td>
                         <td>
-                            <input type="number" form="edit_form_<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" name="level" value="<?php echo htmlspecialchars($userData['level'], ENT_QUOTES, 'UTF-8'); ?>" style="width:80px; padding:8px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-bright); border-radius:4px;" <?php echo (!empty($userData['is_default']) || $userData['level'] == 99) ? 'readonly style="opacity: 0.7;"' : ''; ?>>
+                            <select form="edit_form_<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" name="level" style="padding:8px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-bright); border-radius:4px; font-family: inherit;" <?php echo (!empty($userData['is_default'])) ? 'disabled style="opacity: 0.7;"' : ''; ?>>
+                                <?php
+                                $roles = [99 => 'Admin', 50 => 'User', 10 => 'Viewer', 0 => 'Restricted'];
+                                foreach ($roles as $lvl => $label) {
+                                    $selected = ($userData['level'] == $lvl) ? 'selected' : '';
+                                    echo "<option value=\"$lvl\" $selected>$label</option>";
+                                }
+                                ?>
+                            </select>
                         </td>
                         <td>
                             <form id="edit_form_<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" method="POST" style="display:inline;">
@@ -304,7 +317,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr class="user-row" style="background: rgba(0,255,0,0.05);">
                         <td><input type="text" form="add_user_form" name="username" placeholder="Nieuwe gebruiker" required></td>
                         <td><input type="text" form="add_user_form" name="password" placeholder="Wachtwoord" required></td>
-                        <td><input type="number" form="add_user_form" name="level" value="50" style="width:80px; padding:8px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-bright); border-radius:4px;" required></td>
+                        <td><select form="add_user_form" name="level" style="padding:8px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-bright); border-radius:4px; font-family: inherit;" required>
+                                <option value="99">Admin</option>
+                                <option value="50" selected>User</option>
+                                <option value="10">Viewer</option>
+                                <option value="0">Restricted</option>
+                            </select></td>
                         <td>
                             <form id="add_user_form" method="POST" style="display:inline;">
                                 <input type="hidden" name="action" value="add_user">
