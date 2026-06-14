@@ -82,6 +82,30 @@
     letter-spacing: 0.5px;
 }
 
+.weather-extras-container {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weather-extra {
+    font-size: 11px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.weather-extra-icon {
+    font-size: 14px;
+}
+
 /* ── Mobiele optimalisatie voor de weersvoorspelling (max 600px) ── */
 @media (max-width: 600px) {
     /* n+4 selecteert het 4e element, 5e element, 6e element, etc. 
