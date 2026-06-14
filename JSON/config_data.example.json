@@ -1,0 +1,66 @@
+{
+    "users": {
+        "admin": {
+            "password": "admin",
+            "level": 99,
+            "is_default": true
+        }
+    },
+    "pages": {
+        "index.php": {
+            "name": "START",
+            "emoji": "\ud83c\udfe0",
+            "roles": [99, 50, 10, 0]
+        },
+        "informatie.php": {
+            "name": "INFORMATIE",
+            "emoji": "\u2139\ufe0f",
+            "roles": [99, 50, 10, 0]
+        },
+        "automatisering.php": {
+            "name": "AUTOMATISERING",
+            "emoji": "\ud83e\udd16",
+            "roles": [99, 50, 10, 0]
+        },
+        "monitoring.php": {
+            "name": "ALARM",
+            "emoji": "\ud83d\udea8",
+            "roles": [99, 50, 10, 0]
+        },
+        "energy.php": {
+            "name": "ENERGIE",
+            "emoji": "\u26a1",
+            "roles": [99, 50, 10, 0]
+        },
+        "verwarming.php": {
+            "name": "VERWARMING",
+            "emoji": "\ud83d\udd25",
+            "roles": [99, 50, 10, 0]
+        },
+        "airco.php": {
+            "name": "AIRCO",
+            "emoji": "\u2744\ufe0f",
+            "roles": [99, 50, 10, 0]
+        },
+        "verlichting.php": {
+            "name": "VERLICHTING",
+            "emoji": "\ud83d\udca1",
+            "roles": [99, 50, 10, 0]
+        },
+        "kalender.php": {
+            "name": "KALENDER",
+            "emoji": "\ud83d\uddd3\ufe0f",
+            "roles": [99, 50, 10, 0]
+        },
+        "wk2026.php": {
+            "name": "WK VOETBAL",
+            "emoji": "\u26bd",
+            "roles": [99, 50, 10, 0]
+        }
+    },
+    "settings": {
+        "REQUIRE_AUTH": true,
+        "HA_URL": "",
+        "HA_TOKEN": ""
+    }
+}

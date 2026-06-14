@@ -171,9 +171,9 @@ async function fetchEnergyData() {
             el('live-grid-import', `${val('sensor.electriciteit_netverbruik_nu')} W`);
             el('live-grid-export', `${val('sensor.electriciteit_injectie_nu')} W`);
 
-            el('live-gas-vandaag', `${val('sensor.gasverbruik_vandaag')} m³`);
-            el('live-electricity-vandaag', `${val('sensor.electriciteit_vandaag')} kWh`);
-            el('live-injection-vandaag', `${val('sensor.injectie_vandaag')} kWh`);
+            el('live-gas-vandaag', `${val('sensor.gasverbruik_vandaag', 1)} m³`);
+            el('live-electricity-vandaag', `${val('sensor.electriciteit_vandaag', 1)} kWh`);
+            el('live-injection-vandaag', `${val('sensor.injectie_vandaag', 1)} kWh`);
 
             // Eigen verbruik van zonnepanelen (alleen berekend als er geen netstroom wordt verbruikt)
             // Formule: zonProductie - injectie - batterijLaden

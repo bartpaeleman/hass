@@ -12,10 +12,14 @@ if (empty($referer) || strpos($referer, $host) === false) {
 header("Content-type: application/javascript; charset=utf-8");
 require_once 'config.php';
 require_once 'CLASSES/Comfort.php';
+$configFile = __DIR__ . '/JSON/config_data.json';
+$configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [];
+$haUrl = !empty($configData['settings']['HA_URL']) ? $configData['settings']['HA_URL'] : (defined('HA_URL') ? HA_URL : '');
+$haToken = !empty($configData['settings']['HA_TOKEN']) ? $configData['settings']['HA_TOKEN'] : (defined('HA_TOKEN') ? HA_TOKEN : '');
 ?>
 // Globale Authenticatie Variabelen
-const HA_URL   = "<?php echo HA_URL; ?>";
-const HA_TOKEN = "<?php echo HA_TOKEN; ?>";
+const HA_URL   = "<?php echo $haUrl; ?>";
+const HA_TOKEN = "<?php echo $haToken; ?>";
 const COMFORT_BOUNDARIES = <?php echo json_encode(Comfort::getBoundaries()); ?>;
 const USER_ROLE_LEVEL = <?php echo isset($_SESSION['role_level']) ? $_SESSION['role_level'] : 10; ?>;
 // Use PAGE_MIN_ACTION_LEVEL if defined in the specific dashboard, otherwise default to 50

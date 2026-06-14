@@ -61,7 +61,7 @@ foreach ($events as $event) {
     $nextDate = new DateTime($event['date']);
     $nextDate->setTime(0,0,0);
 
-    $hasPassedThisYear = false;
+        $hasPassedThisYear = false;
     if ($nextDate < clone($today)->setTime(0,0,0)) {
         $hasPassedThisYear = true;
     }
@@ -76,8 +76,13 @@ foreach ($events as $event) {
     $starttime = $event['starttime'] ?? '';
     $stadion = $event['stadion'] ?? '';
 
-    $filterClass = 'filter-sport';
+        $filterClass = 'filter-sport';
     $highlightMessage = '';
+
+    // FILTER: Only keep events that are today or in the future
+    if ($daysRemaining < 0 || $hasPassedThisYear) {
+        continue;
+    }
 
     $processedEvents[] = [
         'original' => $event,
@@ -111,6 +116,23 @@ foreach ($upcomingEventsRaw as $e) {
     }
     $upcomingGrouped[$d][] = $e;
 }
+
+// Sort each group by starttime
+foreach ($upcomingGrouped as &$group) {
+    usort($group, function($a, $b) {
+        $timeA = "00:00";
+        if (preg_match('/(\d{2})[u:](\d{2})/', $a['starttime'], $matches)) {
+            $timeA = $matches[1] . ':' . $matches[2];
+        }
+        $timeB = "00:00";
+        if (preg_match('/(\d{2})[u:](\d{2})/', $b['starttime'], $matches)) {
+            $timeB = $matches[1] . ':' . $matches[2];
+        }
+        return strcmp($timeA, $timeB);
+    });
+}
+unset($group);
+
 
 // Group by next occurrence month (1-12)
 $eventsByMonth = [];
@@ -240,17 +262,17 @@ $currentMonth = (int)$today->format('n');
       for ($m = 6; $m <= 7; $m++):
         $monthEvents = $eventsByMonth[$m] ?? [];
 
-        usort($monthEvents, function($a, $b) {
+                usort($monthEvents, function($a, $b) {
             $dateCmp = (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
             if ($dateCmp !== 0) return $dateCmp;
 
             $timeA = "00:00";
-            if (preg_match('/Aftrap\s+(\d{2}:\d{2})/', $a['starttime'], $matches)) {
-                $timeA = $matches[1];
+            if (preg_match('/(\d{2})[u:](\d{2})/', $a['starttime'], $matches)) {
+                $timeA = $matches[1] . ':' . $matches[2];
             }
             $timeB = "00:00";
-            if (preg_match('/Aftrap\s+(\d{2}:\d{2})/', $b['starttime'], $matches)) {
-                $timeB = $matches[1];
+            if (preg_match('/(\d{2})[u:](\d{2})/', $b['starttime'], $matches)) {
+                $timeB = $matches[1] . ':' . $matches[2];
             }
             return strcmp($timeA, $timeB);
         });
