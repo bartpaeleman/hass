@@ -1,18 +1,5 @@
 <?php
 require_once 'config.php';
-$configFile = __DIR__ . '/JSON/config_data.json';
-$configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [];
-$pageTitle = $configData['pages']['wk2026.php']['name'] ?? 'WK VOETBAL';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-$currentRole = $_SESSION['role_level'] ?? 10;
-$allowedRoles = $configData['pages']['wk2026.php']['roles'] ?? [99, 50, 10, 0];
-if ('wk2026.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $currentRole < 99) {
-    header("HTTP/1.1 403 Forbidden");
-    exit("Toegang geweigerd. Onvoldoende rechten voor deze pagina.");
-}
 
 // Data processing logic
 $eventsFile = __DIR__ . '/JSON/wk2026.json';
@@ -74,7 +61,7 @@ foreach ($events as $event) {
     $nextDate = new DateTime($event['date']);
     $nextDate->setTime(0,0,0);
 
-    $hasPassedThisYear = false;
+        $hasPassedThisYear = false;
     if ($nextDate < clone($today)->setTime(0,0,0)) {
         $hasPassedThisYear = true;
     }
@@ -89,8 +76,13 @@ foreach ($events as $event) {
     $starttime = $event['starttime'] ?? '';
     $stadion = $event['stadion'] ?? '';
 
-    $filterClass = 'filter-sport';
+        $filterClass = 'filter-sport';
     $highlightMessage = '';
+
+    // FILTER: Only keep events that are today or in the future
+    if ($daysRemaining < 0 || $hasPassedThisYear) {
+        continue;
+    }
 
     $processedEvents[] = [
         'original' => $event,
@@ -125,6 +117,23 @@ foreach ($upcomingEventsRaw as $e) {
     $upcomingGrouped[$d][] = $e;
 }
 
+// Sort each group by starttime
+foreach ($upcomingGrouped as &$group) {
+    usort($group, function($a, $b) {
+        $timeA = "00:00";
+        if (preg_match('/(\d{2})[u:](\d{2})/', $a['starttime'], $matches)) {
+            $timeA = $matches[1] . ':' . $matches[2];
+        }
+        $timeB = "00:00";
+        if (preg_match('/(\d{2})[u:](\d{2})/', $b['starttime'], $matches)) {
+            $timeB = $matches[1] . ':' . $matches[2];
+        }
+        return strcmp($timeA, $timeB);
+    });
+}
+unset($group);
+
+
 // Group by next occurrence month (1-12)
 $eventsByMonth = [];
 for ($m = 1; $m <= 12; $m++) {
@@ -143,7 +152,7 @@ $currentMonth = (int)$today->format('n');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+<title>WK VOETBAL 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="CSS/common.css">
 <link rel="stylesheet" href="CSS/kalender.css">
@@ -164,7 +173,7 @@ $currentMonth = (int)$today->format('n');
   <div class="logo">
     <div class="logo-icon"></div>
     <div>
-      <h1><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></h1>
+      <h1>WK VOETBAL 2026</h1>
       <span>DASHBOARD</span>
     </div>
   </div>
@@ -253,17 +262,17 @@ $currentMonth = (int)$today->format('n');
       for ($m = 6; $m <= 7; $m++):
         $monthEvents = $eventsByMonth[$m] ?? [];
 
-        usort($monthEvents, function($a, $b) {
+                usort($monthEvents, function($a, $b) {
             $dateCmp = (int)$a['nextDate']->format('j') <=> (int)$b['nextDate']->format('j');
             if ($dateCmp !== 0) return $dateCmp;
 
             $timeA = "00:00";
-            if (preg_match('/Aftrap\s+(\d{2}:\d{2})/', $a['starttime'], $matches)) {
-                $timeA = $matches[1];
+            if (preg_match('/(\d{2})[u:](\d{2})/', $a['starttime'], $matches)) {
+                $timeA = $matches[1] . ':' . $matches[2];
             }
             $timeB = "00:00";
-            if (preg_match('/Aftrap\s+(\d{2}:\d{2})/', $b['starttime'], $matches)) {
-                $timeB = $matches[1];
+            if (preg_match('/(\d{2})[u:](\d{2})/', $b['starttime'], $matches)) {
+                $timeB = $matches[1] . ':' . $matches[2];
             }
             return strcmp($timeA, $timeB);
         });
