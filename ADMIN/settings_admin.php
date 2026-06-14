@@ -283,14 +283,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="settings-content">
         <form method="POST">
             <input type="hidden" name="action" value="update_weather">
-            <div class="form-group">
-                <label>Latitude (Breedtegraad)</label>
-                <input type="text" name="weather_lat" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_LATITUDE'] ?? '51.32', ENT_QUOTES, 'UTF-8'); ?>" placeholder="bv. 51.32">
+            <div class="form-group" style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                <label>Automatisch Locatie Bepalen</label>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <input type="text" id="weather_address" placeholder="Voer een adres of stad in..." style="flex: 1; min-width: 200px;">
+                    <button type="button" class="btn" style="background: var(--surface); border: 1px solid var(--border);" onclick="geocodeAddress()">🔍 Zoek Adres</button>
+                    <button type="button" class="btn" style="background: var(--surface); border: 1px solid var(--border);" onclick="getCurrentLocation()">📍 Huidige Locatie</button>
+                </div>
+                <small style="color: var(--text); opacity: 0.7;">Zoeken gebruikt de gratis OpenStreetMap service. Huidige locatie vereist browser toestemming.</small>
             </div>
-            <div class="form-group">
-                <label>Longitude (Lengtegraad)</label>
-                <input type="text" name="weather_lon" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_LONGITUDE'] ?? '4.95', ENT_QUOTES, 'UTF-8'); ?>" placeholder="bv. 4.95">
+
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Latitude (Breedtegraad)</label>
+                    <input type="text" id="weather_lat" name="weather_lat" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_LATITUDE'] ?? '51.32', ENT_QUOTES, 'UTF-8'); ?>" placeholder="bv. 51.32">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Longitude (Lengtegraad)</label>
+                    <input type="text" id="weather_lon" name="weather_lon" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_LONGITUDE'] ?? '4.95', ENT_QUOTES, 'UTF-8'); ?>" placeholder="bv. 4.95">
+                </div>
             </div>
+
             <div class="form-group">
                 <label>Aantal Dagen (Max 16)</label>
                 <input type="number" name="weather_days" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_DAYS'] ?? 7, ENT_QUOTES, 'UTF-8'); ?>" min="1" max="16">
@@ -441,5 +454,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </div>
 
+<script>
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('weather_lat').value = position.coords.latitude.toFixed(4);
+            document.getElementById('weather_lon').value = position.coords.longitude.toFixed(4);
+            alert('Locatie succesvol opgehaald!');
+        }, function(error) {
+            alert('Fout bij ophalen locatie: ' + error.message);
+        });
+    } else {
+        alert('Geolocation wordt niet ondersteund door deze browser.');
+    }
+}
+
+async function geocodeAddress() {
+    const address = document.getElementById('weather_address').value;
+    if (!address) {
+        alert('Voer eerst een adres of stad in.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+            document.getElementById('weather_lat').value = parseFloat(data[0].lat).toFixed(4);
+            document.getElementById('weather_lon').value = parseFloat(data[0].lon).toFixed(4);
+            alert(`Coördinaten gevonden voor: ${data[0].display_name}`);
+        } else {
+            alert('Geen resultaten gevonden voor dit adres.');
+        }
+    } catch (e) {
+        alert('Er is een fout opgetreden bij het zoeken naar het adres.');
+        console.error(e);
+    }
+}
+</script>
 </body>
 </html>
