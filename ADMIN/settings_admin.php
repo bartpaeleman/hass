@@ -65,6 +65,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         saveConfig($configFile, $configData);
     }
 
+    if ($action === 'update_weather') {
+        $configData['settings']['WEATHER_LATITUDE'] = $_POST['weather_lat'] ?? '';
+        $configData['settings']['WEATHER_LONGITUDE'] = $_POST['weather_lon'] ?? '';
+        $configData['settings']['WEATHER_DAYS'] = (int)($_POST['weather_days'] ?? 7);
+        $configData['settings']['WEATHER_SHOW_MIN_TEMP'] = isset($_POST['weather_show_min']);
+        $configData['settings']['WEATHER_SHOW_MAX_TEMP'] = isset($_POST['weather_show_max']);
+        $configData['settings']['WEATHER_SHOW_PRECIPITATION'] = isset($_POST['weather_show_precip']);
+        $configData['settings']['WEATHER_SHOW_WIND'] = isset($_POST['weather_show_wind']);
+
+        saveConfig($configFile, $configData);
+    }
+
     if ($action === 'add_user' || $action === 'edit_user') {
         $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
@@ -260,6 +272,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group" style="display: flex; align-items: center;">
                 <input type="checkbox" id="require_auth" name="require_auth" <?php echo (!empty($configData['settings']['REQUIRE_AUTH'])) ? 'checked' : ''; ?>>
                 <label for="require_auth" style="margin-bottom: 0;">Require Auth (Inloggen verplicht)</label>
+            </div>
+            <button type="submit" class="btn btn-save">Opslaan</button>
+        </form>
+        </div>
+    </details>
+
+    <details class="settings-section">
+        <summary>Weersvoorspelling Instellingen</summary>
+        <div class="settings-content">
+        <form method="POST">
+            <input type="hidden" name="action" value="update_weather">
+            <div class="form-group">
+                <label>Latitude (Breedtegraad)</label>
+                <input type="text" name="weather_lat" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_LATITUDE'] ?? '51.32', ENT_QUOTES, 'UTF-8'); ?>" placeholder="bv. 51.32">
+            </div>
+            <div class="form-group">
+                <label>Longitude (Lengtegraad)</label>
+                <input type="text" name="weather_lon" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_LONGITUDE'] ?? '4.95', ENT_QUOTES, 'UTF-8'); ?>" placeholder="bv. 4.95">
+            </div>
+            <div class="form-group">
+                <label>Aantal Dagen (Max 16)</label>
+                <input type="number" name="weather_days" value="<?php echo htmlspecialchars($configData['settings']['WEATHER_DAYS'] ?? 7, ENT_QUOTES, 'UTF-8'); ?>" min="1" max="16">
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 15px; margin-top: 10px; margin-bottom: 5px;">
+                <label style="margin-bottom: 0; display: flex; align-items: center; gap: 5px;">
+                    <input type="checkbox" name="weather_show_min" <?php echo (!isset($configData['settings']['WEATHER_SHOW_MIN_TEMP']) || $configData['settings']['WEATHER_SHOW_MIN_TEMP']) ? 'checked' : ''; ?>>
+                    Min Temp tonen
+                </label>
+                <label style="margin-bottom: 0; display: flex; align-items: center; gap: 5px;">
+                    <input type="checkbox" name="weather_show_max" <?php echo (!isset($configData['settings']['WEATHER_SHOW_MAX_TEMP']) || $configData['settings']['WEATHER_SHOW_MAX_TEMP']) ? 'checked' : ''; ?>>
+                    Max Temp tonen
+                </label>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <label style="margin-bottom: 0; display: flex; align-items: center; gap: 5px;">
+                    <input type="checkbox" name="weather_show_precip" <?php echo (!empty($configData['settings']['WEATHER_SHOW_PRECIPITATION'])) ? 'checked' : ''; ?>>
+                    Neerslag tonen
+                </label>
+                <label style="margin-bottom: 0; display: flex; align-items: center; gap: 5px;">
+                    <input type="checkbox" name="weather_show_wind" <?php echo (!empty($configData['settings']['WEATHER_SHOW_WIND'])) ? 'checked' : ''; ?>>
+                    Windkracht tonen
+                </label>
             </div>
             <button type="submit" class="btn btn-save">Opslaan</button>
         </form>

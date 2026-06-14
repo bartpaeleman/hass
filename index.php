@@ -12,6 +12,16 @@ if ('index.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $cu
     header("HTTP/1.1 403 Forbidden");
     exit("Toegang geweigerd. Onvoldoende rechten voor deze pagina.");
 }
+
+$weatherConfig = [
+    'lat' => $configData['settings']['WEATHER_LATITUDE'] ?? '51.32',
+    'lon' => $configData['settings']['WEATHER_LONGITUDE'] ?? '4.95',
+    'days' => (int)($configData['settings']['WEATHER_DAYS'] ?? 7),
+    'showMin' => !isset($configData['settings']['WEATHER_SHOW_MIN_TEMP']) || $configData['settings']['WEATHER_SHOW_MIN_TEMP'],
+    'showMax' => !isset($configData['settings']['WEATHER_SHOW_MAX_TEMP']) || $configData['settings']['WEATHER_SHOW_MAX_TEMP'],
+    'showPrecip' => !empty($configData['settings']['WEATHER_SHOW_PRECIPITATION']),
+    'showWind' => !empty($configData['settings']['WEATHER_SHOW_WIND'])
+];
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -80,6 +90,8 @@ if ('index.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $cu
 </main>
 
 <script>
+  const weatherConfig = <?php echo json_encode($weatherConfig); ?>;
+
   const REFRESH  = 3000;
 
   const ENTITIES = {
@@ -178,7 +190,15 @@ if ('index.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $cu
 
   async function loadWeather() {
       try {
-          const url = "https://api.open-meteo.com/v1/forecast?latitude=51.32&longitude=4.95&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto";
+          let dailyParams = ["weathercode"];
+          if (weatherConfig.showMax) dailyParams.push("temperature_2m_max");
+          if (weatherConfig.showMin) dailyParams.push("temperature_2m_min");
+          if (weatherConfig.showPrecip) dailyParams.push("precipitation_probability_max");
+          if (weatherConfig.showWind) dailyParams.push("wind_speed_10m_max");
+
+          const dailyStr = dailyParams.join(",");
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${weatherConfig.lat}&longitude=${weatherConfig.lon}&daily=${dailyStr}&forecast_days=${weatherConfig.days}&timezone=auto`;
+
           const response = await fetch(url);
           const data = await response.json();
           const container = document.getElementById("weatherRow");
@@ -187,19 +207,40 @@ if ('index.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $cu
           data.daily.time.forEach((date, index) => {
               const code = data.daily.weathercode[index];
               const weather = weatherCodes[code] || { text: "Onbekend", icon: "https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/not-available.svg" };
-              const max = Math.round(data.daily.temperature_2m_max[index]);
-              const min = Math.round(data.daily.temperature_2m_min[index]);
-              const dayName = new Date(date).toLocaleDateString("nl-BE", { weekday: "short", day: "numeric", month: "short" });
 
-              container.innerHTML += `
-                  <div class="weather-card">
-                      <div class="weather-day">${dayName}</div>
-                      <img class="weather-icon" src="${weather.icon}" alt="${weather.text}">
-                      <div class="weather-temp-max">${max}°C</div>
-                      <div class="weather-temp-min">${min}°C</div>
-                      <div class="weather-description">${weather.text}</div>
-                  </div>
-              `;
+              let html = `<div class="weather-card">`;
+
+              const dayName = new Date(date).toLocaleDateString("nl-BE", { weekday: "short", day: "numeric", month: "short" });
+              html += `<div class="weather-day">${dayName}</div>`;
+              html += `<img class="weather-icon" src="${weather.icon}" alt="${weather.text}">`;
+
+              if (weatherConfig.showMax && data.daily.temperature_2m_max) {
+                  const max = Math.round(data.daily.temperature_2m_max[index]);
+                  html += `<div class="weather-temp-max">${max}°C</div>`;
+              }
+              if (weatherConfig.showMin && data.daily.temperature_2m_min) {
+                  const min = Math.round(data.daily.temperature_2m_min[index]);
+                  html += `<div class="weather-temp-min">${min}°C</div>`;
+              }
+
+              html += `<div class="weather-description">${weather.text}</div>`;
+
+              let extrasHtml = "";
+              if (weatherConfig.showPrecip && data.daily.precipitation_probability_max) {
+                  const precip = data.daily.precipitation_probability_max[index];
+                  extrasHtml += `<div class="weather-extra"><span class="weather-extra-icon">💧</span> ${precip}%</div>`;
+              }
+              if (weatherConfig.showWind && data.daily.wind_speed_10m_max) {
+                  const wind = Math.round(data.daily.wind_speed_10m_max[index]);
+                  extrasHtml += `<div class="weather-extra"><span class="weather-extra-icon">💨</span> ${wind} km/u</div>`;
+              }
+
+              if (extrasHtml !== "") {
+                  html += `<div class="weather-extras-container">${extrasHtml}</div>`;
+              }
+
+              html += `</div>`;
+              container.innerHTML += html;
           });
       } catch (e) {
           console.error("Fout bij laden weersvoorspelling:", e);
