@@ -6,6 +6,22 @@
     width: 100%;
 }
 
+.weather-location-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .weather-row {
     display: flex; /* CRUCIAL: Activeert de flexbox voor horizontaal scrollen */
     flex-wrap: nowrap;
