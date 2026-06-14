@@ -64,6 +64,7 @@
         "HA_TOKEN": "",
         "WEATHER_LATITUDE": "51.32",
         "WEATHER_LONGITUDE": "4.95",
+        "WEATHER_ADDRESS": "",
         "WEATHER_DAYS": 7,
         "WEATHER_SHOW_MIN_TEMP": true,
         "WEATHER_SHOW_MAX_TEMP": true,

@@ -16,6 +16,7 @@ if ('index.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $cu
 $weatherConfig = [
     'lat' => $configData['settings']['WEATHER_LATITUDE'] ?? '51.32',
     'lon' => $configData['settings']['WEATHER_LONGITUDE'] ?? '4.95',
+    'address' => $configData['settings']['WEATHER_ADDRESS'] ?? '',
     'days' => (int)($configData['settings']['WEATHER_DAYS'] ?? 7),
     'showMin' => !isset($configData['settings']['WEATHER_SHOW_MIN_TEMP']) || $configData['settings']['WEATHER_SHOW_MIN_TEMP'],
     'showMax' => !isset($configData['settings']['WEATHER_SHOW_MAX_TEMP']) || $configData['settings']['WEATHER_SHOW_MAX_TEMP'],
@@ -64,6 +65,9 @@ $weatherConfig = [
 
     <!-- Weersverwachting -->
     <div class="weather-section">
+      <div class="weather-location-header">
+        📍 <?php echo htmlspecialchars(!empty($weatherConfig['address']) ? $weatherConfig['address'] : "Coördinaten: " . $weatherConfig['lat'] . ", " . $weatherConfig['lon'], ENT_QUOTES, 'UTF-8'); ?>
+      </div>
       <div class="weather-row" id="weatherRow">
       </div>
     </div>
