@@ -137,20 +137,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../CSS/common.css">
     <link rel="stylesheet" href="../CSS/events_admin.css">
     <style>
-        .settings-section {
+        details.settings-section {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 20px;
             margin-bottom: 30px;
         }
-        .settings-section h2 {
+        details.settings-section summary {
             margin-top: 0;
             color: var(--accent);
             font-size: 24px;
-            margin-bottom: 20px;
+            padding: 20px;
+            cursor: pointer;
+            list-style: none;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        details.settings-section summary::-webkit-details-marker {
+            display: none;
+        }
+        details.settings-section summary::after {
+            content: '▼';
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+        details.settings-section[open] summary::after {
+            transform: rotate(180deg);
+        }
+        details.settings-section[open] summary {
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        details.settings-section .settings-content {
+            padding: 0 20px 20px 20px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -217,8 +239,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <a href="../index.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
     </div>
 
-    <div class="settings-section">
-        <h2>Globale Instellingen</h2>
+    <details class="settings-section">
+        <summary>Globale Instellingen</summary>
+        <div class="settings-content">
         <form method="POST">
             <input type="hidden" name="action" value="update_globals">
             <div class="form-group">
@@ -235,10 +258,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" class="btn btn-save">Opslaan</button>
         </form>
-    </div>
+        </div>
+    </details>
 
-    <div class="settings-section">
-        <h2>Account Management</h2>
+    <details class="settings-section" open>
+        <summary>Account Management</summary>
+        <div class="settings-content">
         <table>
             <thead>
                 <tr>
@@ -289,10 +314,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </tr>
             </tbody>
         </table>
-    </div>
+        </div>
+    </details>
 
-    <div class="settings-section">
-        <h2>Role Based Access (RBAC) & Pagina Beheer</h2>
+    <details class="settings-section">
+        <summary>Role Based Access (RBAC) & Pagina Beheer</summary>
+        <div class="settings-content">
         <form method="POST">
             <input type="hidden" name="action" value="update_pages">
             <table>
@@ -337,7 +364,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </table>
             <button type="submit" class="btn btn-save">Alle Pagina's Opslaan</button>
         </form>
-    </div>
+        </div>
+    </details>
 
 </div>
 
