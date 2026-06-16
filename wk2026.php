@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+date_default_timezone_set('Europe/Brussels');
 
 // Data processing logic
 $eventsFile = __DIR__ . '/JSON/wk2026.json';

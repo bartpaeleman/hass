@@ -48,7 +48,7 @@ if (!$isLoggedIn) {
     ];
 
     foreach ($configData['pages'] as $file => $page) {
-        if ($file === 'wk2026poules.php') {
+        if ($file === 'wk2026poules.php' || $file === 'wk2026uitslagen.php') {
             continue;
         }
 
