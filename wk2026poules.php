@@ -6,6 +6,58 @@ require_once 'auth.php';
 $html = @file_get_contents("https://pouletips.nl/wk-2026/stand/");
 $groups = [];
 
+// Mapping landen op basis van de JSON + extra teams (bijv. Engeland, Schotland)
+$countryFlags = [
+    'Algerije' => '🇩🇿',
+    'Argentinië' => '🇦🇷',
+    'Australië' => '🇦🇺',
+    'België' => '🇧🇪',
+    'Bosnië-Herzegovina' => '🇧🇦',
+    'Brazilië' => '🇧🇷',
+    'Canada' => '🇨🇦',
+    'Colombia' => '🇨🇴',
+    'Curaçao' => '🇨🇼',
+    'DR Congo' => '🇨🇩',
+    'Duitsland' => '🇩🇪',
+    'Ecuador' => '🇪🇨',
+    'Egypte' => '🇪🇬',
+    'Frankrijk' => '🇫🇷',
+    'Ghana' => '🇬🇭',
+    'Haïti' => '🇭🇹',
+    'Irak' => '🇮🇶',
+    'Iran' => '🇮🇷',
+    'Ivoorkust' => '🇨🇮',
+    'Japan' => '🇯🇵',
+    'Jordanië' => '🇯🇴',
+    'Kaapverdië' => '🇨🇻',
+    'Kroatië' => '🇭🇷',
+    'Marokko' => '🇲🇦',
+    'Mexico' => '🇲🇽',
+    'Nederland' => '🇳🇱',
+    'Nieuw-Zeeland' => '🇳🇿',
+    'Noorwegen' => '🇳🇴',
+    'Oezbekistan' => '🇺🇿',
+    'Oostenrijk' => '🇦🇹',
+    'Panama' => '🇵🇦',
+    'Paraguay' => '🇵🇾',
+    'Portugal' => '🇵🇹',
+    'Qatar' => '🇶🇦',
+    'Saudi-Arabië' => '🇸🇦', // Let op: kan soms 'Saoedi-Arabië' gespeld zijn
+    'Senegal' => '🇸🇳',
+    'Spanje' => '🇪🇸',
+    'Tsjechië' => '🇨🇿',
+    'Tunesië' => '🇹🇳',
+    'Turkije' => '🇹🇷',
+    'Uruguay' => '🇺🇾',
+    'Verenigde Staten' => '🇺🇸',
+    'Zuid-Afrika' => '🇿🇦',
+    'Zuid-Korea' => '🇰🇷',
+    'Zweden' => '🇸🇪',
+    'Zwitserland' => '🇨🇭',
+    'Schotland' => '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+    'Engeland' => '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+];
+
 if ($html !== false) {
     $dom = new DOMDocument();
     @$dom->loadHTML($html);
@@ -24,6 +76,10 @@ if ($html !== false) {
                     $rowData = [];
                     foreach ($cols as $col) {
                         $rowData[] = trim(preg_replace('/\s+/', ' ', $col->textContent));
+                    }
+                    // Apply flag to team name (column 1)
+                    if (isset($rowData[1]) && isset($countryFlags[$rowData[1]])) {
+                        $rowData[1] = $countryFlags[$rowData[1]] . ' ' . $rowData[1];
                     }
                     $tableData[] = $rowData;
                 }
