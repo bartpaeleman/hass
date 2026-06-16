@@ -130,16 +130,26 @@ if ($html !== false) {
   <div class="left">
 
     <div class="filters-container" style="margin-top: 20px;">
-      <a href="wk2026.php" class="filter-btn">⬅️ <span class="filter-text">Dashboard</span></a>
+      <a href="wk2026.php" class="filter-btn">⬅️ <span class="filter-text">WK AGENDA</span></a>
     </div>
 
     <?php if (empty($groups)): ?>
       <p style="color: var(--warn); padding: 20px;">Kon de poule standen niet inladen. Probeer het later opnieuw.</p>
     <?php else: ?>
       <div class="poules-grid">
-        <?php foreach ($groups as $groupName => $rows): ?>
-          <details class="poule-details active-month" open>
-            <summary class="poule-summary">
+        <?php foreach ($groups as $groupName => $rows):
+          $hasBelgium = false;
+          if (!empty($rows)) {
+              for ($i = 1; $i < count($rows); $i++) {
+                  if (isset($rows[$i][1]) && strpos($rows[$i][1], 'België') !== false) {
+                      $hasBelgium = true;
+                      break;
+                  }
+              }
+          }
+        ?>
+          <details class="poule-details active-month <?php echo $hasBelgium ? 'highlight-belgium-group' : ''; ?>" data-group-name="<?php echo htmlspecialchars($groupName); ?>" open>
+            <summary class="poule-summary <?php echo $hasBelgium ? 'highlight-belgium-summary' : ''; ?>">
               <div class="month-title"><?php echo htmlspecialchars($groupName); ?></div>
             </summary>
             <div class="poule-content">
@@ -163,7 +173,8 @@ if ($html !== false) {
                     // Data rows
                     for ($i = 1; $i < count($rows); $i++) {
                         $row = $rows[$i];
-                        echo '<tr>';
+                        $isBelgiumRow = (isset($row[1]) && strpos($row[1], 'België') !== false);
+                        echo '<tr' . ($isBelgiumRow ? ' class="highlight-belgium-row"' : '') . '>';
                         foreach ($row as $idx => $td) {
                             $class = ($idx === 1) ? ' class="team-name"' : '';
                             echo '<td' . $class . '>' . htmlspecialchars($td) . '</td>';
@@ -198,6 +209,28 @@ if ($html !== false) {
   }
   tick();
   setInterval(tick, 1000);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const detailsElements = document.querySelectorAll('details.poule-details');
+    detailsElements.forEach(details => {
+      const groupName = details.getAttribute('data-group-name');
+      if (groupName) {
+        const key = 'wk2026poules_open_' + groupName;
+        const storedState = localStorage.getItem(key);
+        if (storedState !== null) {
+          if (storedState === 'true') {
+            details.setAttribute('open', '');
+          } else {
+            details.removeAttribute('open');
+          }
+        }
+
+        details.addEventListener('toggle', (e) => {
+          localStorage.setItem(key, details.open);
+        });
+      }
+    });
+  });
 </script>
 </body>
 </html>

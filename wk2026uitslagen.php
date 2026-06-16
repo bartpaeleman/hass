@@ -208,8 +208,9 @@ if ($html !== false) {
 <main>
   <div class="left">
 
-    <div class="filters-container" style="margin-top: 20px;">
-      <a href="wk2026.php" class="filter-btn">⬅️ <span class="filter-text">Dashboard</span></a>
+    <div class="filters-container" style="margin-top: 20px; display: flex; gap: 8px;">
+      <a href="wk2026.php" class="filter-btn">⬅️ <span class="filter-text">WK AGENDA</span></a>
+      <button id="btnTogglePredictions" class="filter-btn">📈 <span class="filter-text">VOORSPELLINGEN</span></button>
     </div>
 
     <?php if (empty($groupData) && empty($knockoutData)): ?>
@@ -219,22 +220,36 @@ if ($html !== false) {
       <?php if (!empty($groupData)): ?>
       <div class="phase-header">GROEPSFASE</div>
       <div class="poules-grid">
-        <?php foreach ($groupData as $groupName => $matches): ?>
-          <details class="poule-details" open>
-            <summary class="poule-summary">
-              <div class="month-title"><?php echo htmlspecialchars($groupName); ?></div>
+        <?php foreach ($groupData as $groupName => $matches):
+            $groupTeams = [];
+            $hasBelgium = false;
+            foreach ($matches as $match) {
+                if ($match['team1']) $groupTeams[$match['team1']] = true;
+                if ($match['team2']) $groupTeams[$match['team2']] = true;
+                if ($match['team1'] === 'België' || $match['team2'] === 'België') {
+                    $hasBelgium = true;
+                }
+            }
+            $flagsStr = '';
+            foreach (array_keys($groupTeams) as $t) {
+                if (isset($countryFlags[$t])) $flagsStr .= $countryFlags[$t] . ' ';
+            }
+        ?>
+          <details class="poule-details <?php echo $hasBelgium ? 'highlight-belgium-group' : ''; ?>" data-group-name="<?php echo htmlspecialchars($groupName); ?>" open>
+            <summary class="poule-summary <?php echo $hasBelgium ? 'highlight-belgium-summary' : ''; ?>">
+              <div class="month-title"><?php echo htmlspecialchars($groupName) . ' ' . trim($flagsStr); ?></div>
             </summary>
             <div class="poule-content" style="padding: 0;">
               <?php foreach ($matches as $match):
                   $t1Flag = $countryFlags[$match['team1']] ?? '';
                   $t2Flag = $countryFlags[$match['team2']] ?? '';
                   $isF = $match['isForecast'];
+                  $isBelgiumMatch = ($match['team1'] === 'België' || $match['team2'] === 'België');
               ?>
-              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?>">
+              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?> <?php echo $isBelgiumMatch ? 'highlight-belgium-row' : ''; ?>">
                   <div class="match-meta">
                       <?php echo htmlspecialchars($match['time']); ?>
                       <?php if ($match['stadium']) echo ' • ' . htmlspecialchars($match['stadium']); ?>
-                      <?php if ($isF) echo '<span class="forecast-badge">Voorspelling</span>'; ?>
                   </div>
                   <div class="match-teams">
                       <div class="match-team">
@@ -256,22 +271,36 @@ if ($html !== false) {
       <?php if (!empty($knockoutData)): ?>
       <div class="phase-header">KNOCK-OUT FASE</div>
       <div class="poules-grid">
-        <?php foreach ($knockoutData as $phaseName => $matches): ?>
-          <details class="poule-details" open>
-            <summary class="poule-summary">
-              <div class="month-title"><?php echo htmlspecialchars($phaseName); ?></div>
+        <?php foreach ($knockoutData as $phaseName => $matches):
+            $groupTeams = [];
+            $hasBelgium = false;
+            foreach ($matches as $match) {
+                if ($match['team1']) $groupTeams[$match['team1']] = true;
+                if ($match['team2']) $groupTeams[$match['team2']] = true;
+                if ($match['team1'] === 'België' || $match['team2'] === 'België') {
+                    $hasBelgium = true;
+                }
+            }
+            $flagsStr = '';
+            foreach (array_keys($groupTeams) as $t) {
+                if (isset($countryFlags[$t])) $flagsStr .= $countryFlags[$t] . ' ';
+            }
+        ?>
+          <details class="poule-details <?php echo $hasBelgium ? 'highlight-belgium-group' : ''; ?>" data-group-name="<?php echo htmlspecialchars($phaseName); ?>" open>
+            <summary class="poule-summary <?php echo $hasBelgium ? 'highlight-belgium-summary' : ''; ?>">
+              <div class="month-title"><?php echo htmlspecialchars($phaseName) . ' ' . trim($flagsStr); ?></div>
             </summary>
             <div class="poule-content" style="padding: 0;">
               <?php foreach ($matches as $match):
                   $t1Flag = $countryFlags[$match['team1']] ?? '';
                   $t2Flag = $countryFlags[$match['team2']] ?? '';
                   $isF = $match['isForecast'];
+                  $isBelgiumMatch = ($match['team1'] === 'België' || $match['team2'] === 'België');
               ?>
-              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?>">
+              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?> <?php echo $isBelgiumMatch ? 'highlight-belgium-row' : ''; ?>">
                   <div class="match-meta">
                       <?php echo htmlspecialchars($match['time']); ?>
                       <?php if ($match['stadium']) echo ' • ' . htmlspecialchars($match['stadium']); ?>
-                      <?php if ($isF) echo '<span class="forecast-badge">Voorspelling</span>'; ?>
                   </div>
                   <div class="match-teams">
                       <div class="match-team">
@@ -310,6 +339,54 @@ if ($html !== false) {
   }
   tick();
   setInterval(tick, 1000);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Prediction toggle logic
+    const btnToggle = document.getElementById('btnTogglePredictions');
+    if (btnToggle) {
+      let showPredictions = localStorage.getItem('wk2026_show_predictions') === 'true';
+      const applyPredictionsState = () => {
+        if (showPredictions) {
+          document.body.classList.remove('hide-forecasts');
+          btnToggle.style.opacity = '1';
+          btnToggle.style.background = 'rgba(255, 61, 61, 0.1)';
+        } else {
+          document.body.classList.add('hide-forecasts');
+          btnToggle.style.opacity = '0.6';
+          btnToggle.style.background = 'transparent';
+        }
+      };
+
+      applyPredictionsState(); // apply default state
+
+      btnToggle.addEventListener('click', () => {
+        showPredictions = !showPredictions;
+        localStorage.setItem('wk2026_show_predictions', showPredictions);
+        applyPredictionsState();
+      });
+    }
+
+    // Persist details blocks state
+    const detailsElements = document.querySelectorAll('details.poule-details');
+    detailsElements.forEach(details => {
+      const groupName = details.getAttribute('data-group-name');
+      if (groupName) {
+        const key = 'wk2026uitslagen_open_' + groupName;
+        const storedState = localStorage.getItem(key);
+        if (storedState !== null) {
+          if (storedState === 'true') {
+            details.setAttribute('open', '');
+          } else {
+            details.removeAttribute('open');
+          }
+        }
+
+        details.addEventListener('toggle', (e) => {
+          localStorage.setItem(key, details.open);
+        });
+      }
+    });
+  });
 </script>
 </body>
 </html>
