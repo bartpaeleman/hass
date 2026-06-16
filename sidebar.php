@@ -48,6 +48,10 @@ if (!$isLoggedIn) {
     ];
 
     foreach ($configData['pages'] as $file => $page) {
+        if ($file === 'wk2026poules.php') {
+            continue;
+        }
+
         // Skip index.php als we er al op zijn
         if ($file === 'index.php' && basename($_SERVER['PHP_SELF']) === 'index.php') {
             continue;
