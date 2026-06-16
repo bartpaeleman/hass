@@ -84,30 +84,6 @@ $weatherConfig = [
     </div>
 
 
-    <?php
-      $showWk2026Link = !isset($configData['settings']['SHOW_WK2026_LINK']) || !empty($configData['settings']['SHOW_WK2026_LINK']);
-      if ($showWk2026Link):
-    ?>
-    <div style="margin-top: 24px;">
-        <div class="section-label">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M2 6h8M2 9h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            Evenementen
-        </div>
-        <a href="wk2026.php" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; text-decoration: none; color: var(--text-bright); transition: border-color 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="font-size: 24px;">⚽</span>
-                <div>
-                    <div style="font-family: 'Share Tech Mono', monospace; font-size: 18px; font-weight: bold; color: var(--accent);">WK VOETBAL 2026</div>
-                    <div style="font-size: 14px; color: var(--text-muted); margin-top: 4px;">Bekijk standen, poules en het speelschema</div>
-                </div>
-            </div>
-            <div style="color: var(--accent);">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-        </a>
-    </div>
-    <?php endif; ?>
-
     </div>
 
   </div>

@@ -5,6 +5,23 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $configFile = __DIR__ . '/JSON/config_data.json';
 $configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [];
+
+// Auto-merge missing pages from example config
+$exampleConfigFile = __DIR__ . '/JSON/config_data.example.json';
+if (file_exists($exampleConfigFile)) {
+    $exampleData = json_decode(file_get_contents($exampleConfigFile), true);
+    if (isset($exampleData['pages']) && is_array($exampleData['pages'])) {
+        if (!isset($configData['pages'])) {
+            $configData['pages'] = [];
+        }
+        foreach ($exampleData['pages'] as $pageKey => $pageInfo) {
+            if (!isset($configData['pages'][$pageKey])) {
+                $configData['pages'][$pageKey] = $pageInfo;
+            }
+        }
+    }
+}
+
 $requireAuth = isset($configData['settings']['REQUIRE_AUTH']) ? $configData['settings']['REQUIRE_AUTH'] : (defined('REQUIRE_AUTH') ? REQUIRE_AUTH : false);
 
 if ($requireAuth) {
@@ -132,6 +149,30 @@ if ($requireAuth) {
               <input type="password" name="app_password" class="login-input" placeholder="Wachtwoord" required>
               <button type="submit" class="login-btn">INLOGGEN</button>
             </form>
+
+            <?php
+              $showWk2026Link = !isset($configData['settings']['SHOW_WK2026_LINK']) || !empty($configData['settings']['SHOW_WK2026_LINK']);
+              if ($showWk2026Link):
+            ?>
+            <div style="margin-top: 24px;">
+                <div class="section-label" style="color: var(--text-muted); font-size: 14px; margin-bottom: 8px;">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right: 4px;"><path d="M2 3h8M2 6h8M2 9h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                    Publieke Toegang
+                </div>
+                <a href="wk2026.php" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; text-decoration: none; color: var(--text-bright); transition: border-color 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 24px;">⚽</span>
+                        <div style="text-align: left;">
+                            <div style="font-family: 'Share Tech Mono', monospace; font-size: 18px; font-weight: bold; color: var(--accent);">WK VOETBAL 2026</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Bekijk standen, poules en het speelschema</div>
+                        </div>
+                    </div>
+                    <div style="color: var(--accent);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </a>
+            </div>
+            <?php endif; ?>
           </div>
         </body>
         </html>
