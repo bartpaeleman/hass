@@ -1,3 +1,14 @@
+<?php
+$isLoggedIn = isset($_SESSION['authenticated']) && $_SESSION['authenticated'] === true;
+
+if (!$isLoggedIn) {
+    // If not authenticated, we output some CSS to hide the right section and expand the left section
+    echo '<style>
+        main { grid-template-columns: 1fr !important; }
+        .right { display: none !important; }
+    </style>';
+} else {
+?>
 <div class="sidebar-section">
   <div class="section-label">Navigatie</div>
 
@@ -82,3 +93,4 @@
   <?php endif; ?>
 </div>
 <script src="ha_core_js.php"></script>
+<?php } ?>

@@ -55,7 +55,12 @@
         "wk2026.php": {
             "name": "WK VOETBAL",
             "emoji": "\u26bd",
-            "roles": [99, 50, 10, 0]
+            "roles": [99, 50, 10, 0, -1]
+        },
+        "wk2026poules.php": {
+            "name": "WK POULES",
+            "emoji": "🏆",
+            "roles": [99, 50, 10, 0, -1]
         }
     },
     "settings": {
