@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $configData['settings']['HA_URL'] = $_POST['ha_url'] ?? '';
         $configData['settings']['HA_TOKEN'] = $_POST['ha_token'] ?? '';
         $configData['settings']['REQUIRE_AUTH'] = isset($_POST['require_auth']);
+        $configData['settings']['SHOW_WK2026_LINK'] = isset($_POST['show_wk2026_link']);
 
         saveConfig($configFile, $configData);
     }
@@ -273,6 +274,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group" style="display: flex; align-items: center;">
                 <input type="checkbox" id="require_auth" name="require_auth" <?php echo (!empty($configData['settings']['REQUIRE_AUTH'])) ? 'checked' : ''; ?>>
                 <label for="require_auth" style="margin-bottom: 0;">Require Auth (Inloggen verplicht)</label>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center;">
+                <input type="checkbox" id="show_wk2026_link" name="show_wk2026_link" <?php echo (!isset($configData['settings']['SHOW_WK2026_LINK']) || !empty($configData['settings']['SHOW_WK2026_LINK'])) ? 'checked' : ''; ?>>
+                <label for="show_wk2026_link" style="margin-bottom: 0;">WK 2026 Link op Startscherm tonen</label>
             </div>
             <button type="submit" class="btn btn-save">Opslaan</button>
         </form>

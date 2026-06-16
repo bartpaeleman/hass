@@ -74,6 +74,7 @@
         "WEATHER_SHOW_MIN_TEMP": true,
         "WEATHER_SHOW_MAX_TEMP": true,
         "WEATHER_SHOW_PRECIPITATION": false,
-        "WEATHER_SHOW_WIND": false
+        "WEATHER_SHOW_WIND": false,
+        "SHOW_WK2026_LINK": true
     }
 }

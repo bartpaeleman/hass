@@ -249,7 +249,7 @@ $currentMonth = (int)$today->format('n');
 
     <div class="filters-container">
       <a href="wk2026poules.php" class="filter-btn">🏆 <span class="filter-text">POULES</span></a>
-      <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 50): ?>
+      <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] == 99): ?>
       <a href="ADMIN/wk_admin.php?json-events=wk2026.json" class="filter-btn admin-btn">⚙️ <span class="filter-text">BEHEER</span></a>
       <?php endif; ?>
     </div>
