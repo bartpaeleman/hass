@@ -61,6 +61,11 @@
             "name": "WK POULES",
             "emoji": "🏆",
             "roles": [99, 50, 10, 0, -1]
+        },
+        "wk2026uitslagen.php": {
+            "name": "WK UITSLAGEN",
+            "emoji": "📈",
+            "roles": [99, 50, 10, 0, -1]
         }
     },
     "settings": {
