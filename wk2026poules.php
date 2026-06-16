@@ -173,8 +173,7 @@ if ($html !== false) {
                     // Data rows
                     for ($i = 1; $i < count($rows); $i++) {
                         $row = $rows[$i];
-                        $isBelgiumRow = (isset($row[1]) && strpos($row[1], 'België') !== false);
-                        echo '<tr' . ($isBelgiumRow ? ' class="highlight-belgium-row"' : '') . '>';
+                        echo '<tr>';
                         foreach ($row as $idx => $td) {
                             $class = ($idx === 1) ? ' class="team-name"' : '';
                             echo '<td' . $class . '>' . htmlspecialchars($td) . '</td>';
