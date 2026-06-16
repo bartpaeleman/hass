@@ -88,8 +88,15 @@ if ($requireAuth) {
         }
     }
 
+    // Check if the current page allows unauthenticated access (-1 role)
+    $currentPage = basename($_SERVER['PHP_SELF']);
+    $pageAllowsUnauth = false;
+    if (isset($configData['pages'][$currentPage]['roles']) && in_array(-1, $configData['pages'][$currentPage]['roles'])) {
+        $pageAllowsUnauth = true;
+    }
+
     // Controleer definitief of de gebruiker is ingelogd
-    if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
+    if ((!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) && !$pageAllowsUnauth) {
         $isJs = (basename($_SERVER['PHP_SELF']) === 'ha_core_js.php');
         if ($isJs) {
             header("Content-type: application/javascript; charset=utf-8");

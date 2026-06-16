@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $configData['settings']['HA_URL'] = $_POST['ha_url'] ?? '';
         $configData['settings']['HA_TOKEN'] = $_POST['ha_token'] ?? '';
         $configData['settings']['REQUIRE_AUTH'] = isset($_POST['require_auth']);
+        $configData['settings']['SHOW_WK2026_LINK'] = isset($_POST['show_wk2026_link']);
 
         saveConfig($configFile, $configData);
     }
@@ -274,6 +275,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="checkbox" id="require_auth" name="require_auth" <?php echo (!empty($configData['settings']['REQUIRE_AUTH'])) ? 'checked' : ''; ?>>
                 <label for="require_auth" style="margin-bottom: 0;">Require Auth (Inloggen verplicht)</label>
             </div>
+            <div class="form-group" style="display: flex; align-items: center;">
+                <input type="checkbox" id="show_wk2026_link" name="show_wk2026_link" <?php echo (!isset($configData['settings']['SHOW_WK2026_LINK']) || !empty($configData['settings']['SHOW_WK2026_LINK'])) ? 'checked' : ''; ?>>
+                <label for="show_wk2026_link" style="margin-bottom: 0;">WK 2026 Link op Startscherm tonen</label>
+            </div>
             <button type="submit" class="btn btn-save">Opslaan</button>
         </form>
         </div>
@@ -358,7 +363,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <td>
                             <select form="edit_form_<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" name="level" style="padding:8px; background:rgba(0,0,0,0.5); border:1px solid var(--border); color:var(--text-bright); border-radius:4px; font-family: inherit;" <?php echo (!empty($userData['is_default'])) ? 'disabled style="opacity: 0.7;"' : ''; ?>>
                                 <?php
-                                $roles = [99 => 'Admin', 50 => 'User', 10 => 'Viewer', 0 => 'Restricted'];
+                                $roles = [99 => 'Admin', 50 => 'User', 10 => 'Viewer', 0 => 'Restricted', -1 => 'Unauthenticated'];
                                 foreach ($roles as $lvl => $label) {
                                     $selected = ($userData['level'] == $lvl) ? 'selected' : '';
                                     echo "<option value=\"$lvl\" $selected>$label</option>";
@@ -390,6 +395,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <option value="50" selected>User</option>
                                 <option value="10">Viewer</option>
                                 <option value="0">Restricted</option>
+                                <option value="-1">Unauthenticated</option>
                             </select></td>
                         <td>
                             <form id="add_user_form" method="POST" style="display:inline;">
@@ -419,7 +425,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </thead>
                 <tbody>
                     <?php
-                    $available_roles = [99 => 'Admin (99)', 50 => 'User (50)', 10 => 'Viewer (10)', 0 => 'Restricted (0)'];
+                    $available_roles = [99 => 'Admin', 50 => 'User', 10 => 'Viewer', 0 => 'Restricted', -1 => 'Unauthenticated'];
                     foreach ($configData['pages'] as $filename => $pageData):
                     ?>
                     <tr class="page-row">
