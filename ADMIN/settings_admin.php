@@ -42,6 +42,21 @@ $configData = file_exists($configFile) ? json_decode(file_get_contents($configFi
     ]
 ];
 
+// Auto-merge missing pages from example config
+if (file_exists($exampleFile)) {
+    $exampleData = json_decode(file_get_contents($exampleFile), true);
+    if (isset($exampleData['pages']) && is_array($exampleData['pages'])) {
+        if (!isset($configData['pages'])) {
+            $configData['pages'] = [];
+        }
+        foreach ($exampleData['pages'] as $pageKey => $pageInfo) {
+            if (!isset($configData['pages'][$pageKey])) {
+                $configData['pages'][$pageKey] = $pageInfo;
+            }
+        }
+    }
+}
+
 // Helper to save and handle errors
 function saveConfig($file, $data) {
     global $message, $error;

@@ -249,8 +249,9 @@ $currentMonth = (int)$today->format('n');
 
     <div class="filters-container">
       <a href="wk2026poules.php" class="filter-btn">🏆 <span class="filter-text">POULES</span></a>
+      <a href="wk2026uitslagen.php" class="filter-btn">📈 <span class="filter-text">UITSLAGEN</span></a>
       <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] == 99): ?>
-      <a href="ADMIN/wk_admin.php?json-events=wk2026.json" class="filter-btn admin-btn">⚙️ <span class="filter-text">BEHEER</span></a>
+      <a href="ADMIN/wk_admin.php?json-events=wk2026.json" class="filter-btn admin-btn" style="margin-left: auto;">⚙️ <span class="filter-text">BEHEER</span></a>
       <?php endif; ?>
     </div>
 
