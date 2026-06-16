@@ -108,6 +108,10 @@ if ($html !== false) {
 <link rel="stylesheet" href="CSS/wk2026.css">
 <link rel="stylesheet" href="CSS/wk2026poules.css">
 <style>
+  #btnTogglePredictions {
+      color: var(--warn);
+      border-color: var(--warn);
+  }
   .match-row {
       display: flex;
       flex-direction: column;
@@ -210,6 +214,7 @@ if ($html !== false) {
 
     <div class="filters-container" style="margin-top: 20px; display: flex; gap: 8px;">
       <a href="wk2026.php" class="filter-btn">⬅️ <span class="filter-text">WK AGENDA</span></a>
+      <a href="wk2026poules.php" class="filter-btn">🏆 <span class="filter-text">POULES</span></a>
       <button id="btnTogglePredictions" class="filter-btn">📈 <span class="filter-text">VOORSPELLINGEN</span></button>
     </div>
 
@@ -218,7 +223,8 @@ if ($html !== false) {
     <?php else: ?>
 
       <?php if (!empty($groupData)): ?>
-      <div class="phase-header">GROEPSFASE</div>
+      <details class="phase-details" data-phase="groepsfase" open>
+      <summary class="phase-header" style="cursor: pointer;">GROEPSFASE</summary>
       <div class="poules-grid">
         <?php foreach ($groupData as $groupName => $matches):
             $groupTeams = [];
@@ -262,10 +268,12 @@ if ($html !== false) {
           </details>
         <?php endforeach; ?>
       </div>
+      </details>
       <?php endif; ?>
 
       <?php if (!empty($knockoutData)): ?>
-      <div class="phase-header">KNOCK-OUT FASE</div>
+      <details class="phase-details" data-phase="knockout" open>
+      <summary class="phase-header" style="cursor: pointer;">KNOCK-OUT FASE</summary>
       <div class="poules-grid">
         <?php foreach ($knockoutData as $phaseName => $matches):
             $groupTeams = [];
@@ -309,6 +317,7 @@ if ($html !== false) {
           </details>
         <?php endforeach; ?>
       </div>
+      </details>
       <?php endif; ?>
 
     <?php endif; ?>
@@ -341,7 +350,7 @@ if ($html !== false) {
         if (showPredictions) {
           document.body.classList.remove('hide-forecasts');
           btnToggle.style.opacity = '1';
-          btnToggle.style.background = 'rgba(255, 61, 61, 0.1)';
+          btnToggle.style.background = 'rgba(255, 160, 0, 0.1)';
         } else {
           document.body.classList.add('hide-forecasts');
           btnToggle.style.opacity = '0.6';
@@ -364,6 +373,27 @@ if ($html !== false) {
       const groupName = details.getAttribute('data-group-name');
       if (groupName) {
         const key = 'wk2026uitslagen_open_' + groupName;
+        const storedState = localStorage.getItem(key);
+        if (storedState !== null) {
+          if (storedState === 'true') {
+            details.setAttribute('open', '');
+          } else {
+            details.removeAttribute('open');
+          }
+        }
+
+        details.addEventListener('toggle', (e) => {
+          localStorage.setItem(key, details.open);
+        });
+      }
+    });
+
+    // Persist phase blocks state
+    const phaseElements = document.querySelectorAll('details.phase-details');
+    phaseElements.forEach(details => {
+      const phaseName = details.getAttribute('data-phase');
+      if (phaseName) {
+        const key = 'wk2026uitslagen_phase_' + phaseName;
         const storedState = localStorage.getItem(key);
         if (storedState !== null) {
           if (storedState === 'true') {

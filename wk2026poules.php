@@ -131,6 +131,7 @@ if ($html !== false) {
 
     <div class="filters-container" style="margin-top: 20px;">
       <a href="wk2026.php" class="filter-btn">⬅️ <span class="filter-text">WK AGENDA</span></a>
+      <a href="wk2026uitslagen.php" class="filter-btn">📈 <span class="filter-text">UITSLAGEN</span></a>
     </div>
 
     <?php if (empty($groups)): ?>
@@ -226,6 +227,30 @@ if ($html !== false) {
 
         details.addEventListener('toggle', (e) => {
           localStorage.setItem(key, details.open);
+
+          // Sync with adjacent column in the same row on desktop
+          if (window.innerWidth >= 900) {
+             const allDetails = Array.from(document.querySelectorAll('details.poule-details'));
+             const index = allDetails.indexOf(details);
+             let siblingIndex = -1;
+
+             if (index % 2 === 0 && index + 1 < allDetails.length) {
+                 siblingIndex = index + 1; // It's the left column, sync with right
+             } else if (index % 2 !== 0 && index - 1 >= 0) {
+                 siblingIndex = index - 1; // It's the right column, sync with left
+             }
+
+             if (siblingIndex !== -1) {
+                 const sibling = allDetails[siblingIndex];
+                 if (sibling.open !== details.open) {
+                     sibling.open = details.open;
+                     const siblingGroup = sibling.getAttribute('data-group-name');
+                     if (siblingGroup) {
+                         localStorage.setItem('wk2026poules_open_' + siblingGroup, sibling.open);
+                     }
+                 }
+             }
+          }
         });
       }
     });
