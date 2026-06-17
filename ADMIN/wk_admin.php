@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)) !== false) {
                 $message = "Event succesvol verwijderd.";
             } else {
-                $error = "Fout bij opslaan. Controleer of de webserver schrijfrechten heeft op events.json.";
+                $error = "Fout bij opslaan. Controleer of de webserver schrijfrechten heeft op " . htmlspecialchars($requestedFile) . ".";
             }
         }
     } elseif ($action === 'save') {
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (file_put_contents($eventsFile, json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)) !== false) {
                 $message = $successMsg;
             } else {
-                $error = "Fout bij opslaan. Controleer of de webserver schrijfrechten heeft op events.json.";
+                $error = "Fout bij opslaan. Controleer of de webserver schrijfrechten heeft op " . htmlspecialchars($requestedFile) . ".";
             }
         }
     }
