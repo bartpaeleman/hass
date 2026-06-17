@@ -56,6 +56,10 @@ $months = [
     9 => 'sep', 10 => 'okt', 11 => 'nov', 12 => 'dec'
 ];
 
+// ⚡ Bolt Optimization: Hoisted clone and time manipulation outside the loop to avoid
+// an expensive O(N) object creation and method call overhead during array processing.
+$todayMidnight = clone($today)->setTime(0,0,0);
+
 foreach ($events as $event) {
     if (!isset($event['name']) || !isset($event['date'])) continue;
 
@@ -63,7 +67,7 @@ foreach ($events as $event) {
     $nextDate->setTime(0,0,0);
 
         $hasPassedThisYear = false;
-    if ($nextDate < clone($today)->setTime(0,0,0)) {
+    if ($nextDate < $todayMidnight) {
         $hasPassedThisYear = true;
     }
 
