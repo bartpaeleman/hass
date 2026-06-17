@@ -188,6 +188,14 @@ $currentMonth = (int)$today->format('n');
 <main>
   <div class="left">
 
+    <div class="filters-container">
+      <a href="wk2026poules.php" class="filter-btn">🏆 <span class="filter-text">POULES</span></a>
+      <a href="wk2026uitslagen.php" class="filter-btn">📈 <span class="filter-text">UITSLAGEN</span></a>
+      <?php if (isset($_SESSION['authenticated_user']) && isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 99): ?>
+      <a href="ADMIN/wk_admin.php?json-events=wk2026.json" class="filter-btn admin-btn" style="margin-left: auto;">⚙️ <span class="filter-text">BEHEER</span></a>
+      <?php endif; ?>
+    </div>
+
     <?php if (count($upcomingGrouped) > 0): ?>
     <div class="section-label section-label-upcoming">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M6 1v6.5M6 10a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M8 3h1M8 5h1" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
@@ -250,14 +258,6 @@ $currentMonth = (int)$today->format('n');
     <div class="section-label section-label-events">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align: middle; margin-right:4px;"><path d="M2 3h8M2 6h8M2 9h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       Events
-    </div>
-
-    <div class="filters-container">
-      <a href="wk2026poules.php" class="filter-btn">🏆 <span class="filter-text">POULES</span></a>
-      <a href="wk2026uitslagen.php" class="filter-btn">📈 <span class="filter-text">UITSLAGEN</span></a>
-      <?php if (isset($_SESSION['role_level']) && $_SESSION['role_level'] == 99): ?>
-      <a href="ADMIN/wk_admin.php?json-events=wk2026.json" class="filter-btn admin-btn" style="margin-left: auto;">⚙️ <span class="filter-text">BEHEER</span></a>
-      <?php endif; ?>
     </div>
 
     <div class="months-wrapper">
