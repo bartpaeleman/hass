@@ -247,8 +247,13 @@ if ($html !== false) {
                   $t2Flag = $countryFlags[$match['team2']] ?? '';
                   $isF = $match['isForecast'];
                   $isBelgiumMatch = ($match['team1'] === 'België' || $match['team2'] === 'België');
+                  $isNetherlandsMatch = ($match['team1'] === 'Nederland' || $match['team2'] === 'Nederland');
+
+                  $rowClass = '';
+                  if ($isBelgiumMatch) $rowClass .= ' highlight-belgium-row';
+                  if ($isNetherlandsMatch) $rowClass .= ' highlight-netherlands-row';
               ?>
-              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?> <?php echo $isBelgiumMatch ? 'highlight-belgium-row' : ''; ?>">
+              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?> <?php echo $rowClass; ?>">
                   <div class="match-meta">
                       <?php echo htmlspecialchars($match['time']); ?>
                       <?php if ($match['stadium']) echo ' • ' . htmlspecialchars($match['stadium']); ?>
@@ -296,8 +301,13 @@ if ($html !== false) {
                   $t2Flag = $countryFlags[$match['team2']] ?? '';
                   $isF = $match['isForecast'];
                   $isBelgiumMatch = ($match['team1'] === 'België' || $match['team2'] === 'België');
+                  $isNetherlandsMatch = ($match['team1'] === 'Nederland' || $match['team2'] === 'Nederland');
+
+                  $rowClass = '';
+                  if ($isBelgiumMatch) $rowClass .= ' highlight-belgium-row';
+                  if ($isNetherlandsMatch) $rowClass .= ' highlight-netherlands-row';
               ?>
-              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?> <?php echo $isBelgiumMatch ? 'highlight-belgium-row' : ''; ?>">
+              <div class="match-row <?php echo $isF ? 'is-forecast' : ''; ?> <?php echo $rowClass; ?>">
                   <div class="match-meta">
                       <?php echo htmlspecialchars($match['time']); ?>
                       <?php if ($match['stadium']) echo ' • ' . htmlspecialchars($match['stadium']); ?>

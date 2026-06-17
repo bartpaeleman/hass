@@ -106,6 +106,18 @@
   text-align: center;
 }
 
+/* Highlight Classes */
+div.event-row.highlight-belgium-row, div.uc-item.highlight-belgium-row {
+  border: 2px solid var(--ok);
+  background: rgba(0, 230, 118, 0.1);
+  border-radius: 4px;
+}
+div.event-row.highlight-netherlands-row, div.uc-item.highlight-netherlands-row {
+  border: 2px solid #ff9800;
+  background: rgba(255, 152, 0, 0.1);
+  border-radius: 4px;
+}
+
 /* Event layouts */
 .event-row {
   margin: 0;

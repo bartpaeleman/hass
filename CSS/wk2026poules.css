@@ -105,10 +105,16 @@
   opacity: 0.8;
 }
 
-.highlight-belgium-group { border: 2px solid #ff9800 !important; }
-.highlight-belgium-summary { background: rgba(255, 152, 0, 0.15) !important; color: #fff !important; }
-.highlight-belgium-row { background: rgba(255, 152, 0, 0.1) !important; }
-table.poule-table tr.highlight-belgium-row { border: 2px solid #ff9800; }
-div.match-row.highlight-belgium-row { border: 2px solid #ff9800; border-radius: 4px; margin-bottom: 2px; }
+.highlight-belgium-group { border: 2px solid var(--ok) !important; }
+.highlight-belgium-summary { background: rgba(0, 230, 118, 0.15) !important; color: #fff !important; }
+.highlight-belgium-row { background: rgba(0, 230, 118, 0.1) !important; }
+table.poule-table tr.highlight-belgium-row { border: 2px solid var(--ok); }
+div.match-row.highlight-belgium-row { border: 2px solid var(--ok); border-radius: 4px; margin-bottom: 2px; }
+
+.highlight-netherlands-group { border: 2px solid #ff9800 !important; }
+.highlight-netherlands-summary { background: rgba(255, 152, 0, 0.15) !important; color: #fff !important; }
+.highlight-netherlands-row { background: rgba(255, 152, 0, 0.1) !important; }
+table.poule-table tr.highlight-netherlands-row { border: 2px solid #ff9800; }
+div.match-row.highlight-netherlands-row { border: 2px solid #ff9800; border-radius: 4px; margin-bottom: 2px; }
 
 .hide-forecasts .match-row.is-forecast .match-score { visibility: hidden !important; }

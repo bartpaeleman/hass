@@ -140,17 +140,31 @@ if ($html !== false) {
       <div class="poules-grid">
         <?php foreach ($groups as $groupName => $rows):
           $hasBelgium = false;
+          $hasNetherlands = false;
           if (!empty($rows)) {
               for ($i = 1; $i < count($rows); $i++) {
                   if (isset($rows[$i][1]) && strpos($rows[$i][1], 'België') !== false) {
                       $hasBelgium = true;
-                      break;
+                  }
+                  if (isset($rows[$i][1]) && strpos($rows[$i][1], 'Nederland') !== false) {
+                      $hasNetherlands = true;
                   }
               }
           }
+
+          $groupClass = '';
+          $summaryClass = '';
+          if ($hasBelgium) {
+              $groupClass .= ' highlight-belgium-group';
+              $summaryClass .= ' highlight-belgium-summary';
+          }
+          if ($hasNetherlands) {
+              $groupClass .= ' highlight-netherlands-group';
+              $summaryClass .= ' highlight-netherlands-summary';
+          }
         ?>
-          <details class="poule-details active-month <?php echo $hasBelgium ? 'highlight-belgium-group' : ''; ?>" data-group-name="<?php echo htmlspecialchars($groupName); ?>" open>
-            <summary class="poule-summary <?php echo $hasBelgium ? 'highlight-belgium-summary' : ''; ?>">
+          <details class="poule-details active-month <?php echo $groupClass; ?>" data-group-name="<?php echo htmlspecialchars($groupName); ?>" open>
+            <summary class="poule-summary <?php echo $summaryClass; ?>">
               <div class="month-title"><?php echo htmlspecialchars($groupName); ?></div>
             </summary>
             <div class="poule-content">
@@ -174,7 +188,15 @@ if ($html !== false) {
                     // Data rows
                     for ($i = 1; $i < count($rows); $i++) {
                         $row = $rows[$i];
-                        echo '<tr>';
+
+                        $trClass = '';
+                        if (isset($row[1]) && strpos($row[1], 'België') !== false) {
+                            $trClass = ' class="highlight-belgium-row"';
+                        } elseif (isset($row[1]) && strpos($row[1], 'Nederland') !== false) {
+                            $trClass = ' class="highlight-netherlands-row"';
+                        }
+
+                        echo '<tr' . $trClass . '>';
                         foreach ($row as $idx => $td) {
                             $class = ($idx === 1) ? ' class="team-name"' : '';
                             echo '<td' . $class . '>' . htmlspecialchars($td) . '</td>';

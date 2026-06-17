@@ -226,8 +226,12 @@ $currentMonth = (int)$today->format('n');
                 } elseif (!empty($e['starttime'])) {
                     $time = str_replace('⏱️ Aftrap ', '', $e['starttime']) . ': ';
                 }
+
+                $hlClass = '';
+                if (strpos($e['original']['name'], 'België') !== false) $hlClass .= ' highlight-belgium-row';
+                if (strpos($e['original']['name'], 'Nederland') !== false) $hlClass .= ' highlight-netherlands-row';
             ?>
-              <div class="uc-item wk-uc-item" data-filter="<?php echo $e['filterClass']; ?>">
+              <div class="uc-item wk-uc-item<?php echo $hlClass; ?>" data-filter="<?php echo $e['filterClass']; ?>">
                 <div class="uc-name-wrap wk-uc-name-wrap">
                   <span class="uc-name wk-uc-name"><?php echo htmlspecialchars($time) . htmlspecialchars($e['original']['name']); ?></span>
                 </div>
@@ -331,9 +335,14 @@ $currentMonth = (int)$today->format('n');
                             <div class="ronde-divider">
                                 <?php echo htmlspecialchars($currentRonde); ?>
                             </div>
-                        <?php endif; ?>
+                        <?php endif;
 
-                        <div class="event-row">
+                        $hlClass = '';
+                        if (strpos($e['original']['name'], 'België') !== false) $hlClass .= ' highlight-belgium-row';
+                        if (strpos($e['original']['name'], 'Nederland') !== false) $hlClass .= ' highlight-netherlands-row';
+                        ?>
+
+                        <div class="event-row<?php echo $hlClass; ?>">
                           <div class="er-icon"><?php echo $icon; ?></div>
                           <div class="er-main">
                             <div class="er-name-wrap">
