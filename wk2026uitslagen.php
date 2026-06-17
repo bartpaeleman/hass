@@ -394,6 +394,32 @@ if ($html !== false) {
 
         details.addEventListener('toggle', (e) => {
           localStorage.setItem(key, details.open);
+
+          if (window.innerWidth >= 900) {
+              const parentGrid = details.closest('.poules-grid');
+              if (parentGrid) {
+                  const siblings = Array.from(parentGrid.querySelectorAll(':scope > details.poule-details'));
+                  const index = siblings.indexOf(details);
+                  let siblingIndex = -1;
+
+                  if (index % 2 === 0 && index + 1 < siblings.length) {
+                      siblingIndex = index + 1;
+                  } else if (index % 2 !== 0 && index - 1 >= 0) {
+                      siblingIndex = index - 1;
+                  }
+
+                  if (siblingIndex !== -1) {
+                      const sibling = siblings[siblingIndex];
+                      if (sibling.open !== details.open) {
+                          sibling.open = details.open;
+                          const siblingGroup = sibling.getAttribute('data-group-name');
+                          if (siblingGroup) {
+                              localStorage.setItem('wk2026uitslagen_open_' + siblingGroup, sibling.open);
+                          }
+                      }
+                  }
+              }
+          }
         });
       }
     });
