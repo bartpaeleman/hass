@@ -62,36 +62,54 @@ if ($html !== false) {
     @$dom->loadHTML($html);
     $xpath = new DOMXPath($dom);
 
-    $groupPhaseDiv = $xpath->query('/html/body/main/section/div[3]');
-    if ($groupPhaseDiv->length > 0) {
-        $divs = $xpath->query('./div', $groupPhaseDiv->item(0));
-        foreach ($divs as $div) {
-            $h2 = $xpath->query('.//h2', $div)->item(0);
-            $sectionName = $h2 ? trim($h2->textContent) : 'Onbekend';
-            $groupData[$sectionName] = [];
-            $matches = $xpath->query('.//a', $div);
-            foreach($matches as $m) {
-                $matchText = trim(preg_replace('/\s+/', ' ', $m->textContent));
-                if (strpos($matchText, 'Analyse') === false) {
-                    $parsed = parseMatchStr($matchText, $stadiums);
-                    if ($parsed) $groupData[$sectionName][] = $parsed;
+    $allH2s = $xpath->query('//h2');
+    foreach ($allH2s as $h2) {
+        $sectionName = trim($h2->textContent);
+        if (strpos($sectionName, 'Groep') !== false) {
+            $parentDiv = $h2->parentNode;
+            if ($parentDiv) {
+                $grandparent = $parentDiv->parentNode;
+                if ($grandparent) {
+                    $greatGrandparent = $grandparent->parentNode;
+                    if ($greatGrandparent) {
+                        $matches = $xpath->query('.//a', $greatGrandparent);
+                        if ($matches->length > 0) {
+                            $groupData[$sectionName] = [];
+                            foreach($matches as $m) {
+                                $matchText = trim(preg_replace('/\s+/', ' ', $m->textContent));
+                                if (strpos($matchText, 'Analyse') === false) {
+                                    $parsed = parseMatchStr($matchText, $stadiums);
+                                    if ($parsed) $groupData[$sectionName][] = $parsed;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
-    $knockoutDiv = $xpath->query('/html/body/main/section/div[4]/div');
-    if ($knockoutDiv->length > 0) {
-        $divs = $xpath->query('./div', $knockoutDiv->item(0));
-        foreach ($divs as $div) {
-            $h3 = $xpath->query('.//h3 | .//h2', $div)->item(0);
-            $phaseName = $h3 ? trim($h3->textContent) : 'Onbekend';
-            $knockoutData[$phaseName] = [];
-            $matches = $xpath->query('.//a', $div);
-            foreach($matches as $m) {
-                $matchText = trim(preg_replace('/\s+/', ' ', $m->textContent));
-                $parsed = parseMatchStr($matchText, $stadiums);
-                if ($parsed) $knockoutData[$phaseName][] = $parsed;
+    $allH3s = $xpath->query('//h3 | //h2');
+    foreach ($allH3s as $h3) {
+        $phaseName = trim($h3->textContent);
+        if (in_array($phaseName, ['Ronde van 32', 'Achtste finale', 'Kwartfinale', 'Halve finale', 'Derde plaats', 'Finale'])) {
+            $parentDiv = $h3->parentNode;
+            if ($parentDiv) {
+                $grandparent = $parentDiv->parentNode;
+                if ($grandparent) {
+                    $greatGrandparent = $grandparent->parentNode;
+                    if ($greatGrandparent) {
+                        $matches = $xpath->query('.//a', $greatGrandparent);
+                        if ($matches->length > 0) {
+                            $knockoutData[$phaseName] = [];
+                            foreach($matches as $m) {
+                                $matchText = trim(preg_replace('/\s+/', ' ', $m->textContent));
+                                $parsed = parseMatchStr($matchText, $stadiums);
+                                if ($parsed) $knockoutData[$phaseName][] = $parsed;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
