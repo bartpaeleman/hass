@@ -30,6 +30,10 @@ if (file_exists($eventsFile)) {
 }
 
 $today = new DateTime('today');
+// ⚡ Bolt Optimization: Hoisted clone and time manipulation outside the loop to avoid
+// an expensive O(N) object creation and method call overhead during array processing.
+$todayMidnight = clone($today)->setTime(0,0,0);
+$currentYear = (int)$today->format('Y');
 $processedEvents = [];
 
 // Helper functies voor flexibele datums
@@ -119,8 +123,6 @@ $months = [
 foreach ($events as $event) {
     if (!isset($event['name'])) continue;
 
-    $currentYear = (int)$today->format('Y');
-
     // First, try to calculate for this year
     $nextDate = calculateNextDate($event, $currentYear);
     if (!$nextDate) continue; // Skip invalid formats
@@ -129,14 +131,14 @@ foreach ($events as $event) {
 
     // Check if the event has already passed this year
     $hasPassedThisYear = false;
-    if ($nextDate < $today) {
+    if ($nextDate < $todayMidnight) {
         $hasPassedThisYear = true;
         // Compute for next year to get the correct next occurrence date and days remaining
         $nextDate = calculateNextDate($event, $currentYear + 1);
         $nextDate->setTime(0,0,0);
     }
 
-    $interval = $today->diff($nextDate);
+    $interval = $todayMidnight->diff($nextDate);
     $daysRemaining = (int)$interval->format('%a');
 
     // Calculate years if applicable (for birthdays and weddings)
@@ -159,7 +161,7 @@ foreach ($events as $event) {
         // If the date hasn't happened yet this year, they haven't reached the "current" age for this year yet
         $thisYearDate = calculateNextDate($event, $currentYear);
         $thisYearDate->setTime(0,0,0);
-        if ($thisYearDate > $today) {
+        if ($thisYearDate > $todayMidnight) {
             $currentYears--;
         }
         $nextYears = ((int)$nextDate->format('Y')) - $originalYear;
