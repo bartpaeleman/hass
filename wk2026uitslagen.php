@@ -246,17 +246,31 @@ if ($html !== false) {
       <div class="poules-grid">
         <?php foreach ($groupData as $groupName => $matches):
             $groupTeams = [];
+            $hasBelgium = false;
+            $hasNetherlands = false;
             foreach ($matches as $match) {
                 if ($match['team1']) $groupTeams[$match['team1']] = true;
                 if ($match['team2']) $groupTeams[$match['team2']] = true;
+                if ($match['team1'] === 'België' || $match['team2'] === 'België') $hasBelgium = true;
+                if ($match['team1'] === 'Nederland' || $match['team2'] === 'Nederland') $hasNetherlands = true;
             }
             $flagsStr = '';
             foreach (array_keys($groupTeams) as $t) {
                 if (isset($countryFlags[$t])) $flagsStr .= $countryFlags[$t] . ' ';
             }
+            $groupClass = '';
+            $summaryClass = '';
+            if ($hasBelgium) {
+                $groupClass .= ' highlight-belgium-group';
+                $summaryClass .= ' highlight-belgium-summary';
+            }
+            if ($hasNetherlands) {
+                $groupClass .= ' highlight-netherlands-group';
+                $summaryClass .= ' highlight-netherlands-summary';
+            }
         ?>
-          <details class="poule-details" data-group-name="<?php echo htmlspecialchars($groupName); ?>" open>
-            <summary class="poule-summary">
+          <details class="poule-details <?php echo $groupClass; ?>" data-group-name="<?php echo htmlspecialchars($groupName); ?>" open>
+            <summary class="poule-summary <?php echo $summaryClass; ?>">
               <div class="month-title"><?php echo htmlspecialchars($groupName) . ' ' . trim($flagsStr); ?></div>
             </summary>
             <div class="poule-content" style="padding: 0;">
@@ -300,17 +314,31 @@ if ($html !== false) {
       <div class="poules-grid">
         <?php foreach ($knockoutData as $phaseName => $matches):
             $groupTeams = [];
+            $hasBelgium = false;
+            $hasNetherlands = false;
             foreach ($matches as $match) {
                 if ($match['team1']) $groupTeams[$match['team1']] = true;
                 if ($match['team2']) $groupTeams[$match['team2']] = true;
+                if ($match['team1'] === 'België' || $match['team2'] === 'België') $hasBelgium = true;
+                if ($match['team1'] === 'Nederland' || $match['team2'] === 'Nederland') $hasNetherlands = true;
             }
             $flagsStr = '';
             foreach (array_keys($groupTeams) as $t) {
                 if (isset($countryFlags[$t])) $flagsStr .= $countryFlags[$t] . ' ';
             }
+            $groupClass = '';
+            $summaryClass = '';
+            if ($hasBelgium) {
+                $groupClass .= ' highlight-belgium-group';
+                $summaryClass .= ' highlight-belgium-summary';
+            }
+            if ($hasNetherlands) {
+                $groupClass .= ' highlight-netherlands-group';
+                $summaryClass .= ' highlight-netherlands-summary';
+            }
         ?>
-          <details class="poule-details" data-group-name="<?php echo htmlspecialchars($phaseName); ?>" open>
-            <summary class="poule-summary">
+          <details class="poule-details <?php echo $groupClass; ?>" data-group-name="<?php echo htmlspecialchars($phaseName); ?>" open>
+            <summary class="poule-summary <?php echo $summaryClass; ?>">
               <div class="month-title"><?php echo htmlspecialchars($phaseName) . ' ' . trim($flagsStr); ?></div>
             </summary>
             <div class="poule-content" style="padding: 0;">

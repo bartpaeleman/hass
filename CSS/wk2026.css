@@ -170,3 +170,11 @@ div.event-row.highlight-netherlands-row, div.uc-item.highlight-netherlands-row {
   border-top: 1px solid var(--border);
   margin: 6px 0;
 }
+
+.highlight-belgium-group { border: 2px solid var(--ok) !important; }
+.highlight-belgium-summary { background: rgba(0, 230, 118, 0.15) !important; color: #fff !important; }
+.highlight-belgium-row { background: rgba(0, 230, 118, 0.1) !important; }
+
+.highlight-netherlands-group { border: 2px solid #ff9800 !important; }
+.highlight-netherlands-summary { background: rgba(255, 152, 0, 0.15) !important; color: #fff !important; }
+.highlight-netherlands-row { background: rgba(255, 152, 0, 0.1) !important; }
