@@ -98,6 +98,14 @@ foreach ($events as $index => $event) {
     $mappedEvents[] = ['index' => $index, 'event' => $event];
 }
 
+// Filtering
+$search = $_GET['search'] ?? '';
+if ($search !== '') {
+    $mappedEvents = array_filter($mappedEvents, function($item) use ($search) {
+        return stripos($item['event']['name'] ?? '', $search) !== false;
+    });
+}
+
 // Sorting
 $sort = $_GET['sort'] ?? '';
 $dir = $_GET['dir'] ?? 'asc';
@@ -167,13 +175,28 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
     <?php endif; ?>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-        <div class="top-buttons-container" style="display: flex; gap: 10px;">
+        <div class="top-buttons-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
             <?php if ($requestedFile === 'wk2026.json'): ?>
             <a href="../wk2026.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
         <?php else: ?>
             <a href="../kalender.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
         <?php endif; ?>
             <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()"><span class="btn-add-text-desktop">+ Nieuw Event Toevoegen</span><span class="btn-add-text-mobile">+ Nieuw</span></button>
+
+            <form method="GET" style="display: flex; gap: 5px; margin: 0; align-items: center;">
+                <input type="hidden" name="json-events" value="<?php echo htmlspecialchars($requestedFile); ?>">
+                <?php if (isset($_GET['sort'])): ?>
+                    <input type="hidden" name="sort" value="<?php echo htmlspecialchars($_GET['sort']); ?>">
+                <?php endif; ?>
+                <?php if (isset($_GET['dir'])): ?>
+                    <input type="hidden" name="dir" value="<?php echo htmlspecialchars($_GET['dir']); ?>">
+                <?php endif; ?>
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Zoek op land..." style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: var(--surface); color: var(--text-bright); font-family: 'Share Tech Mono', monospace; width: 150px;">
+                <button type="submit" class="btn" style="background: var(--accent); padding: 10px 15px;">🔍</button>
+                <?php if ($search !== ''): ?>
+                    <button type="button" class="btn btn-delete" style="padding: 10px 15px;" onclick="clearSearch()">Wis filter</button>
+                <?php endif; ?>
+            </form>
         </div>
 
         <?php if ($totalPages > 1): ?>
@@ -211,7 +234,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
                     <td class="hide-mobile"><?php echo htmlspecialchars($event['stadion'] ?? ''); ?></td>
                     <td class="actions-cell">
                         <button class="btn btn-edit" onclick="editForm(<?php echo $index; ?>, <?php echo htmlspecialchars(json_encode($event), ENT_QUOTES, 'UTF-8'); ?>)">Bewerk</button>
-                        <form method="POST" action="?json-events=<?php echo $eventsFileWeb; ?>" style="display:inline;" onsubmit="return confirm('Zeker dat je dit event wil wissen?');">
+                        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>" style="display:inline;" onsubmit="return confirm('Zeker dat je dit event wil wissen?');">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="index" value="<?php echo $index; ?>">
                             <button type="submit" class="btn btn-delete">Wis</button>
@@ -228,7 +251,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
 
     <div id="eventFormContainer" class="form-container">
         <h2 id="formTitle">Nieuwe Wedstrijd</h2>
-        <form method="POST" action="?json-events=<?php echo $eventsFileWeb; ?>">
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="index" id="formIndex" value="">
 
@@ -296,28 +319,39 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
 
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
+        const stateKey = 'events_admin_state_<?php echo $eventsFileWeb; ?>';
+        const isPost = <?php echo $_SERVER['REQUEST_METHOD'] === 'POST' ? 'true' : 'false'; ?>;
 
         // If clear is set, clear localStorage and redirect
         if (urlParams.has('clear')) {
-            localStorage.removeItem('events_admin_state');
-            window.location.href = window.location.pathname;
+            localStorage.removeItem(stateKey);
+            window.location.href = window.location.pathname + '?json-events=<?php echo $eventsFileWeb; ?>';
             return;
         }
 
-        // If no query string but we have saved state, restore it
-        if (!window.location.search && localStorage.getItem('events_admin_state')) {
-            window.location.href = window.location.pathname + localStorage.getItem('events_admin_state');
-            return;
-        }
+        if (!isPost) {
+            // If no search/sort/page but we have saved state, restore it
+            if (!urlParams.has('search') && !urlParams.has('sort') && !urlParams.has('page') && localStorage.getItem(stateKey)) {
+                window.location.href = window.location.pathname + localStorage.getItem(stateKey);
+                return;
+            }
 
-        // If there is a query string, save it
-        if (window.location.search) {
-            localStorage.setItem('events_admin_state', window.location.search);
+            // If there is a search/sort/page query string, save it
+            if (urlParams.has('search') || urlParams.has('sort') || urlParams.has('page')) {
+                localStorage.setItem(stateKey, window.location.search);
+            }
         }
     });
 
     function clearState() {
-        window.location.href = '?clear=1';
+        window.location.href = '?json-events=<?php echo $eventsFileWeb; ?>&clear=1';
+    }
+
+    function clearSearch() {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('search');
+        urlParams.delete('page');
+        window.location.search = urlParams.toString();
     }
 </script>
 
