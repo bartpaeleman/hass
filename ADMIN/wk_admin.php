@@ -8,6 +8,10 @@ if (!isset($_SESSION['role_level']) || $_SESSION['role_level'] < 50) {
     exit("Toegang geweigerd. Onvoldoende rechten.");
 }
 
+$configFile = __DIR__ . '/../JSON/config_data.json';
+$configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [];
+$showSyncButtons = !isset($configData['settings']['SHOW_WK2026_SYNC_BUTTONS']) || !empty($configData['settings']['SHOW_WK2026_SYNC_BUTTONS']);
+
 $requestedFile = isset($_GET['json-events']) ? $_GET['json-events'] : 'wk2026.json';
 $allowedFiles = ['events.json', 'wk2026.json'];
 if (!in_array($requestedFile, $allowedFiles)) {
@@ -361,7 +365,7 @@ $pagePrefix = $baseQuery ? "?{$baseQuery}&page=" : "?page=";
             <a href="../kalender.php" class="btn" style="text-decoration: none; background: rgba(255,255,255,0.1); color: var(--text-bright); padding: 10px 20px; font-size: 16px; display: inline-block;">⬅️ Dashboard</a>
         <?php endif; ?>
             <button class="btn btn-add" style="margin-bottom: 0;" onclick="openForm()"><span class="btn-add-text-desktop">+ Nieuw Event Toevoegen</span><span class="btn-add-text-mobile">+ Nieuw</span></button>
-            <?php if ($requestedFile === 'wk2026.json'): ?>
+            <?php if ($requestedFile === 'wk2026.json' && $showSyncButtons): ?>
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>" style="margin: 0; display: inline;" onsubmit="return confirm('Dit zal het hele schema overschrijven met data van pouletips.nl. Doorgaan?');">
                 <input type="hidden" name="action" value="sync_wk">
                 <button type="submit" class="btn" style="background: var(--ok); color: var(--bg); margin-bottom: 0;">🔄 Sync Schema</button>

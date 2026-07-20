@@ -2,7 +2,28 @@
 require_once 'config.php';
 require_once 'auth.php';
 
-$html = @file_get_contents("https://pouletips.nl/wk-2026/uitslagen/");
+// Sync handler
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'sync_uitslagen') {
+    if (isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 99) {
+        $externalHtml = @file_get_contents("https://pouletips.nl/wk-2026/uitslagen/");
+        if ($externalHtml !== false) {
+            file_put_contents(__DIR__ . '/JSON/wk2026_uitslagen.html', $externalHtml);
+        }
+        // Redirect to avoid form resubmission
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+}
+
+// Check configuration for sync buttons
+$configFile = __DIR__ . '/JSON/config_data.json';
+$configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [];
+$showSyncButtons = !isset($configData['settings']['SHOW_WK2026_SYNC_BUTTONS']) || !empty($configData['settings']['SHOW_WK2026_SYNC_BUTTONS']);
+
+// Read from local static file
+$localFile = __DIR__ . '/JSON/wk2026_uitslagen.html';
+$html = file_exists($localFile) ? file_get_contents($localFile) : false;
+
 $groupData = [];
 $knockoutData = [];
 
@@ -234,6 +255,12 @@ if ($html !== false) {
       <a href="wk2026.php" class="filter-btn">⬅️ <span class="filter-text">WK AGENDA</span></a>
       <a href="wk2026poules.php" class="filter-btn">🏆 <span class="filter-text">POULES</span></a>
       <button id="btnTogglePredictions" class="filter-btn">📈 <span class="filter-text">VOORSPELLINGEN</span></button>
+      <?php if ($showSyncButtons && isset($_SESSION['authenticated_user']) && isset($_SESSION['role_level']) && $_SESSION['role_level'] >= 99): ?>
+      <form method="POST" style="margin: 0; margin-left: auto;">
+          <input type="hidden" name="action" value="sync_uitslagen">
+          <button type="submit" class="filter-btn admin-btn" style="border: 1px solid var(--accent); background: rgba(0,255,0,0.1); cursor: pointer;" onclick="return confirm('Dit zal de lokale uitslagen overschrijven met data van pouletips.nl. Doorgaan?');">🔄 <span class="filter-text">SYNC UITSLAGEN</span></button>
+      </form>
+      <?php endif; ?>
     </div>
 
     <?php if (empty($groupData) && empty($knockoutData)): ?>
