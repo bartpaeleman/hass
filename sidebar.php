@@ -57,6 +57,14 @@ if (!$isLoggedIn) {
             continue;
         }
 
+        // Check if wk2026.php is disabled in settings
+        if ($file === 'wk2026.php') {
+            $showWk2026Link = !isset($configData['settings']['SHOW_WK2026_LINK']) || !empty($configData['settings']['SHOW_WK2026_LINK']);
+            if (!$showWk2026Link) {
+                continue;
+            }
+        }
+
         // Controleer of role in array zit (index.php is ALL ON)
         $roles = $page['roles'] ?? [];
         if ($file !== 'index.php' && !in_array($currentRole, $roles) && $currentRole < 99) {
