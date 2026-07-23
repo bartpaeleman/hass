@@ -72,16 +72,22 @@ if ('airco.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $cu
       <div class="ac-summary-stat ac-summary-full-width" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleAutoAirco('input_boolean.autoairco')">
         <span class="ac-auto-btn" id="sum-auto-btn" style="width:100%; height:100%; font-size:14px;">AUTO AIRCO</span>
       </div>
-      <div class="ac-summary-stat" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleFan('light.ventilator', 'BUREAU FAN')">
-        <span class="ac-auto-btn" id="btn-fan-bureau" style="width:100%; height:100%; font-size:14px; gap:6px;">
+      <div class="ac-summary-stat" style="display:flex; align-items:center; justify-content:center; cursor:pointer; padding: 4px;" onclick="toggleFan('light.ventilator', 'BUREAU FAN')">
+        <div class="ac-auto-btn fan-btn-layout" id="btn-fan-bureau">
           <svg viewBox="0 0 24 24" fill="currentColor" id="svg-fan-bureau"><path d="M12,11L14.53,10.15L15,10.05C15.42,10.05 15.82,10.22 16.11,10.53C16.41,10.83 16.58,11.23 16.58,11.66V13L15.34,14.61C14.7,15.5 13.56,16 12.33,16H12V11M13,12L12.15,9.47L12.05,9C12.05,8.58 11.88,8.18 11.57,7.89C11.27,7.59 10.87,7.42 10.44,7.42H9.11L7.5,8.66C6.61,9.3 6.11,10.44 6.11,11.67V12H13M12,13L9.47,13.85L9,13.95C8.58,13.95 8.18,13.78 7.89,13.47C7.59,13.17 7.42,12.77 7.42,12.34V11L8.66,9.39C9.3,8.5 10.44,8 11.67,8H12V13M11,12L11.85,14.53L11.95,15C11.95,15.42 12.12,15.82 12.43,16.11C12.73,16.41 13.13,16.58 13.56,16.58H14.89L16.5,15.34C17.39,14.7 17.89,13.56 17.89,12.33V12H11Z"/></svg>
-          BUREAU: <span id="text-fan-bureau">UIT</span>
+          <div class="fan-btn-text-wrap">
+            <span class="fan-btn-room">BUREAU</span>
+            <span class="fan-btn-status" id="text-fan-bureau">UIT</span>
+          </div>
         </span>
       </div>
-      <div class="ac-summary-stat" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleFan('light.ventilator_slaapkamer', 'SLAAPKAMER FAN')">
-        <span class="ac-auto-btn" id="btn-fan-slaapkamer" style="width:100%; height:100%; font-size:14px; gap:6px;">
+      <div class="ac-summary-stat" style="display:flex; align-items:center; justify-content:center; cursor:pointer; padding: 4px;" onclick="toggleFan('light.ventilator_slaapkamer', 'SLAAPKAMER FAN')">
+        <div class="ac-auto-btn fan-btn-layout" id="btn-fan-slaapkamer">
           <svg viewBox="0 0 24 24" fill="currentColor" id="svg-fan-slaapkamer"><path d="M12,11L14.53,10.15L15,10.05C15.42,10.05 15.82,10.22 16.11,10.53C16.41,10.83 16.58,11.23 16.58,11.66V13L15.34,14.61C14.7,15.5 13.56,16 12.33,16H12V11M13,12L12.15,9.47L12.05,9C12.05,8.58 11.88,8.18 11.57,7.89C11.27,7.59 10.87,7.42 10.44,7.42H9.11L7.5,8.66C6.61,9.3 6.11,10.44 6.11,11.67V12H13M12,13L9.47,13.85L9,13.95C8.58,13.95 8.18,13.78 7.89,13.47C7.59,13.17 7.42,12.77 7.42,12.34V11L8.66,9.39C9.3,8.5 10.44,8 11.67,8H12V13M11,12L11.85,14.53L11.95,15C11.95,15.42 12.12,15.82 12.43,16.11C12.73,16.41 13.13,16.58 13.56,16.58H14.89L16.5,15.34C17.39,14.7 17.89,13.56 17.89,12.33V12H11Z"/></svg>
-          SLAAPK: <span id="text-fan-slaapkamer">UIT</span>
+          <div class="fan-btn-text-wrap">
+            <span class="fan-btn-room">SLAAPKAMER</span>
+            <span class="fan-btn-status" id="text-fan-slaapkamer">UIT</span>
+          </div>
         </span>
       </div>
     </div>
