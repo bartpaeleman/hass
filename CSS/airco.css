@@ -377,7 +377,7 @@
   margin-bottom: 24px;
 }
 
-.ac-summary-bar > .ac-summary-stat:last-child {
+.ac-summary-bar > .ac-summary-full-width {
   grid-column: 1 / -1;
   min-height: 50px; 
 }
@@ -447,8 +447,19 @@
 }
 
 @media (min-width: 600px) {
-  .ac-summary-bar > .ac-summary-stat:last-child {
+  .ac-summary-bar > .ac-summary-full-width {
     grid-column: auto;
     min-height: auto;
   }
+}
+
+.ac-auto-btn.vent-on {
+  background: var(--ok);
+  color: var(--bg);
+  border-color: var(--ok);
+}
+
+.ac-auto-btn svg {
+  width: 14px;
+  height: 14px;
 }
