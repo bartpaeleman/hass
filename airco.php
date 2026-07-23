@@ -466,9 +466,6 @@ function renderAcCard(container, unitIdx, stateMap) {
           </div>
         </div>
       </div>
-      <div class="ac-summary-stat ac-summary-full-width" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleAutoAirco('input_boolean.autoairco')">
-        <span class="ac-auto-btn" id="sum-auto-btn" style="width:100%; height:100%; font-size:14px;">AUTO AIRCO</span>
-      </div>
     </div>
   `;
 }
