@@ -69,8 +69,20 @@ if ('airco.php' !== 'index.php' && !in_array($currentRole, $allowedRoles) && $cu
         <span class="ac-summary-label">Totaal vermogen</span>
         <span class="ac-summary-val" id="sum-power">—</span>
       </div>
-      <div class="ac-summary-stat" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleAutoAirco('input_boolean.autoairco')">
+      <div class="ac-summary-stat ac-summary-full-width" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleAutoAirco('input_boolean.autoairco')">
         <span class="ac-auto-btn" id="sum-auto-btn" style="width:100%; height:100%; font-size:14px;">AUTO AIRCO</span>
+      </div>
+      <div class="ac-summary-stat" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleFan('light.ventilator', 'BUREAU FAN')">
+        <span class="ac-auto-btn" id="btn-fan-bureau" style="width:100%; height:100%; font-size:14px; gap:6px;">
+          <svg viewBox="0 0 24 24" fill="currentColor" id="svg-fan-bureau"><path d="M12,11L14.53,10.15L15,10.05C15.42,10.05 15.82,10.22 16.11,10.53C16.41,10.83 16.58,11.23 16.58,11.66V13L15.34,14.61C14.7,15.5 13.56,16 12.33,16H12V11M13,12L12.15,9.47L12.05,9C12.05,8.58 11.88,8.18 11.57,7.89C11.27,7.59 10.87,7.42 10.44,7.42H9.11L7.5,8.66C6.61,9.3 6.11,10.44 6.11,11.67V12H13M12,13L9.47,13.85L9,13.95C8.58,13.95 8.18,13.78 7.89,13.47C7.59,13.17 7.42,12.77 7.42,12.34V11L8.66,9.39C9.3,8.5 10.44,8 11.67,8H12V13M11,12L11.85,14.53L11.95,15C11.95,15.42 12.12,15.82 12.43,16.11C12.73,16.41 13.13,16.58 13.56,16.58H14.89L16.5,15.34C17.39,14.7 17.89,13.56 17.89,12.33V12H11Z"/></svg>
+          BUREAU: <span id="text-fan-bureau">UIT</span>
+        </span>
+      </div>
+      <div class="ac-summary-stat" style="display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="toggleFan('light.ventilator_slaapkamer', 'SLAAPKAMER FAN')">
+        <span class="ac-auto-btn" id="btn-fan-slaapkamer" style="width:100%; height:100%; font-size:14px; gap:6px;">
+          <svg viewBox="0 0 24 24" fill="currentColor" id="svg-fan-slaapkamer"><path d="M12,11L14.53,10.15L15,10.05C15.42,10.05 15.82,10.22 16.11,10.53C16.41,10.83 16.58,11.23 16.58,11.66V13L15.34,14.61C14.7,15.5 13.56,16 12.33,16H12V11M13,12L12.15,9.47L12.05,9C12.05,8.58 11.88,8.18 11.57,7.89C11.27,7.59 10.87,7.42 10.44,7.42H9.11L7.5,8.66C6.61,9.3 6.11,10.44 6.11,11.67V12H13M12,13L9.47,13.85L9,13.95C8.58,13.95 8.18,13.78 7.89,13.47C7.59,13.17 7.42,12.77 7.42,12.34V11L8.66,9.39C9.3,8.5 10.44,8 11.67,8H12V13M11,12L11.85,14.53L11.95,15C11.95,15.42 12.12,15.82 12.43,16.11C12.73,16.41 13.13,16.58 13.56,16.58H14.89L16.5,15.34C17.39,14.7 17.89,13.56 17.89,12.33V12H11Z"/></svg>
+          SLAAPK: <span id="text-fan-slaapkamer">UIT</span>
+        </span>
       </div>
     </div>
 
@@ -481,6 +493,45 @@ function updateSummary(stateMap) {
       sumAutoBtn.classList.remove('auto-on');
     }
   }
+
+  // Update Fan States
+  const fanBureauOn = stateVal(stateMap['light.ventilator']) === 'on';
+  const btnFanBureau = document.getElementById('btn-fan-bureau');
+  const svgFanBureau = document.getElementById('svg-fan-bureau');
+  const textFanBureau = document.getElementById('text-fan-bureau');
+  if (btnFanBureau) {
+    if (fanBureauOn) {
+      btnFanBureau.classList.add('vent-on');
+      svgFanBureau.classList.add('fan-spin');
+      textFanBureau.textContent = 'AAN';
+    } else {
+      btnFanBureau.classList.remove('vent-on');
+      svgFanBureau.classList.remove('fan-spin');
+      textFanBureau.textContent = 'UIT';
+    }
+  }
+
+  const fanSlaapOn = stateVal(stateMap['light.ventilator_slaapkamer']) === 'on';
+  const btnFanSlaap = document.getElementById('btn-fan-slaapkamer');
+  const svgFanSlaap = document.getElementById('svg-fan-slaapkamer');
+  const textFanSlaap = document.getElementById('text-fan-slaapkamer');
+  if (btnFanSlaap) {
+    if (fanSlaapOn) {
+      btnFanSlaap.classList.add('vent-on');
+      svgFanSlaap.classList.add('fan-spin');
+      textFanSlaap.textContent = 'AAN';
+    } else {
+      btnFanSlaap.classList.remove('vent-on');
+      svgFanSlaap.classList.remove('fan-spin');
+      textFanSlaap.textContent = 'UIT';
+    }
+  }
+}
+
+async function toggleFan(entityId, label) {
+  const ok = await haCall('light', 'toggle', { entity_id: entityId });
+  if (ok) toast(`✓ ${label} GETOGGLED`);
+  setTimeout(refresh, 1000);
 }
 
 async function refresh() {
@@ -489,6 +540,8 @@ async function refresh() {
     u.compFreq, u.compPower, u.energy, u.monthHeat, u.monthCool, u.autoAirco
   ].filter(Boolean));
   allIds.push('input_boolean.autoairco');
+  allIds.push('light.ventilator');
+  allIds.push('light.ventilator_slaapkamer');
 
   const results = await haGetAll([...new Set(allIds)]);
   const stateMap = {};
