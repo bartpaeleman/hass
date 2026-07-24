@@ -445,11 +445,16 @@ function renderAcCard(container, unitIdx, stateMap) {
         </div>
 
         <div class="ac-temps-row">
-          <div class="ac-temp-item" style="display:flex; flex-direction:column; align-items:center;">
-            <span class="ac-temp-label">Binnen</span>
-            <span class="ac-temp-value" style="color: ${getComfortStatus(parseFloat(tempIn), unit.name).color};">${tempIn}</span>
-            <span style="font-size: 10px; color: ${getComfortStatus(parseFloat(tempIn), unit.name).color}; margin-top:2px;">${getComfortStatus(parseFloat(tempIn), unit.name).statusText}</span>
-          </div>
+          ${(() => {
+            const cs = getComfortStatus(parseFloat(tempIn), unit.name);
+            return `
+            <div class="ac-temp-item" style="display:flex; flex-direction:column; align-items:center;">
+              <span class="ac-temp-label">Binnen</span>
+              <span class="ac-temp-value" style="color: ${cs.color};">${tempIn}</span>
+              <span style="font-size: 10px; color: ${cs.color}; margin-top:2px;">${cs.statusText}</span>
+            </div>
+            `;
+          })()}
           <div style="width:1px; background:var(--border);"></div>
           <div class="ac-temp-item" style="display:flex; flex-direction:column; align-items:center;">
             <span class="ac-temp-label">Buiten</span>
