@@ -2,7 +2,7 @@
 
 class Comfort {
     public static function getBoundaries() {
-        return [
+        $defaultBoundaries = [
             'Woonkamer'   => ['min' => 20.0, 'max' => 23.5],
             'Badkamer'    => ['min' => 21.0, 'max' => 24.0],
             'Bureau'      => ['min' => 19.5, 'max' => 23.0],
@@ -15,6 +15,24 @@ class Comfort {
             'Living'      => ['min' => 20.0, 'max' => 23.5],
             'Eetkamer'    => ['min' => 20.0, 'max' => 23.5]
         ];
+
+        $configFile = __DIR__ . '/../JSON/config_data.json';
+        $configData = file_exists($configFile) ? json_decode(file_get_contents($configFile), true) : [];
+        $savedBoundaries = $configData['settings']['COMFORT_BOUNDARIES'] ?? [];
+
+        $finalBoundaries = [];
+        foreach ($defaultBoundaries as $room => $defaults) {
+            $saved = $savedBoundaries[$room] ?? [];
+            $finalBoundaries[$room] = [
+                'min' => isset($saved['min']) ? (float)$saved['min'] : $defaults['min'],
+                'max' => isset($saved['max']) ? (float)$saved['max'] : $defaults['max'],
+                'msg_koud' => $saved['msg_koud'] ?? 'Te koud',
+                'msg_warm' => $saved['msg_warm'] ?? 'Te warm',
+                'msg_ok' => $saved['msg_ok'] ?? 'Prima'
+            ];
+        }
+
+        return $finalBoundaries;
     }
 }
 

@@ -454,7 +454,7 @@ function renderCard(container, room, stateMap) {
         </div>
         <div class="thermo-stat">
           <span class="thermo-stat-label">Comfort</span>
-          <span class="thermo-stat-val" style="${comfortStyle(comfort)}; font-size: 13px;">${comfort !== 'unavailable' ? comfort : '—'}</span>
+          <span class="thermo-stat-val ${getComfortStatus(currentTemp, room.name).cls}" style="font-size: 13px; color: ${getComfortStatus(currentTemp, room.name).color};">${getComfortStatus(currentTemp, room.name).statusText}</span>
         </div>
         <div class="thermo-stat">
           <span class="thermo-stat-label">Vocht</span>

@@ -25,15 +25,28 @@ const USER_ROLE_LEVEL = <?php echo isset($_SESSION['role_level']) ? $_SESSION['r
 // Use PAGE_MIN_ACTION_LEVEL if defined in the specific dashboard, otherwise default to 50
 const MIN_ACTION_LEVEL = typeof PAGE_MIN_ACTION_LEVEL !== 'undefined' ? PAGE_MIN_ACTION_LEVEL : 50;
 
-function getComfortColor(currentTemp, roomName) {
-  if (currentTemp == null || isNaN(currentTemp)) return 'var(--text)';
-  const bounds = COMFORT_BOUNDARIES[roomName] || {min: 19.0, max: 22.5};
+function getComfortStatus(currentTemp, roomName) {
+  if (currentTemp == null || isNaN(currentTemp)) {
+    return { statusText: '—', cls: 'prima', color: 'var(--text)' };
+  }
+  const bounds = COMFORT_BOUNDARIES[roomName] || {
+    min: 19.0, max: 22.5,
+    msg_koud: 'Te koud', msg_warm: 'Te warm', msg_ok: 'Prima'
+  };
   const minComfort = bounds.min;
   const maxComfort = bounds.max;
-  if (currentTemp < minComfort - 2.0) return 'var(--accent)';
-  if (currentTemp > maxComfort + 2.0) return 'var(--alert)';
-  if (currentTemp > maxComfort) return 'var(--heat)';
-  return 'var(--ok)';
+
+  if (currentTemp < minComfort) {
+    return { statusText: bounds.msg_koud, cls: 'koud', color: 'var(--accent)' };
+  } else if (currentTemp >= maxComfort) {
+    return { statusText: bounds.msg_warm, cls: 'warm', color: 'var(--alert)' };
+  } else {
+    return { statusText: bounds.msg_ok, cls: 'prima', color: 'var(--ok)' };
+  }
+}
+
+function getComfortColor(currentTemp, roomName) {
+  return getComfortStatus(currentTemp, roomName).color;
 }
 
 
