@@ -93,6 +93,7 @@ $weatherConfig = [
   </div>
 </main>
 
+<script src="ha_core_js.php"></script>
 <script>
   const weatherConfig = <?php echo json_encode($weatherConfig); ?>;
 
@@ -113,9 +114,9 @@ $weatherConfig = [
 
   function updateTemp(states) {
     const rooms = [
-      { label: 'Leven',  id: ENTITIES.tempLiving, cold: 20, warm: 23 },
-      { label: 'Slapen', id: ENTITIES.tempSlaap,  cold: null, warm: 22 },
-      { label: 'Werken', id: ENTITIES.tempBureau, cold: 20, warm: 24 },
+      { label: 'Leven',  id: ENTITIES.tempLiving, name: 'Woonkamer' },
+      { label: 'Slapen', id: ENTITIES.tempSlaap,  name: 'Slaapkamer' },
+      { label: 'Werken', id: ENTITIES.tempBureau, name: 'Bureau' },
     ];
     const list = document.getElementById('tempList');
     list.innerHTML = '';
@@ -124,23 +125,14 @@ $weatherConfig = [
       const val = parseFloat(stateVal(states[r.id]));
       if (isNaN(val)) return;
 
-      let cls = 'prima';
-      let statusText = 'Prima';
-
-      if (r.cold && val < r.cold) {
-        cls = 'koud';
-        statusText = 'Te koud';
-      } else if (r.warm && val >= r.warm) {
-        cls = 'warm';
-        statusText = 'Te warm';
-      }
+      const comfortStatus = getComfortStatus(val, r.name);
 
       const card = document.createElement('div');
-      card.className = `temp-card ${cls}`;
+      card.className = `temp-card ${comfortStatus.cls}`;
       card.innerHTML = `
         <div class="temp-info">
           <span class="temp-label">${r.label}</span>
-          <span class="temp-status">${statusText}</span>
+          <span class="temp-status">${comfortStatus.statusText}</span>
         </div>
         <span class="temp-val-large">${val.toFixed(1)}°C</span>
       `;

@@ -81,6 +81,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         saveConfig($configFile, $configData);
     }
 
+    if ($action === 'update_comfort') {
+        $configData['settings']['COMFORT_MSG_KOUD'] = $_POST['comfort_msg_koud'] ?? 'Te koud';
+        $configData['settings']['COMFORT_MSG_WARM'] = $_POST['comfort_msg_warm'] ?? 'Te warm';
+        $configData['settings']['COMFORT_MSG_OK']   = $_POST['comfort_msg_ok'] ?? 'Prima';
+
+        $comfortData = $_POST['comfort'] ?? [];
+        $newBoundaries = [];
+        foreach ($comfortData as $room => $data) {
+            $newBoundaries[$room] = [
+                'min' => isset($data['min']) ? (float)$data['min'] : null,
+                'max' => isset($data['max']) ? (float)$data['max'] : null
+            ];
+        }
+        $configData['settings']['COMFORT_BOUNDARIES'] = $newBoundaries;
+        saveConfig($configFile, $configData);
+    }
+
     if ($action === 'update_weather') {
         $configData['settings']['WEATHER_LATITUDE'] = $_POST['weather_lat'] ?? '';
         $configData['settings']['WEATHER_LONGITUDE'] = $_POST['weather_lon'] ?? '';
@@ -171,6 +188,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../CSS/common.css">
     <link rel="stylesheet" href="../CSS/events_admin.css">
     <style>
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-bright);
+            border-radius: 4px;
+            font-family: inherit;
+        }
         details.settings-section {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
@@ -350,6 +377,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </label>
             </div>
             <button type="submit" class="btn btn-save">Opslaan</button>
+        </form>
+        </div>
+    </details>
+
+    <details class="settings-section">
+        <summary>Comfort Instellingen</summary>
+        <div class="settings-content">
+        <form method="POST">
+            <input type="hidden" name="action" value="update_comfort">
+
+            <h4 style="margin-top: 0; color: var(--accent);">Algemene Meldingen</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1; min-width: 150px;">
+                    <label>Bericht te koud</label>
+                    <input type="text" name="comfort_msg_koud" value="<?php echo htmlspecialchars($configData['settings']['COMFORT_MSG_KOUD'] ?? 'Te koud', ENT_QUOTES, 'UTF-8'); ?>">
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 150px;">
+                    <label>Bericht OK</label>
+                    <input type="text" name="comfort_msg_ok" value="<?php echo htmlspecialchars($configData['settings']['COMFORT_MSG_OK'] ?? 'Prima', ENT_QUOTES, 'UTF-8'); ?>">
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 150px;">
+                    <label>Bericht te warm</label>
+                    <input type="text" name="comfort_msg_warm" value="<?php echo htmlspecialchars($configData['settings']['COMFORT_MSG_WARM'] ?? 'Te warm', ENT_QUOTES, 'UTF-8'); ?>">
+                </div>
+            </div>
+
+            <h4 style="color: var(--accent);">Temperatuur per Ruimte</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+            <?php
+            require_once __DIR__ . '/../CLASSES/Comfort.php';
+            // Alleen de basiselementen itereren, aliasen zitten niet in de form
+            $baseRooms = Comfort::getBaseRooms();
+            $currentBoundaries = Comfort::getBoundaries();
+            foreach ($baseRooms as $room => $defaultData) {
+                $data = $currentBoundaries[$room] ?? $defaultData;
+                echo '<div class="form-group" style="background: rgba(255,255,255,0.02); padding: 10px; border: 1px solid var(--border); border-radius: 6px;">';
+                echo '<h4 style="margin-top: 0; margin-bottom: 10px; color: var(--text); font-size: 14px;">' . htmlspecialchars($room) . '</h4>';
+
+                echo '<div style="display: flex; flex-wrap: wrap; gap: 10px;">';
+                echo '<div style="flex: 1; min-width: 60px;"><label style="font-size: 11px;">Min Temp</label>';
+                echo '<input type="number" step="0.5" name="comfort[' . htmlspecialchars($room) . '][min]" value="' . htmlspecialchars($data['min'] ?? '') . '"></div>';
+
+                echo '<div style="flex: 1; min-width: 60px;"><label style="font-size: 11px;">Max Temp</label>';
+                echo '<input type="number" step="0.5" name="comfort[' . htmlspecialchars($room) . '][max]" value="' . htmlspecialchars($data['max'] ?? '') . '"></div>';
+                echo '</div>';
+
+                echo '</div>';
+            }
+            ?>
+            </div>
+            <button type="submit" class="btn btn-save" style="margin-top: 15px;">Instellingen Opslaan</button>
         </form>
         </div>
     </details>
