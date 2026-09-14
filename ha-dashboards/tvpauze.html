@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>TV Timer</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; width: 100vw; height: 100vh;
+    background: #111; color: #fff;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    overflow: hidden;
+  }
+  #wrap {
+    display: flex; flex-direction: column;
+    width: 100vw; height: 100vh; box-sizing: border-box;
+    padding: 20px; gap: 20px;
+  }
+  #timer {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10rem; font-weight: bold; line-height: 1;
+  }
+  #buttons {
+    flex: 0 0 30vh;
+    display: flex;
+    gap: 20px;
+  }
+  .actionBtn {
+    flex: 1;
+    margin: 0; border: none; border-radius: 25px;
+    color: #fff;
+    font-size: 2rem; font-weight: bold;
+    display: flex;
+    align-items: center; justify-content: center; gap: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+  }
+  #startBtn {
+    background-color: #2e7d32;
+  }
+  #startBtn:active {
+    background-color: #1b5e20;
+  }
+  #stopBtn {
+    background-color: #f44336;
+  }
+  #stopBtn:active {
+    background-color: #d32f2f;
+  }
+  .actionBtn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="timer">--:--</div>
+  <div id="buttons">
+    <button id="startBtn" class="actionBtn">▶ START TV PAUZE</button>
+    <button id="stopBtn" class="actionBtn">⏹ STOP TV PAUZE</button>
+  </div>
+</div>
+
+<script>
+// ==== CONFIGURATIE ====
+// Vul het volledige adres in (bijv. "http://192.168.1.150:8123").
+const HA_BASE_URL = "";
+const HA_TOKEN = "<VERVANGEN!!!>";
+
+const TIMER_ENTITY = "timer.tv_pauze";
+const PAUSE_BOOLEAN = "input_boolean.tv_pauze"; // Wordt mee ingeschakeld/uitgeschakeld
+const START_SCRIPT = "1765569524531"; // Aangepast naar het correcte script ID
+const STOP_SCRIPT = "tvpauze_stop";
+// ======================
+
+const timerEl = document.getElementById('timer');
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+
+let finishesAt = null;
+let remainingSec = null;
+let timerState = 'idle';
+
+function fmt(totalSeconds) {
+  if (totalSeconds < 0) totalSeconds = 0;
+  const m = Math.floor(totalSeconds / 60);
+  const s = Math.floor(totalSeconds % 60);
+  return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+function updateUi() {
+  const isActive = (timerState === 'active' || timerState === 'paused');
+  startBtn.disabled = isActive;
+  stopBtn.disabled = !isActive;
+}
+
+async function fetchState() {
+  const headers = {
+    Authorization: `Bearer ${HA_TOKEN}`,
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    const timerRes = await fetch(`${HA_BASE_URL}/api/states/${TIMER_ENTITY}`, { headers });
+
+    if (timerRes.ok) {
+      const data = await timerRes.json();
+      timerState = data.state;
+      if (timerState === 'active' && data.attributes.finishes_at) {
+        finishesAt = new Date(data.attributes.finishes_at);
+        remainingSec = null;
+      } else if (timerState === 'paused' && data.attributes.remaining) {
+        const [h, m, s] = data.attributes.remaining.split(':').map(Number);
+        remainingSec = h * 3600 + m * 60 + s;
+        finishesAt = null;
+      } else {
+        finishesAt = null;
+        remainingSec = null;
+      }
+    } else {
+      console.warn(`Timer ophalen mislukt status: ${timerRes.status}`);
+    }
+
+    updateUi();
+  } catch (e) {
+    console.error('Fout bij ophalen HA status:', e);
+  }
+}
+
+function tick() {
+  if (timerState === 'active' && finishesAt) {
+    const secs = (finishesAt.getTime() - Date.now()) / 1000;
+    timerEl.textContent = fmt(secs);
+  } else if (timerState === 'paused' && remainingSec !== null) {
+    timerEl.textContent = fmt(remainingSec);
+  } else {
+    timerEl.textContent = '--:--';
+  }
+}
+
+async function callHaService(domain, service, payload = {}) {
+  const headers = {
+    Authorization: `Bearer ${HA_TOKEN}`,
+    'Content-Type': 'application/json'
+  };
+
+  const response = await fetch(`${HA_BASE_URL}/api/services/${domain}/${service}`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    throw new Error(`API ${domain}/${service} gaf status: ${response.status}`);
+  }
+  return response;
+}
+
+async function handleStart() {
+  try {
+    // 1. Schakel helper in (voor het geval automatiseringen hierop triggeren)
+    await callHaService('input_boolean', 'turn_on', { entity_id: PAUSE_BOOLEAN }).catch(() => {});
+
+    // 2. Start het script
+    await callHaService('script', START_SCRIPT);
+
+    setTimeout(fetchState, 300);
+  } catch (e) {
+    console.error('Starten mislukt:', e);
+    alert('Starten mislukt: controleer console F12 en HA_BASE_URL.');
+  }
+}
+
+async function handleStop() {
+  try {
+    // 1. Voer stop-script uit
+    await callHaService('script', STOP_SCRIPT);
+
+    // 2. Schakel timer en helper direct uit
+    await callHaService('timer', 'finish', { entity_id: TIMER_ENTITY }).catch(() => {});
+    await callHaService('input_boolean', 'turn_off', { entity_id: PAUSE_BOOLEAN }).catch(() => {});
+
+    setTimeout(fetchState, 300);
+  } catch (e) {
+    console.error('Stoppen mislukt:', e);
+    alert('Stoppen mislukt: controleer console F12 en HA_BASE_URL.');
+  }
+}
+
+startBtn.addEventListener('click', handleStart);
+stopBtn.addEventListener('click', handleStop);
+
+updateUi();
+fetchState();
+tick();
+setInterval(tick, 1000);
+setInterval(fetchState, 3000);
+</script>
+</body>
+</html>
